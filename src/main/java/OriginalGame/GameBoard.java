@@ -16,9 +16,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel {
-	protected Hex[] hexes;
-	protected Intersection[] intersections;
-	protected Road[] roads;
+	public Hex[] hexes;
+	public Intersection[] intersections;
+	public Road[] roads;
 	public JPanel gamePanel;
 	public int hexSideLength = 70;
 	public double hexDiameter = 2 * (hexSideLength * Math.sqrt(3) / 2) + 20;

@@ -3,10 +3,13 @@
 // (powered by FernFlower decompiler)
 //
 
-package Team7.SettlersOfCatan;
+
+
 
 import java.awt.Color;
 import java.util.ArrayList;
+
+import Team7.SettlersOfCatan.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

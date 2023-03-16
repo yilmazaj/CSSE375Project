@@ -4,7 +4,7 @@ public class Hex {
 	
 	private int number;
 	private String resource;
-	protected Intersection[] intersections = new Intersection[6];
+	public Intersection[] intersections = new Intersection[6];
 	protected boolean hasRobber;
 	
 	public Hex(int i) {

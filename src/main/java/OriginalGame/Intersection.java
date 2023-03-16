@@ -3,9 +3,9 @@ package Team7.SettlersOfCatan;
 import java.awt.Color;
 
 public class Intersection {
-	protected Hex[] hexes = new Hex[3];
-	protected Road[] roads = new Road[3];
-	protected Structure structure = null;
+	public Hex[] hexes = new Hex[3];
+	public Road[] roads = new Road[3];
+	public Structure structure = null;
 	
 	public Intersection(Hex h) {
 		hexes[0] = h;

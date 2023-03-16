@@ -12,17 +12,17 @@ import java.util.Random;
 public class Player {
     public String name;
     public Color color;
-    protected ArrayList<ResourceCard> resources;
+    public ArrayList<ResourceCard> resources;
     protected boolean isActive;
-    protected int numSettlements;
+    public int numSettlements;
     protected int numCities;
-    protected int numRoads;
-    protected int victoryPoints;
-    protected ArrayList<NonPlayableCard> nCards = new ArrayList();
-    protected ArrayList<PlayableCard> pCards = new ArrayList();
-    protected int knightCount;
-    protected boolean hasKnightCard;
-    protected boolean hasRoadCard;
+    public int numRoads;
+    public int victoryPoints;
+    public ArrayList<NonPlayableCard> nCards = new ArrayList();
+    public ArrayList<PlayableCard> pCards = new ArrayList();
+    public int knightCount;
+    public boolean hasKnightCard;
+    public boolean hasRoadCard;
 
     public Player(String name, Color color) {
         this.name = name;

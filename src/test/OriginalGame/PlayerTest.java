@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package Team7.SettlersOfCatan;
+import Team7.SettlersOfCatan.*;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -41,8 +41,8 @@ class PlayerTest {
         ResourceCard c2 = new ResourceCard("Brick");
         p.addResourceCard(c1);
         p.addResourceCard(c2);
-        p.removeResourceCard(c1.type);
-        p.removeResourceCard(c2.type);
+        p.removeResourceCard(c1.getType());
+        p.removeResourceCard(c2.getType());
         Assertions.assertFalse(p.resources.contains(c1));
         Assertions.assertFalse(p.resources.contains(c2));
     }

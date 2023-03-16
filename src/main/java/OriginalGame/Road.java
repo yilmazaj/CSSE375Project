@@ -11,7 +11,7 @@ public class Road extends Buildable {
     protected int intersection1Num;
     protected int intersection2Num;
     protected int indexNum;
-    protected Color color;
+    public Color color;
 
     public Road(int i1, int i2, int index) {
         this.intersection1Num = i1;

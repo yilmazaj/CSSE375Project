@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package Team7.SettlersOfCatan;
+import Team7.SettlersOfCatan.*;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

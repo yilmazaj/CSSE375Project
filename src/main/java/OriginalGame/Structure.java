@@ -8,7 +8,7 @@ package Team7.SettlersOfCatan;
 import java.awt.Color;
 
 public abstract class Structure extends Buildable {
-    protected Color color;
+    public Color color;
     protected Hex[] hexes;
 
     public Structure(Color s) {
