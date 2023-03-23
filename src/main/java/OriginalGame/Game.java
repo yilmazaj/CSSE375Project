@@ -32,8 +32,11 @@ public class Game extends JFrame {
 	public int maxRoads;
 	public MostRoads mostRoads;
 	public LargestArmy largestArmy;
+
+	public Dice dice;
 	
 	public Game () {
+		dice = new Dice(2);
 		playerNum = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter number of players", "2"));
 		while(playerNum < 2 || playerNum > 4) {
 			playerNum = Integer.parseInt(JOptionPane.showInputDialog(null, "There must be between 2 and 4 players", "2"));
@@ -41,7 +44,7 @@ public class Game extends JFrame {
 		playerPanels = new JPanel[playerNum];
 		
 		board = new GameBoard();
-		
+
 		gameFrame = new JFrame();
 		gameFrame.setSize(new Dimension(1000, 800));
 		setDefaultCloseOperation(gameFrame.EXIT_ON_CLOSE);
@@ -288,49 +291,48 @@ public class Game extends JFrame {
 		}
 	}
 	
-	public int rollForResources() {
-		Random r = new Random();
-		int die1 = r.nextInt(6)+1;
-		int die2 = r.nextInt(6)+1;
-		int total = die1 + die2;
-		System.out.println(total);
-		ArrayList<Structure> structures;
+	public int handleDiceRoll() {
+		int total = dice.getTotal();
 		//robber scenario
 		if(total == 7) {
 			activateRobber();
 		}
 		else {
-			structures = board.getStructuresOnRolledHexes(total);
-			//may not work if structure is on both rolled hexes
-			for(int i = 0; i < structures.size(); i++) {
-				String resource = "None";
-				for(int j = 0; j < 3; j++) {
-					if(structures.get(i).hexes[j].getNumber() == total) {
-						if(structures.get(i).hexes[j].hasRobber) {
-							break;
-						}
-						resource = structures.get(i).hexes[j].getResource();
-						break;
-					}
-				}
-				if(resource.equals("None")) {
-					continue;
-				}
-				Player currentPlayer = getPlayerOfColor(structures.get(i).color);
-				if(structures.get(i).getType().equals("Settlement")) {
-					ResourceCard c1 = new ResourceCard(resource);
-					currentPlayer.addResourceCard(c1);
-				}
-				else {
-					ResourceCard c1 = new ResourceCard(resource);
-					currentPlayer.addResourceCard(c1);
-					ResourceCard c2 = new ResourceCard(resource);
-					currentPlayer.addResourceCard(c2);
-				}
-			}
+			giveResourcesFromRoll(total);
 		}
 		return total;
-		
+	}
+
+	private void giveResourcesFromRoll(int total){
+		ArrayList<Structure> structures;
+		structures = board.getStructuresOnRolledHexes(total);
+		//may not work if structure is on both rolled hexes
+		for(int i = 0; i < structures.size(); i++) {
+			String resource = "None";
+			for(int j = 0; j < 3; j++) {
+				if(structures.get(i).hexes[j].getNumber() == total) {
+					if(structures.get(i).hexes[j].hasRobber) {
+						break;
+					}
+					resource = structures.get(i).hexes[j].getResource();
+					break;
+				}
+			}
+			if(resource.equals("None")) {
+				continue;
+			}
+			Player currentPlayer = getPlayerOfColor(structures.get(i).color);
+			if(structures.get(i).getType().equals("Settlement")) {
+				ResourceCard c1 = new ResourceCard(resource);
+				currentPlayer.addResourceCard(c1);
+			}
+			else {
+				ResourceCard c1 = new ResourceCard(resource);
+				currentPlayer.addResourceCard(c1);
+				ResourceCard c2 = new ResourceCard(resource);
+				currentPlayer.addResourceCard(c2);
+			}
+		}
 	}
 	
 	public void activateRobber() {
@@ -391,23 +393,67 @@ public class Game extends JFrame {
 		}
 		return null;
 	}
+
+	private void waitForPlayerToEndTurn(Game game, CurrentTurnGUI turnGUI){
+		while(!turnGUI.isTurnOver()){
+			try {
+				Thread.sleep(1);
+				handlePlayerAction(game,turnGUI);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	private void handlePlayerAction(Game game, CurrentTurnGUI turnGUI){
+		if(turnGUI.doTradeAction()){
+			JOptionPane.showMessageDialog(null, "Request trades with other players", "Trade stage", JOptionPane.INFORMATION_MESSAGE);
+			game.tradeStage();
+		}
+		if(turnGUI.doBuildAction()){
+			JOptionPane.showMessageDialog(null, "Use your resources to build structures and roads", "Build stage", JOptionPane.INFORMATION_MESSAGE);
+			game.buildStage();
+		}
+		if(turnGUI.doCardAction()){
+			JOptionPane.showMessageDialog(null, "Buy and play cards", "Card stage", JOptionPane.INFORMATION_MESSAGE);
+			game.buyCard();
+			game.playCard();
+			game.inTurn.printResources();
+		}
+	}
+	
+	public void waitForPlayerDiceRoll(){
+		while(!dice.hasPlayerMadeRoll()){
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
 	
 	public static void main(String[] args) {
 		System.out.println("The Start of Catan.");
 		Game game = new Game();
 		game.buildInitialStructures();
+
+		CurrentTurnGUI turnGUI = new CurrentTurnGUI("Default",game.dice);
+
 		while(game.inTurn.victoryPoints < 10) {
-			JOptionPane.showMessageDialog(null, "It is " + game.inTurn.name + "'s turn to play", game.inTurn.name + "'s turn!", JOptionPane.INFORMATION_MESSAGE);
-			JOptionPane.showMessageDialog(null, "Click Ok to roll for resources", "Roll stage", JOptionPane.INFORMATION_MESSAGE);
-			game.rollForResources();
-			JOptionPane.showMessageDialog(null, "Buy and play cards", "Card stage", JOptionPane.INFORMATION_MESSAGE);
-			game.buyCard();
-			game.playCard();
-			game.inTurn.printResources();
-			JOptionPane.showMessageDialog(null, "Request trades with other players", "Trade stage", JOptionPane.INFORMATION_MESSAGE);
-			game.tradeStage();
-			JOptionPane.showMessageDialog(null, "Use your resources to build structures and roads", "Build stage", JOptionPane.INFORMATION_MESSAGE);
-			game.buildStage();
+			turnGUI.updateUIForNewPlayer(game.inTurn.name);
+			game.waitForPlayerDiceRoll();
+			game.handleDiceRoll();
+			game.waitForPlayerToEndTurn(game, turnGUI);
+//			JOptionPane.showMessageDialog(null, "Request trades with other players", "Trade stage", JOptionPane.INFORMATION_MESSAGE);
+//			game.tradeStage();
+
+//			JOptionPane.showMessageDialog(null, "Buy and play cards", "Card stage", JOptionPane.INFORMATION_MESSAGE);
+//			game.buyCard();
+//			game.playCard();
+//			game.inTurn.printResources();
+//
+//			JOptionPane.showMessageDialog(null, "Use your resources to build structures and roads", "Build stage", JOptionPane.INFORMATION_MESSAGE);
+//			game.buildStage();
 			game.checkSpecialties();
 			if(game.inTurn.victoryPoints >= 10) {
 				break;
