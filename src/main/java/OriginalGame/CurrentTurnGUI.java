@@ -6,7 +6,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 public class CurrentTurnGUI {
 
@@ -70,11 +69,11 @@ public class CurrentTurnGUI {
         panel.setLayout(layout);
     }
     private void attachActionListeners(){
-        rollDiceButton.addActionListener(e -> rollDiceAction());
-        tradeButton.addActionListener(e -> tradeAction());
-        buildButton.addActionListener(e -> buildAction());
-        endTurnButton.addActionListener(e -> endTurnAction());
-        cardButton.addActionListener(e -> cardAction());
+        rollDiceButton.addActionListener(e -> rollDiceButtonAction());
+        tradeButton.addActionListener(e -> tradeButtonAction());
+        buildButton.addActionListener(e -> buildButtonAction());
+        endTurnButton.addActionListener(e -> endTurnButtonAction());
+        cardButton.addActionListener(e -> cardButtonAction());
     }
 
 
@@ -163,19 +162,19 @@ public class CurrentTurnGUI {
 
     }
 
-    private void endTurnAction(){
+    public void endTurnButtonAction(){
         turnEnded = true;
     }
 
-    private void buildAction(){
+    public void buildButtonAction(){
         buildActionFlag = true;
     }
 
-    private void tradeAction(){
+    public void tradeButtonAction(){
         tradeActionFlag = true;
     }
 
-    private void cardAction(){
+    public void cardButtonAction(){
         cardActionFlag = true;
     }
 
@@ -205,7 +204,7 @@ public class CurrentTurnGUI {
 
 
 
-    private void rollDiceAction(){
+    private void rollDiceButtonAction(){
 
         int[] rolls = dice.rollDice();
         for(int i = 0; i < diceLabels.length; i++){

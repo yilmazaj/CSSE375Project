@@ -394,31 +394,31 @@ public class Game extends JFrame {
 		return null;
 	}
 
-	private void waitForPlayerToEndTurn(Game game, CurrentTurnGUI turnGUI){
+	private void waitForPlayerToEndTurn(CurrentTurnGUI turnGUI){
 		while(!turnGUI.isTurnOver()){
 			try {
 				Thread.sleep(1);
-				handlePlayerAction(game,turnGUI);
+				handlePlayerAction(turnGUI);
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
 		}
 	}
 
-	private void handlePlayerAction(Game game, CurrentTurnGUI turnGUI){
+	private void handlePlayerAction(CurrentTurnGUI turnGUI){
 		if(turnGUI.doTradeAction()){
 			JOptionPane.showMessageDialog(null, "Request trades with other players", "Trade stage", JOptionPane.INFORMATION_MESSAGE);
-			game.tradeStage();
+			tradeStage();
 		}
 		if(turnGUI.doBuildAction()){
 			JOptionPane.showMessageDialog(null, "Use your resources to build structures and roads", "Build stage", JOptionPane.INFORMATION_MESSAGE);
-			game.buildStage();
+			buildStage();
 		}
 		if(turnGUI.doCardAction()){
 			JOptionPane.showMessageDialog(null, "Buy and play cards", "Card stage", JOptionPane.INFORMATION_MESSAGE);
-			game.buyCard();
-			game.playCard();
-			game.inTurn.printResources();
+			buyCard();
+			playCard();
+			inTurn.printResources();
 		}
 	}
 	
@@ -431,37 +431,31 @@ public class Game extends JFrame {
 			}
 		}
 	}
+
+	private void handlePlayerTurn(CurrentTurnGUI turnGUI){
+		turnGUI.updateUIForNewPlayer(inTurn.name);
+		waitForPlayerDiceRoll();
+		handleDiceRoll();
+		waitForPlayerToEndTurn(turnGUI);
+		checkSpecialties();
+	}
+
+
 	
 	public static void main(String[] args) {
 		System.out.println("The Start of Catan.");
 		Game game = new Game();
 		game.buildInitialStructures();
-
 		CurrentTurnGUI turnGUI = new CurrentTurnGUI("Default",game.dice);
 
 		while(game.inTurn.victoryPoints < 10) {
-			turnGUI.updateUIForNewPlayer(game.inTurn.name);
-			game.waitForPlayerDiceRoll();
-			game.handleDiceRoll();
-			game.waitForPlayerToEndTurn(game, turnGUI);
-//			JOptionPane.showMessageDialog(null, "Request trades with other players", "Trade stage", JOptionPane.INFORMATION_MESSAGE);
-//			game.tradeStage();
-
-//			JOptionPane.showMessageDialog(null, "Buy and play cards", "Card stage", JOptionPane.INFORMATION_MESSAGE);
-//			game.buyCard();
-//			game.playCard();
-//			game.inTurn.printResources();
-//
-//			JOptionPane.showMessageDialog(null, "Use your resources to build structures and roads", "Build stage", JOptionPane.INFORMATION_MESSAGE);
-//			game.buildStage();
-			game.checkSpecialties();
+			game.handlePlayerTurn(turnGUI);
 			if(game.inTurn.victoryPoints >= 10) {
 				break;
 			}
 			game.rotateTurns();
 		}
 		JOptionPane.showMessageDialog(null, game.inTurn.name + " has reached 10 victory points and won the game!", "Game Over!", JOptionPane.INFORMATION_MESSAGE);
-		
 	}
 	
 	public void checkSpecialties() {

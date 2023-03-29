@@ -5,18 +5,15 @@ import java.util.Random;
 public class Dice {
 
     private int[] rolls;
-
     private int total;
-
     private Random rng;
-
     private boolean rollForCurrentPlayerMade;
 
     public Dice(int numDice){
-        rollForCurrentPlayerMade = false;
         rolls = new int[numDice];
         rng = new Random();
         rollDice();
+        rollForCurrentPlayerMade = false;
     }
 
     public boolean hasPlayerMadeRoll(){

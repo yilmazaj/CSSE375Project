@@ -154,7 +154,7 @@ class GameTest {
             --game.inTurn.numSettlements;
         }
 
-        roll = game.rollForResources();
+        roll = game.handleDiceRoll();
         if (roll != 7) {
             Assertions.assertTrue(numResources < game.inTurn.resources.size());
         }
