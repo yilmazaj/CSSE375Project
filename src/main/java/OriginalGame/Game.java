@@ -91,6 +91,51 @@ public class Game extends JFrame {
 		}
 		
 	}
+
+	//Constructor for Unit Tests
+	public Game (int playerNum) {
+		dice = new Dice(2);
+
+		colors = new Color[MAX_PLAYERS];
+		players = new Player[playerNum];
+		maxKnights = 0;
+		maxRoads = 2;
+		mostRoads = new MostRoads();
+		largestArmy = new LargestArmy();
+
+		populateColors();
+		populatePlayers();
+		inTurn = players[0];
+		inTurnIndex = 0;
+		inTurn.isActive = true;
+		for(int i = 0; i < playerNum; i++) {
+			ResourceCard c1 = new ResourceCard("Brick");
+			ResourceCard c2 = new ResourceCard("Grain");
+			ResourceCard c3 = new ResourceCard("Lumber");
+			ResourceCard c4 = new ResourceCard("Wool");
+			ResourceCard c5 = new ResourceCard("Brick");
+			ResourceCard c6 = new ResourceCard("Grain");
+			ResourceCard c7 = new ResourceCard("Lumber");
+			ResourceCard c8 = new ResourceCard("Wool");
+			ResourceCard c9 = new ResourceCard("Brick");
+			ResourceCard c10 = new ResourceCard("Brick");
+			ResourceCard c11 = new ResourceCard("Lumber");
+			ResourceCard c12 = new ResourceCard("Lumber");
+			players[i].addResourceCard(c1);
+			players[i].addResourceCard(c2);
+			players[i].addResourceCard(c3);
+			players[i].addResourceCard(c4);
+			players[i].addResourceCard(c5);
+			players[i].addResourceCard(c6);
+			players[i].addResourceCard(c7);
+			players[i].addResourceCard(c8);
+			players[i].addResourceCard(c9);
+			players[i].addResourceCard(c10);
+			players[i].addResourceCard(c11);
+			players[i].addResourceCard(c12);
+		}
+
+	}
 	
 	public void rotateTurns() {
 		inTurn.isActive = false;
@@ -432,7 +477,7 @@ public class Game extends JFrame {
 		}
 	}
 
-	private void handlePlayerTurn(CurrentTurnGUI turnGUI){
+	public void handlePlayerTurn(CurrentTurnGUI turnGUI){
 		turnGUI.updateUIForNewPlayer(inTurn.name);
 		waitForPlayerDiceRoll();
 		handleDiceRoll();
@@ -441,22 +486,6 @@ public class Game extends JFrame {
 	}
 
 
-	
-	public static void main(String[] args) {
-		System.out.println("The Start of Catan.");
-		Game game = new Game();
-		game.buildInitialStructures();
-		CurrentTurnGUI turnGUI = new CurrentTurnGUI("Default",game.dice);
-
-		while(game.inTurn.victoryPoints < 10) {
-			game.handlePlayerTurn(turnGUI);
-			if(game.inTurn.victoryPoints >= 10) {
-				break;
-			}
-			game.rotateTurns();
-		}
-		JOptionPane.showMessageDialog(null, game.inTurn.name + " has reached 10 victory points and won the game!", "Game Over!", JOptionPane.INFORMATION_MESSAGE);
-	}
 	
 	public void checkSpecialties() {
 		if(inTurn.knightCount > this.maxKnights) {
