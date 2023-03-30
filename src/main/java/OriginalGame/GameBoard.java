@@ -76,23 +76,29 @@ public class GameBoard extends JPanel {
 			while (nums[index] == 0) {
 				index++;
 			}
-			hexes[i] = new Hex(nums[index]);
-			if (hexes[i].getNumber() == -1) {
-				hexes[i].setResource("None");
+//			hexes[i] = new Hex(nums[index]);
+			if (nums[index] == -1) {
+//				hexes[i].setResource("None");
+				hexes[i] = new NoResourceHex(nums[index]);
 			} else if (grain < 4) {
-				hexes[i].setResource("Grain");
+//				hexes[i].setResource("Grain");
+				hexes[i] = new GrainHex(nums[index]);
 				grain++;
 			} else if (wool < 4) {
-				hexes[i].setResource("Wool");
+//				hexes[i].setResource("Wool");
+				hexes[i] = new WoolHex(nums[index]);
 				wool++;
 			} else if (lumber < 4) {
-				hexes[i].setResource("Lumber");
+//				hexes[i].setResource("Lumber");
+				hexes[i] = new LumberHex(nums[index]);
 				lumber++;
 			} else if (brick < 3) {
-				hexes[i].setResource("Brick");
+//				hexes[i].setResource("Brick");
+				hexes[i] = new BrickHex(nums[index]);
 				brick++;
 			} else {
-				hexes[i].setResource("Ore");
+//				hexes[i].setResource("Ore");
+				hexes[i] = new OreHex(nums[index]);
 			}
 			nums[index] = 0;
 		}
@@ -179,42 +185,10 @@ public class GameBoard extends JPanel {
 
 	public HexagonData drawHex(Hex hex, Graphics2D g2, Point2D.Double point) {
 		HexagonData hexShape = makeHex(point);
-		String type = hex.getResource();
-		switch (type) {
-		case "None":
-			// Done
-			g2.setColor(new Color(255, 255, 240));
-			break;
-		case "Grain":
-			// Done
-			g2.setColor(new Color(250, 233, 144));
-			break;
-		case "Wool":
-			// Done
-			g2.setColor(new Color(136, 239, 167));
-			break;
-		case "Lumber":
-			// Done
-			g2.setColor(new Color(57, 98, 48));
-			break;
-		case "Brick":
-			// Done
-			g2.setColor(new Color(189, 79, 66));
-			break;
-		case "Ore":
-			// Done
-			g2.setColor(new Color(169, 165, 169));
-			break;
-		default:
-			// Done
-			g2.setColor(Color.BLACK);
-			break;
-		}
+		g2.setColor(hex.getColor());
 
-		g2.fillPolygon(hexShape.hex);
-		g2.setColor(new Color(51, 62, 79));
-		g2.setStroke(new BasicStroke(5));
-		g2.drawPolygon(hexShape.hex);
+		hexShape.drawHexShape(g2);
+		hex.drawIcon(g2, point);
 
 		return hexShape;
 	}
@@ -620,6 +594,13 @@ public class GameBoard extends JPanel {
 			xCenter = x;
 			yCenter = y;
 			hex = hexagon;
+		}
+
+		public void drawHexShape(Graphics2D g2) {
+			g2.fillPolygon(hex);
+			g2.setColor(new Color(51, 62, 79));
+			g2.setStroke(new BasicStroke(5));
+			g2.drawPolygon(hex);
 		}
 	}
 

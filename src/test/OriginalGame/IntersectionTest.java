@@ -18,7 +18,7 @@ class IntersectionTest {
         Road r1 = new Road(0, 1, 0);
         Road r2 = new Road(0, 7, 1);
         r1.color = Color.RED;
-        Hex h = new Hex(0);
+        Hex h = new NoResourceHex(0);
         Intersection i = new Intersection(h);
         i.setRoads(r1, r2);
         Assertions.assertTrue(i.containsRoad(Color.RED));
