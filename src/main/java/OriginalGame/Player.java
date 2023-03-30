@@ -57,11 +57,11 @@ public class Player {
             Random r = new Random();
             int toRemove = r.nextInt(this.resources.size());
             ResourceCard c = resources.get(toRemove);
-            if(c.getType() == "Brick"){ brickAmount--;}
-            if(c.getType() == "Grain"){ grainAmount--;}
-            if(c.getType() == "Lumber"){ lumberAmount--;}
-            if(c.getType() == "Wool"){ woolAmount--; }
-            if(c.getType() == "Ore"){ oreAmount--; }
+            if(c.getType().equals("Brick")){ brickAmount--;}
+            if(c.getType().equals("Grain")){ grainAmount--;}
+            if(c.getType().equals("Lumber")){ lumberAmount--;}
+            if(c.getType().equals("Wool")){ woolAmount--; }
+            if(c.getType().equals("Ore")){ oreAmount--; }
             return (ResourceCard)this.resources.remove(toRemove);
         }
     }
@@ -69,28 +69,38 @@ public class Player {
     public void addResourceCard(ResourceCard c) {
         this.resources.add(c);
 
-        if(c.getType() == "Brick"){ brickAmount++; return;}
-        if(c.getType() == "Grain"){ grainAmount++; return;}
-        if(c.getType() == "Lumber"){ lumberAmount++; return;}
-        if(c.getType() == "Wool"){ woolAmount++; return; }
-        if(c.getType() == "Ore"){ oreAmount++; }
+        if(c.getType().equals("Brick")){ brickAmount++;}
+        if(c.getType().equals("Grain")){ grainAmount++;}
+        if(c.getType().equals("Lumber")){ lumberAmount++;}
+        if(c.getType().equals("Wool")){ woolAmount++; }
+        if(c.getType().equals("Ore")){ oreAmount++; }
     }
 
     public boolean removeResourceCard(String type) {
-        for(int i = 0; i < this.resources.size(); ++i) {
-            if (((ResourceCard)this.resources.get(i)).type.equals(type)) {
-                ResourceCard c = resources.get(i);
+
+        for(int i = 0; i < resources.size();i++) {
+            ResourceCard c = resources.get(i);
+            if (c.getType().equals(type)) {
                 this.resources.remove(i);
-                if(c.getType() == "Brick"){ brickAmount--;}
-                if(c.getType() == "Grain"){ grainAmount--;}
-                if(c.getType() == "Lumber"){ lumberAmount--;}
-                if(c.getType() == "Wool"){ woolAmount--; }
-                if(c.getType() == "Ore"){ oreAmount--; }
+                if(c.getType().equals("Brick")){ brickAmount--;}
+                if(c.getType().equals("Grain")){ grainAmount--;}
+                if(c.getType().equals("Lumber")){ lumberAmount--;}
+                if(c.getType().equals("Wool")){ woolAmount--; }
+                if(c.getType().equals("Ore")){ oreAmount--; }
                 return true;
             }
         }
 
         return false;
+    }
+
+    public void clearResources(){
+        resources.clear();
+        oreAmount = 0;
+        woolAmount = 0;
+        grainAmount = 0;
+        lumberAmount = 0;
+        brickAmount = 0;
     }
 
     public boolean containsAllResources(ArrayList<ResourceCard> resourcesToCheck) {
@@ -128,16 +138,9 @@ public class Player {
     }
 
     public void removeAllResources(ArrayList<ResourceCard> requiredResources) {
- //       for (int i = 0; i < requiredResources.size(); i++) {
-        brickAmount = 0;
-        woolAmount = 0;
-        oreAmount = 0;
-        lumberAmount = 0;
-        grainAmount = 0;
-        requiredResources.clear();;
-//            this.removeResourceCard(((ResourceCard)requiredResources.get(i)).type);
- //       }
-
+        for(ResourceCard c: requiredResources){
+            removeResourceCard(c.type);
+        }
     }
 
     public void printResources() {

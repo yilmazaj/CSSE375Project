@@ -333,15 +333,18 @@ public class Game extends JFrame {
 				road2Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "First intersection", ""));
 				road2Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Second intersection", ""));
 			}
+			inTurn.clearResources();
 			rotateTurns();
+
 		}
+
 	}
 	
 	public int handleDiceRoll() {
 		int total = dice.getTotal();
 		//robber scenario
 		if(total == 7) {
-			//robber.activateRobber(this);
+			robber.activateRobber(this);
 		}
 		else {
 			giveResourcesFromRoll(total);

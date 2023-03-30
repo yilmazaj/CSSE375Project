@@ -9,6 +9,7 @@ public class Main {
         Game game = new Game();
         game.buildInitialStructures();
         CurrentTurnGUI turnGUI = new CurrentTurnGUI("Default",game.dice);
+        game.playersStats.updatePlayersStats();
 
         while(game.inTurn.victoryPoints < 10) {
             game.handlePlayerTurn(turnGUI);
