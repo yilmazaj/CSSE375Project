@@ -20,6 +20,39 @@ public class NewGameTest {
 
         int startingResources = game.inTurn.resources.size();
 
+
+        for(int i = 0; i< 5; i= i+5){
+            ResourceCard c1 = new ResourceCard("Brick");
+            ResourceCard c2 = new ResourceCard("Grain");
+            ResourceCard c3 = new ResourceCard("Lumber");
+            ResourceCard c4 = new ResourceCard("Wool");
+            game.inTurn.addResourceCard(c1);
+            game.inTurn.addResourceCard(c2);
+            game.inTurn.addResourceCard(c3);
+            game.inTurn.addResourceCard(c4);
+            game.buildStructure("Settlement", i);
+        }
+
+        assertTrue(game.inTurn.resources.size() == startingResources);
+
+        for(int i = 1; i < 15; i++){
+            if (i == 7) continue;
+            dice.setTotal(i);
+            game.handleDiceRoll();
+        }
+        assertTrue(startingResources < game.inTurn.resources.size());
+
+    }
+
+    @Test
+    public void testRollForResources1(){
+        Game game = new Game(2);
+        Dice dice = game.dice;
+        dice.rollDice();
+        dice.setTotal(8);
+
+        int startingResources = game.inTurn.resources.size();
+
         ResourceCard c1 = new ResourceCard("Brick");
         ResourceCard c2 = new ResourceCard("Grain");
         ResourceCard c3 = new ResourceCard("Lumber");
