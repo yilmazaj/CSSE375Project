@@ -360,6 +360,7 @@ public class Game extends JFrame {
 		else {
 			giveResourcesFromRoll(total);
 		}
+		playersStats.updatePlayersStats();
 		return total;
 	}
 
