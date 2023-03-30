@@ -34,7 +34,9 @@ public class Game extends JFrame {
 	public LargestArmy largestArmy;
 
 	public Dice dice;
-	
+
+	public PlayersStatsGUI playersStats;
+
 	public Game () {
 		dice = new Dice(2);
 		playerNum = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter number of players", "2"));
@@ -46,7 +48,7 @@ public class Game extends JFrame {
 		board = new GameBoard();
 
 		gameFrame = new JFrame();
-		gameFrame.setSize(new Dimension(1000, 800));
+		gameFrame.setSize(new Dimension(800, 700));
 		setDefaultCloseOperation(gameFrame.EXIT_ON_CLOSE);
 		gameFrame.setVisible(true);
 		gameFrame.add(board, BorderLayout.CENTER);
@@ -89,6 +91,8 @@ public class Game extends JFrame {
 			players[i].addResourceCard(c11);
 			players[i].addResourceCard(c12);
 		}
+
+		playersStats = new PlayersStatsGUI(players);
 		
 	}
 
@@ -464,8 +468,12 @@ public class Game extends JFrame {
 			tradeStage();
 		}
 		if(turnGUI.doBuildAction()){
-			JOptionPane.showMessageDialog(null, "Use your resources to build structures and roads", "Build stage", JOptionPane.INFORMATION_MESSAGE);
-			buildStage();
+			if(inTurn.resources.size() != 0){
+				JOptionPane.showMessageDialog(null, "Use your resources to build structures and roads", "Build stage", JOptionPane.INFORMATION_MESSAGE);
+				buildStage();
+			} else {
+				JOptionPane.showMessageDialog(null, "You have no resources to build.");
+			}
 		}
 		if(turnGUI.doCardAction()){
 			JOptionPane.showMessageDialog(null, "Buy and play cards", "Card stage", JOptionPane.INFORMATION_MESSAGE);
