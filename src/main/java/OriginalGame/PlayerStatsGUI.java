@@ -32,9 +32,6 @@ public class PlayerStatsGUI extends JPanel {
 
     public void updateResourcesView(){
         resourceDisplayPanel.removeAll();
-        System.out.println("Player: " + player.name + " has: " + player.brickAmount + " " +
-                            player.grainAmount + " " + player.lumberAmount + " " + player.woolAmount +
-                            " " + player.oreAmount);
         resourceDisplayPanel.add(new JLabel("Brick: " + player.brickAmount));
         resourceDisplayPanel.add(new JLabel("Grain: " + player.grainAmount));
         resourceDisplayPanel.add(new JLabel("Lumber: " + player.lumberAmount));
