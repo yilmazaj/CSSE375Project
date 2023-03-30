@@ -137,20 +137,6 @@ class GameBoard {
   + mixHexes(): void
   + moveRobber(int): void
 }
-class GameBoardTest {
-  ~ testSetIntersectionsHexes(): void
-  ~ testConstructEmptyBoard(): void
-  ~ testHexResources(): void
-  ~ testPlaceHexes(): void
-  ~ testSetRoads(): void
-  ~ testGetStructuresOnRolledHexes(): void
-  ~ testPlaceHexesNumbered(): void
-  ~ testAddStructure(): void
-  ~ testMixHexes(): void
-  ~ testGetRoadByIntersections(): void
-  ~ testInitializeRobber(): void
-  ~ testMoveRobber(): void
-}
 class GrainHex {
   + getResource(): String
   + getColor(): Color
