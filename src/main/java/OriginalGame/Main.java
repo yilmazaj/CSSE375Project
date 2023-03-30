@@ -12,7 +12,7 @@ public class Main {
 
         while(game.inTurn.victoryPoints < 10) {
             game.handlePlayerTurn(turnGUI);
-            game.playersStats.updatePlayersStats();
+
             if(game.inTurn.victoryPoints >= 10) {
                 break;
             }
