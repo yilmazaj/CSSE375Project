@@ -25,7 +25,6 @@ public class GameBoard extends JPanel {
 	public double hexRadius;
 	public Point2D.Double startingPoint;
 	public int playerNum;
-	public GUIHexTie[] hexWrapArray;
 	public IntersectionPoint[] intersectionPoints;
 
 	public GameBoard() {
@@ -40,7 +39,6 @@ public class GameBoard extends JPanel {
 		intersections = new Intersection[54];
 		hexes = new Hex[19];
 		roads = new Road[72];
-		hexWrapArray = new GUIHexTie[19];
 		intersectionPoints = new IntersectionPoint[54];
 		placeHexes();
 		setIntersections();
@@ -162,37 +160,28 @@ public class GameBoard extends JPanel {
 		HexagonData currentHex;
 		if (i < 3) {
 			current.x = current.x + i * hexDiameter + hexDiameter;
-			currentHex = drawHex(hexes[i], g2, current);
-			hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
 		} else if (i < 7) {
 			current.x = current.x + (i - 3) * hexDiameter + 0.5 * hexDiameter - 1;
 			current.y = current.y + 1.5 * hexSideLength + 1;
-			currentHex = drawHex(hexes[i], g2, current);
-			hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
 		} else if (i < 12) {
 			current.x = current.x + (i - 7) * hexDiameter - 1;
 			current.y = current.y + 3 * hexSideLength + 2;
-			currentHex = drawHex(hexes[i], g2, current);
-			hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
 		} else if (i < 16) {
 			current.x = current.x + (i - 12) * hexDiameter + 0.5 * hexDiameter - 1;
 			current.y = current.y + 4.5 * hexSideLength + 3;
-			currentHex = drawHex(hexes[i], g2, current);
-			hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
 		} else if (i < 19) {
 			current.x = current.x + (i - 16) * hexDiameter + hexDiameter - 1;
 			current.y = current.y + 6 * hexSideLength + 5;
-			currentHex = drawHex(hexes[i], g2, current);
-			hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
 		}
+		currentHex = drawHex(hexes[i], g2, current);
 		current.x = 100;
 		current.y = 100;
 
 		Color curColor = g2.getColor();
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke(10));
-		g2.drawString("" + hexes[i].getNumber(), (int) (hexWrapArray[i].hexX),
-				(int) (hexWrapArray[i].hexY));
+		g2.drawString("" + hexes[i].getNumber(), (int) (currentHex.xCenter),
+				(int) (currentHex.yCenter));
 		g2.setColor(curColor);
 	}
 
@@ -568,20 +557,6 @@ public class GameBoard extends JPanel {
 			}
 		}
 		return structures;
-	}
-
-	class GUIHexTie {
-		Hex hex;
-		Polygon hexVisual;
-		int hexX;
-		int hexY;
-
-		public GUIHexTie(Hex curHex, HexagonData curHexData) {
-			this.hex = curHex;
-			this.hexVisual = curHexData.hex;
-			this.hexX = curHexData.xCenter;
-			this.hexY = curHexData.yCenter;
-		}
 	}
 	
 	class IntersectionHelper {
