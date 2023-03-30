@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NewGameTest {
@@ -21,7 +22,7 @@ public class NewGameTest {
         int startingResources = game.inTurn.resources.size();
 
 
-        for(int i = 0; i< 5; i= i+5){
+        for(int i = 10; i< 14; i= i+2){
             ResourceCard c1 = new ResourceCard("Brick");
             ResourceCard c2 = new ResourceCard("Grain");
             ResourceCard c3 = new ResourceCard("Lumber");
@@ -33,7 +34,10 @@ public class NewGameTest {
             game.buildStructure("Settlement", i);
         }
 
-        assertTrue(game.inTurn.resources.size() == startingResources);
+        System.out.println(game.inTurn.resources.size());
+        System.out.println(startingResources);
+
+        assertEquals(game.inTurn.resources.size(),startingResources);
 
         for(int i = 1; i < 15; i++){
             if (i == 7) continue;
@@ -61,7 +65,7 @@ public class NewGameTest {
         game.inTurn.addResourceCard(c2);
         game.inTurn.addResourceCard(c3);
         game.inTurn.addResourceCard(c4);
-        game.buildStructure("Settlement", 1);
+        game.buildStructure("Settlement", 10);
 
         for(int i = 1; i < 15; i++){
             if (i == 7) continue;
