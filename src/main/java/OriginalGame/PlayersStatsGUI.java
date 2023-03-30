@@ -29,7 +29,6 @@ public class PlayersStatsGUI extends JFrame {
     }
 
     public void updatePlayersStats() {
-        System.out.println("Updating player stats GUI");
         for(int i = 0; i < players.length; i++){
             playerStatsGUIs[i].updateResourcesView();
         }
