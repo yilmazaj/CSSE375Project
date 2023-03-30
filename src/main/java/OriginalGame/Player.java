@@ -56,6 +56,12 @@ public class Player {
         } else {
             Random r = new Random();
             int toRemove = r.nextInt(this.resources.size());
+            ResourceCard c = resources.get(toRemove);
+            if(c.getType() == "Brick"){ brickAmount--;}
+            if(c.getType() == "Grain"){ grainAmount--;}
+            if(c.getType() == "Lumber"){ lumberAmount--;}
+            if(c.getType() == "Wool"){ woolAmount--; }
+            if(c.getType() == "Ore"){ oreAmount--; }
             return (ResourceCard)this.resources.remove(toRemove);
         }
     }
@@ -73,7 +79,13 @@ public class Player {
     public boolean removeResourceCard(String type) {
         for(int i = 0; i < this.resources.size(); ++i) {
             if (((ResourceCard)this.resources.get(i)).type.equals(type)) {
+                ResourceCard c = resources.get(i);
                 this.resources.remove(i);
+                if(c.getType() == "Brick"){ brickAmount--;}
+                if(c.getType() == "Grain"){ grainAmount--;}
+                if(c.getType() == "Lumber"){ lumberAmount--;}
+                if(c.getType() == "Wool"){ woolAmount--; }
+                if(c.getType() == "Ore"){ oreAmount--; }
                 return true;
             }
         }
@@ -116,9 +128,15 @@ public class Player {
     }
 
     public void removeAllResources(ArrayList<ResourceCard> requiredResources) {
-        for(int i = 0; i < requiredResources.size(); ++i) {
-            this.removeResourceCard(((ResourceCard)requiredResources.get(i)).type);
-        }
+ //       for (int i = 0; i < requiredResources.size(); i++) {
+        brickAmount = 0;
+        woolAmount = 0;
+        oreAmount = 0;
+        lumberAmount = 0;
+        grainAmount = 0;
+        requiredResources.clear();;
+//            this.removeResourceCard(((ResourceCard)requiredResources.get(i)).type);
+ //       }
 
     }
 

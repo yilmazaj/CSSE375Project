@@ -341,7 +341,7 @@ public class Game extends JFrame {
 		int total = dice.getTotal();
 		//robber scenario
 		if(total == 7) {
-			robber.activateRobber(this);
+			//robber.activateRobber(this);
 		}
 		else {
 			giveResourcesFromRoll(total);
