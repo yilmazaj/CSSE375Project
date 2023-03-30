@@ -49,6 +49,25 @@ public class GameBoard extends JPanel {
 
 	}
 
+	//Testing
+	public GameBoard(int settlement) {
+
+		startingPoint = new Point2D.Double(100, 100);
+
+
+		hexRadius = hexDiameter / 2;
+
+		intersections = new Intersection[54];
+		hexes = new Hex[19];
+		roads = new Road[72];
+		intersectionPoints = new IntersectionPoint[54];
+		placeHexes();
+		setIntersections();
+		setRoads();
+		setIntersectionCoords();
+
+	}
+
 	public void placeHexes() {
 		int[] nums = { 2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12, -1 };
 		int grain = 0, brick = 0, wool = 0, lumber = 0;

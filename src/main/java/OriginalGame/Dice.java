@@ -16,6 +16,12 @@ public class Dice {
         rollForCurrentPlayerMade = false;
     }
 
+
+    //Testing stuff
+    public void setTotal(int total){
+        this.total = total;
+    }
+
     public boolean hasPlayerMadeRoll(){
         return rollForCurrentPlayerMade;
     }

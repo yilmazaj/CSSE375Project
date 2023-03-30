@@ -94,6 +94,7 @@ public class Game extends JFrame {
 
 	//Constructor for Unit Tests
 	public Game (int playerNum) {
+		this.playerNum = playerNum;
 		dice = new Dice(2);
 
 		colors = new Color[MAX_PLAYERS];
@@ -103,12 +104,13 @@ public class Game extends JFrame {
 		mostRoads = new MostRoads();
 		largestArmy = new LargestArmy();
 
+		board = new GameBoard(2);
+
+
 		populateColors();
-		populatePlayers();
-		inTurn = players[0];
-		inTurnIndex = 0;
-		inTurn.isActive = true;
+
 		for(int i = 0; i < playerNum; i++) {
+			players[i] = new Player(String.valueOf(i), colors[i]);
 			ResourceCard c1 = new ResourceCard("Brick");
 			ResourceCard c2 = new ResourceCard("Grain");
 			ResourceCard c3 = new ResourceCard("Lumber");
@@ -134,6 +136,12 @@ public class Game extends JFrame {
 			players[i].addResourceCard(c11);
 			players[i].addResourceCard(c12);
 		}
+
+//		populatePlayers();
+		inTurn = players[0];
+		inTurnIndex = 0;
+		inTurn.isActive = true;
+
 
 	}
 	
