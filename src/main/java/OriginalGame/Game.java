@@ -8,6 +8,7 @@ import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -636,98 +637,98 @@ public class Game extends JFrame {
 				tradeWith = getPlayerByName(name);
 			}
 			trade(tradeWith);
-			
+
 			answer = JOptionPane.showConfirmDialog(null, "Would you like to trade more?", "Trade?", JOptionPane.YES_NO_OPTION);
 		}
-		
+
 	}
-	
+
 	public boolean trade(Player tradeWith) {
-		int numBrick = 0;
-		int numGrain = 0;
-		int numWool = 0;
-		int numOre = 0;
-		int numLumber = 0;
-		ArrayList<ResourceCard> resourcesOut = new ArrayList<ResourceCard>();
-		ArrayList<ResourceCard> resourcesIn = new ArrayList<ResourceCard>();
-		JOptionPane.showMessageDialog(null, "Enter how much of each resource you want to trade away.", "Trade Away", JOptionPane.INFORMATION_MESSAGE);
-		numBrick = Integer.parseInt(JOptionPane.showInputDialog(null, "How many brick?", ""));
-		numGrain = Integer.parseInt(JOptionPane.showInputDialog(null, "How many grain?", ""));
-		numWool = Integer.parseInt(JOptionPane.showInputDialog(null, "How many wool?", ""));
-		numOre = Integer.parseInt(JOptionPane.showInputDialog(null, "How many ore?", ""));
-		numLumber = Integer.parseInt(JOptionPane.showInputDialog(null, "How many lumber?", ""));
-		for(int i = 0; i < numBrick; i++) {
-			ResourceCard r = new ResourceCard("Brick");
-			resourcesOut.add(r);
-		}
-		for(int i = 0; i < numGrain; i++) {
-			ResourceCard r = new ResourceCard("Grain");
-			resourcesOut.add(r);
-		}
-		for(int i = 0; i < numWool; i++) {
-			ResourceCard r = new ResourceCard("Wool");
-			resourcesOut.add(r);
-		}
-		for(int i = 0; i < numOre; i++) {
-			ResourceCard r = new ResourceCard("Ore");
-			resourcesOut.add(r);
-		}
-		for(int i = 0; i < numLumber; i++) {
-			ResourceCard r = new ResourceCard("Lumber");
-			resourcesOut.add(r);
-		}
-		if(!inTurn.containsAllResources(resourcesOut)) {
+		ResourcesWrapper resourcesOut;
+		ResourcesWrapper resourcesIn;
+		resourcesOut = doTradeDialogue(true);
+		System.out.println("Before: " + inTurn.brickAmount + ", " + inTurn.grainAmount + ", " +  inTurn.lumberAmount +
+				", " + inTurn.woolAmount + ", " + inTurn.oreAmount);
+		if(!inTurn.hasAllResources(resourcesOut.resourceValues)) {
 			JOptionPane.showMessageDialog(null, "You don't own all those resources", "Invalid input!", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
-		JOptionPane.showMessageDialog(null, "Enter how much of each resource you want to trade for.", "Trade Away", JOptionPane.INFORMATION_MESSAGE);
-		numBrick = Integer.parseInt(JOptionPane.showInputDialog(null, "How many brick?", ""));
-		numGrain = Integer.parseInt(JOptionPane.showInputDialog(null, "How many grain?", ""));
-		numWool = Integer.parseInt(JOptionPane.showInputDialog(null, "How many wool?", ""));
-		numOre = Integer.parseInt(JOptionPane.showInputDialog(null, "How many ore?", ""));
-		numLumber = Integer.parseInt(JOptionPane.showInputDialog(null, "How many lumber?", ""));
-		for(int i = 0; i < numBrick; i++) {
-			ResourceCard r = new ResourceCard("Brick");
-			resourcesIn.add(r);
-		}
-		for(int i = 0; i < numGrain; i++) {
-			ResourceCard r = new ResourceCard("Grain");
-			resourcesIn.add(r);
-		}
-		for(int i = 0; i < numWool; i++) {
-			ResourceCard r = new ResourceCard("Wool");
-			resourcesIn.add(r);
-		}
-		for(int i = 0; i < numOre; i++) {
-			ResourceCard r = new ResourceCard("Ore");
-			resourcesIn.add(r);
-		}
-		for(int i = 0; i < numLumber; i++) {
-			ResourceCard r = new ResourceCard("Lumber");
-			resourcesIn.add(r);
-		}
-		if(!tradeWith.containsAllResources(resourcesIn)) {
+		resourcesIn = doTradeDialogue(false);
+		if(!tradeWith.hasAllResources(resourcesIn.resourceValues)) {
 			JOptionPane.showMessageDialog(null, tradeWith.name + " doesn't own all those resources", "Invalid input!", JOptionPane.ERROR_MESSAGE);
 			return false;
 		}
-		
-		JOptionPane.showMessageDialog(null, "Please hand over the controls to " + tradeWith.name , "Valid trade request", JOptionPane.INFORMATION_MESSAGE);
+
+		System.out.println("Before: " + inTurn.brickAmount + ", " + inTurn.grainAmount + ", " +  inTurn.lumberAmount +
+				", " + inTurn.woolAmount + ", " + inTurn.oreAmount);
 		int answer = JOptionPane.showConfirmDialog(null, "Do you accept the trade?", tradeWith.name, JOptionPane.YES_NO_OPTION);
 		if(answer == JOptionPane.YES_OPTION) {
 			JOptionPane.showMessageDialog(null, tradeWith.name + " accepted your trade request", "Trade accepted!", JOptionPane.INFORMATION_MESSAGE);
-			for(int i = 0; i < resourcesIn.size(); i++) {
-				inTurn.addResourceCard(resourcesIn.get(i));
+			for(int i = 0; i < resourcesIn.resourceCards.size(); i++) {
+				inTurn.addResourceCard(resourcesIn.resourceCards.get(i));
 			}
-			inTurn.removeAllResources(resourcesOut);
-			for(int i = 0; i < resourcesOut.size(); i++) {
-				tradeWith.addResourceCard(resourcesOut.get(i));
+			inTurn.removeAllResources(resourcesOut.resourceCards);
+			for(int i = 0; i < resourcesOut.resourceCards.size(); i++) {
+				tradeWith.addResourceCard(resourcesOut.resourceCards.get(i));
 			}
-			tradeWith.removeAllResources(resourcesIn);
+			tradeWith.removeAllResources(resourcesIn.resourceCards);
+
+			System.out.println("After: " + inTurn.brickAmount + ", " + inTurn.grainAmount + ", " +  inTurn.lumberAmount +
+					", " + inTurn.woolAmount + ", " + inTurn.oreAmount);
+
 			return true;
 		}
 		else {
 			JOptionPane.showMessageDialog(null, tradeWith.name + " declined your trade request", "Trade declined!", JOptionPane.INFORMATION_MESSAGE);
 			return false;
+		}
+	}
+
+	private ResourcesWrapper doTradeDialogue(boolean outgoing) {
+
+		if(outgoing) {
+			JOptionPane.showMessageDialog(null, "Enter how much of each resource you want to trade away.", "Trade Away", JOptionPane.INFORMATION_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(null, "Enter how much of each resource you want to trade for.", "Trade For", JOptionPane.INFORMATION_MESSAGE);
+		}
+
+		ResourcesWrapper resources = new ResourcesWrapper();
+		int numBrick = Integer.parseInt(JOptionPane.showInputDialog(null, "How many brick?", ""));
+		int numGrain = Integer.parseInt(JOptionPane.showInputDialog(null, "How many grain?", ""));
+		int numLumber = Integer.parseInt(JOptionPane.showInputDialog(null, "How many lumber?", ""));
+		int numWool = Integer.parseInt(JOptionPane.showInputDialog(null, "How many wool?", ""));
+		int numOre = Integer.parseInt(JOptionPane.showInputDialog(null, "How many ore?", ""));
+		for(int i = 0; i < numBrick; i++) {
+			resources.resourceCards.add(new ResourceCard("Brick"));
+			resources.resourceValues[0]++;
+		}
+		for(int i = 0; i < numGrain; i++) {
+			resources.resourceCards.add(new ResourceCard("Grain"));
+			resources.resourceValues[1]++;
+		}
+		for(int i = 0; i < numLumber; i++) {
+			resources.resourceCards.add(new ResourceCard("Lumber"));
+			resources.resourceValues[2]++;
+		}
+		for(int i = 0; i < numWool; i++) {
+			resources.resourceCards.add(new ResourceCard("Wool"));
+			resources.resourceValues[3]++;
+		}
+		for(int i = 0; i < numOre; i++) {
+			resources.resourceCards.add(new ResourceCard("Ore"));
+			resources.resourceValues[4]++;
+		}
+
+		return resources;
+	}
+
+	public class ResourcesWrapper {
+		ArrayList<ResourceCard> resourceCards;
+		int[] resourceValues;
+
+		public ResourcesWrapper() {
+			this.resourceCards = new ArrayList<>();
+			this.resourceValues = new int[5];
 		}
 	}
 
