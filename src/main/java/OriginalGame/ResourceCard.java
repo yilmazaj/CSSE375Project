@@ -17,6 +17,8 @@ public class ResourceCard extends NonPlayableCard {
         return this.type;
     }
 
+
+
     public int getPointValue() {
         return this.pointValue;
     }

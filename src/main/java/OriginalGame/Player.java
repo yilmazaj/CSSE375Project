@@ -106,7 +106,6 @@ public class Player {
     public boolean containsAllResources(ArrayList<ResourceCard> resourcesToCheck) {
         ArrayList<ResourceCard> temp = new ArrayList();
         boolean empty = false;
-
         int i;
         for(i = 0; i < this.resources.size(); ++i) {
             for(int j = 0; j < resourcesToCheck.size(); ++j) {

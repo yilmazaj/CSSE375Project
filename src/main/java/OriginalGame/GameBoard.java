@@ -113,29 +113,36 @@ public class GameBoard extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g;
 		Point2D.Double current = startingPoint;
+		GraphicsWithIndex g2 = new GraphicsWithIndex((Graphics2D) g, 0);
 		for (int i = 0; i < hexes.length; i++) {
-			drawHexNumberAtPosition(g2, current, i);
+			g2.setNewPosition(i);
+			drawHexNumberAtPosition(g2, current);
 		}
 		for (int i = 0; i < roads.length; i++) {
-			drawRoadAtIndex(g2, i);
+			g2.setNewPosition(i);
+			drawRoadAtIndex(g2);
 		}
 		for (int i = 0; i < intersectionPoints.length; i++) {
-			drawIntersectionAtIndex(g2, i);
+			g2.setNewPosition(i);
+			drawIntersectionAtIndex(g2);
 		}
 	}
 
-	private void drawIntersectionAtIndex(Graphics2D g2, int i) {
+	private void drawIntersectionAtIndex(GraphicsWithIndex graphic) {
 		int height = 15;
 		int width = 15;
+		int i = graphic.getPosition();
+		Graphics2D g2 = graphic.getGraphics();
 		g2.setColor(intersectionPoints[i].color);
 		g2.fillOval((int) (intersectionPoints[i].point.getX() - 0.5 * width),
 				(int) (intersectionPoints[i].point.getY() - 0.5 * height), height, width);
 		intersections[i].drawStructureIcon(g2, intersectionPoints[i].point);
 	}
 
-	private void drawRoadAtIndex(Graphics2D g2, int i) {
+	private void drawRoadAtIndex(GraphicsWithIndex graphic) {
+		int i = graphic.getPosition();
+		Graphics2D g2 = graphic.getGraphics();
 		int int1 = roads[i].intersection1Num;
 		int int2 = roads[i].intersection2Num;
 		int x1 = (int) intersectionPoints[int1].point.getX();
@@ -149,7 +156,9 @@ public class GameBoard extends JPanel {
 		g2.setColor(curColor);
 	}
 
-	private void drawHexNumberAtPosition(Graphics2D g2, Point2D.Double current, int i) {
+	private void drawHexNumberAtPosition(GraphicsWithIndex graphic, Point2D.Double current) {
+		int i = graphic.getPosition();
+		Graphics2D g2 = graphic.getGraphics();
 		HexagonData currentHex;
 		if (i < 3) {
 			current.x = current.x + i * hexDiameter + hexDiameter;
@@ -582,6 +591,7 @@ public class GameBoard extends JPanel {
 		boolean standardHeight;
 
 		public IntersectionHelper(int c, double x, double y, boolean sH) {
+
 			this.count = c;
 			this.curX = x;
 			this.curY = y;
@@ -626,5 +636,26 @@ public class GameBoard extends JPanel {
 			this.color = newColor;
 		}
 
+	}
+
+	class GraphicsWithIndex{
+		private Graphics2D g2;
+		private int position;
+		public GraphicsWithIndex(Graphics2D g2, int position){
+			this.g2 = g2;
+			this.position = position;
+		}
+
+		private void setNewPosition(int newPosition){
+			this.position = newPosition;
+		}
+
+		private Graphics2D getGraphics(){
+			return g2;
+		}
+
+		private int getPosition(){
+			return position;
+		}
 	}
 }
