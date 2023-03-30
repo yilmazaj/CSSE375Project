@@ -1,6 +1,7 @@
 package Team7.SettlersOfCatan;
 
-import java.awt.Color;
+import java.awt.*;
+import java.awt.geom.Point2D;
 
 public class Intersection {
 	public Hex[] hexes = new Hex[3];
@@ -78,5 +79,11 @@ public class Intersection {
 		}
 		return false;
 		
+	}
+
+	public void drawStructureIcon(Graphics2D g2, Point2D.Double point) {
+		if(structure != null) {
+			structure.drawIcon(g2, point);
+		}
 	}
 }

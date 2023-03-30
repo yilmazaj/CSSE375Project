@@ -76,28 +76,21 @@ public class GameBoard extends JPanel {
 			while (nums[index] == 0) {
 				index++;
 			}
-//			hexes[i] = new Hex(nums[index]);
 			if (nums[index] == -1) {
-//				hexes[i].setResource("None");
 				hexes[i] = new NoResourceHex(nums[index]);
 			} else if (grain < 4) {
-//				hexes[i].setResource("Grain");
 				hexes[i] = new GrainHex(nums[index]);
 				grain++;
 			} else if (wool < 4) {
-//				hexes[i].setResource("Wool");
 				hexes[i] = new WoolHex(nums[index]);
 				wool++;
 			} else if (lumber < 4) {
-//				hexes[i].setResource("Lumber");
 				hexes[i] = new LumberHex(nums[index]);
 				lumber++;
 			} else if (brick < 3) {
-//				hexes[i].setResource("Brick");
 				hexes[i] = new BrickHex(nums[index]);
 				brick++;
 			} else {
-//				hexes[i].setResource("Ore");
 				hexes[i] = new OreHex(nums[index]);
 			}
 			nums[index] = 0;
@@ -122,65 +115,76 @@ public class GameBoard extends JPanel {
 	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		Point2D.Double current = startingPoint;
-		HexagonData currentHex;
 		for (int i = 0; i < hexes.length; i++) {
-			if (i < 3) {
-				current.x = current.x + i * hexDiameter + hexDiameter;
-				currentHex = drawHex(hexes[i], g2, current);
-				hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
-			} else if (i < 7) {
-				current.x = current.x + (i - 3) * hexDiameter + 0.5 * hexDiameter - 1;
-				current.y = current.y + 1.5 * hexSideLength + 1;
-				currentHex = drawHex(hexes[i], g2, current);
-				hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
-			} else if (i < 12) {
-				current.x = current.x + (i - 7) * hexDiameter - 1;
-				current.y = current.y + 3 * hexSideLength + 2;
-				currentHex = drawHex(hexes[i], g2, current);
-				hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
-			} else if (i < 16) {
-				current.x = current.x + (i - 12) * hexDiameter + 0.5 * hexDiameter - 1;
-				current.y = current.y + 4.5 * hexSideLength + 3;
-				currentHex = drawHex(hexes[i], g2, current);
-				hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
-			} else if (i < 19) {
-				current.x = current.x + (i - 16) * hexDiameter + hexDiameter - 1;
-				current.y = current.y + 6 * hexSideLength + 5;
-				currentHex = drawHex(hexes[i], g2, current);
-				hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
-			}
-			current.x = 100;
-			current.y = 100;
-		}
-		for(int i = 0; i < hexes.length; i++) {
-			Color curColor = g2.getColor();
-			g2.setColor(Color.BLACK);
-			g2.setStroke(new BasicStroke(10));
-			g2.drawString("" + hexes[i].getNumber(), (int) (hexWrapArray[i].hexX), 
-													 (int) (hexWrapArray[i].hexY));
-			g2.setColor(curColor);
+			drawHexNumberAtPosition(g2, current, i);
 		}
 		for (int i = 0; i < roads.length; i++) {
-			int int1 = roads[i].intersection1Num;
-			int int2 = roads[i].intersection2Num;
-			int x1 = (int) intersectionPoints[int1].point.getX();
-			int y1 = (int) intersectionPoints[int1].point.getY();
-			int x2 = (int) intersectionPoints[int2].point.getX();
-			int y2 = (int) intersectionPoints[int2].point.getY();
-			Color curColor = g2.getColor();
-			g2.setColor(roads[i].color);
-			g2.setStroke(new BasicStroke(10));
-			g2.drawLine(x1, y1, x2, y2);
-			g2.setColor(curColor);
-
+			drawRoadAtIndex(g2, i);
 		}
 		for (int i = 0; i < intersectionPoints.length; i++) {
-			int height = 15;
-			int width = 15;
-			g2.setColor(intersectionPoints[i].color);
-			g2.fillOval((int) (intersectionPoints[i].point.getX() - 0.5 * width),
-					(int) (intersectionPoints[i].point.getY() - 0.5 * height), height, width);
+			drawIntersectionAtIndex(g2, i);
 		}
+	}
+
+	private void drawIntersectionAtIndex(Graphics2D g2, int i) {
+		int height = 15;
+		int width = 15;
+		g2.setColor(intersectionPoints[i].color);
+		g2.fillOval((int) (intersectionPoints[i].point.getX() - 0.5 * width),
+				(int) (intersectionPoints[i].point.getY() - 0.5 * height), height, width);
+		intersections[i].drawStructureIcon(g2, intersectionPoints[i].point);
+	}
+
+	private void drawRoadAtIndex(Graphics2D g2, int i) {
+		int int1 = roads[i].intersection1Num;
+		int int2 = roads[i].intersection2Num;
+		int x1 = (int) intersectionPoints[int1].point.getX();
+		int y1 = (int) intersectionPoints[int1].point.getY();
+		int x2 = (int) intersectionPoints[int2].point.getX();
+		int y2 = (int) intersectionPoints[int2].point.getY();
+		Color curColor = g2.getColor();
+		g2.setColor(roads[i].color);
+		g2.setStroke(new BasicStroke(10));
+		g2.drawLine(x1, y1, x2, y2);
+		g2.setColor(curColor);
+	}
+
+	private void drawHexNumberAtPosition(Graphics2D g2, Point2D.Double current, int i) {
+		HexagonData currentHex;
+		if (i < 3) {
+			current.x = current.x + i * hexDiameter + hexDiameter;
+			currentHex = drawHex(hexes[i], g2, current);
+			hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
+		} else if (i < 7) {
+			current.x = current.x + (i - 3) * hexDiameter + 0.5 * hexDiameter - 1;
+			current.y = current.y + 1.5 * hexSideLength + 1;
+			currentHex = drawHex(hexes[i], g2, current);
+			hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
+		} else if (i < 12) {
+			current.x = current.x + (i - 7) * hexDiameter - 1;
+			current.y = current.y + 3 * hexSideLength + 2;
+			currentHex = drawHex(hexes[i], g2, current);
+			hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
+		} else if (i < 16) {
+			current.x = current.x + (i - 12) * hexDiameter + 0.5 * hexDiameter - 1;
+			current.y = current.y + 4.5 * hexSideLength + 3;
+			currentHex = drawHex(hexes[i], g2, current);
+			hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
+		} else if (i < 19) {
+			current.x = current.x + (i - 16) * hexDiameter + hexDiameter - 1;
+			current.y = current.y + 6 * hexSideLength + 5;
+			currentHex = drawHex(hexes[i], g2, current);
+			hexWrapArray[i] = new GUIHexTie(hexes[i], currentHex);
+		}
+		current.x = 100;
+		current.y = 100;
+
+		Color curColor = g2.getColor();
+		g2.setColor(Color.BLACK);
+		g2.setStroke(new BasicStroke(10));
+		g2.drawString("" + hexes[i].getNumber(), (int) (hexWrapArray[i].hexX),
+				(int) (hexWrapArray[i].hexY));
+		g2.setColor(curColor);
 	}
 
 	public HexagonData drawHex(Hex hex, Graphics2D g2, Point2D.Double point) {
