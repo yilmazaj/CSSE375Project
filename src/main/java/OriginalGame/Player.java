@@ -24,6 +24,12 @@ public class Player {
     public boolean hasKnightCard;
     public boolean hasRoadCard;
 
+    public int brickAmount = 0;
+    public int grainAmount = 0;
+    public int lumberAmount = 0;
+    public int woolAmount = 0;
+    public int oreAmount = 0;
+
     public Player(String name, Color color) {
         this.name = name;
         this.color = color;
@@ -56,6 +62,12 @@ public class Player {
 
     public void addResourceCard(ResourceCard c) {
         this.resources.add(c);
+
+        if(c.getType() == "Brick"){ brickAmount++; return;}
+        if(c.getType() == "Grain"){ grainAmount++; return;}
+        if(c.getType() == "Lumber"){ lumberAmount++; return;}
+        if(c.getType() == "Wool"){ woolAmount++; return; }
+        if(c.getType() == "Ore"){ oreAmount++; }
     }
 
     public boolean removeResourceCard(String type) {
