@@ -90,12 +90,18 @@ public class Game extends JFrame {
 
 
 		populateColors();
-		giveInitialResources();
 
+
+		for(int i = 0; i < playerNum; i++){
+			players[i] = new Player(String.valueOf(i), colors[i]);
+		}
 //		populatePlayers();
 		inTurn = players[0];
 		inTurnIndex = 0;
 		inTurn.isActive = true;
+
+
+		giveInitialResources();
 
 		playersStats = new PlayersStatsGUI(players);
 
@@ -105,7 +111,6 @@ public class Game extends JFrame {
 
 	private void giveInitialResources(){
 		for(int i = 0; i < playerNum; i++) {
-			players[i] = new Player(String.valueOf(i), colors[i]);
 			ResourceCard c1 = new ResourceCard("Brick");
 			ResourceCard c2 = new ResourceCard("Grain");
 			ResourceCard c3 = new ResourceCard("Lumber");
