@@ -68,32 +68,7 @@ public class Game extends JFrame {
 		inTurn = players[0];
 		inTurnIndex = 0;
 		inTurn.isActive = true;
-		for(int i = 0; i < playerNum; i++) {
-			ResourceCard c1 = new ResourceCard("Brick");
-			ResourceCard c2 = new ResourceCard("Grain");
-			ResourceCard c3 = new ResourceCard("Lumber");
-			ResourceCard c4 = new ResourceCard("Wool");
-			ResourceCard c5 = new ResourceCard("Brick");
-			ResourceCard c6 = new ResourceCard("Grain");
-			ResourceCard c7 = new ResourceCard("Lumber");
-			ResourceCard c8 = new ResourceCard("Wool");
-			ResourceCard c9 = new ResourceCard("Brick");
-			ResourceCard c10 = new ResourceCard("Brick");
-			ResourceCard c11 = new ResourceCard("Lumber");
-			ResourceCard c12 = new ResourceCard("Lumber");
-			players[i].addResourceCard(c1);
-			players[i].addResourceCard(c2);
-			players[i].addResourceCard(c3);
-			players[i].addResourceCard(c4);
-			players[i].addResourceCard(c5);
-			players[i].addResourceCard(c6);
-			players[i].addResourceCard(c7);
-			players[i].addResourceCard(c8);
-			players[i].addResourceCard(c9);
-			players[i].addResourceCard(c10);
-			players[i].addResourceCard(c11);
-			players[i].addResourceCard(c12);
-		}
+		giveInitialResources();
 
 		playersStats = new PlayersStatsGUI(players);
 
@@ -115,7 +90,20 @@ public class Game extends JFrame {
 
 
 		populateColors();
+		giveInitialResources();
 
+//		populatePlayers();
+		inTurn = players[0];
+		inTurnIndex = 0;
+		inTurn.isActive = true;
+
+		playersStats = new PlayersStatsGUI(players);
+
+
+
+	}
+
+	private void giveInitialResources(){
 		for(int i = 0; i < playerNum; i++) {
 			players[i] = new Player(String.valueOf(i), colors[i]);
 			ResourceCard c1 = new ResourceCard("Brick");
@@ -143,13 +131,6 @@ public class Game extends JFrame {
 			players[i].addResourceCard(c11);
 			players[i].addResourceCard(c12);
 		}
-
-//		populatePlayers();
-		inTurn = players[0];
-		inTurnIndex = 0;
-		inTurn.isActive = true;
-
-
 	}
 	
 	public void rotateTurns() {
