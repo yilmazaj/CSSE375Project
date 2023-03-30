@@ -1,0 +1,376 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class BrickHex {
+  + getResource(): String
+  + getColor(): Color
+}
+class Buildable
+class Buyable
+class City {
+  + getType(): String
+}
+class CurrentTurnGUI {
+  + rollDiceButton: JButton
+  + frame: JFrame
+  + endTurnButton: JButton
+  + tradeButton: JButton
+  + cardActionFlag: boolean
+  + dice: Dice
+  + playerName: String
+  + cardButton: JButton
+  + buildButton: JButton
+  + tradeActionFlag: boolean
+  + diceLabels: JLabel[]
+  + turnEnded: boolean
+  + panel: JPanel
+  + buildActionFlag: boolean
+  + playerNameLabel: JLabel
+  + resetFlags(): void
+  + setGridBagConstraints(GridBagConstraints, int, int, int, int): void
+  + resetButtons(): void
+  + initializeSwingUI(): void
+  + main(String[]): void
+  + doTradeAction(): boolean
+  + tradeButtonAction(): void
+  + endTurnButtonAction(): void
+  + rollDiceButtonAction(): void
+  + isTurnOver(): boolean
+  + buildButtonAction(): void
+  + cardButtonAction(): void
+  + attachActionListeners(): void
+  + updateUIForNewPlayer(String): void
+  + scaleAndSetDiceImage(int, int): void
+  + initializeFields(): void
+  + resetDice(): void
+  + generateDiceConstraints(int): GridBagConstraints
+  + resetContent(): void
+  + updateDiceImage(int, int): void
+  + doBuildAction(): boolean
+  + doCardAction(): boolean
+}
+class Dice {
+  + rng: Random
+  + rollForCurrentPlayerMade: boolean
+  + total: int
+  + rolls: int[]
+  + getTotal(): int
+  + rollDice(): int[]
+  + setTotal(int): void
+  + getNumDice(): int
+  + invalidatePreviousRoll(): void
+  + hasPlayerMadeRoll(): boolean
+}
+class Game {
+  + playerNum: int
+  + MAX_PLAYERS: int
+  + maxKnights: int
+  + gameFrame: JFrame
+  + colors: Color[]
+  + inTurn: Player
+  + largestArmy: LargestArmy
+  + robber: Robber
+  + mostRoads: MostRoads
+  + playersStats: PlayersStatsGUI
+  + players: Player[]
+  + inTurnIndex: int
+  + board: GameBoard
+  + maxRoads: int
+  + playerPanels: JPanel[]
+  + dice: Dice
+  + buildRoad(int, int): boolean
+  + giveResourcesFromRoll(int): void
+  + checkSpecialties(): void
+  + trade(Player): boolean
+  + waitForPlayerDiceRoll(): void
+  + getPlayerByName(String): Player?
+  + buildInitialStructures(): void
+  + handlePlayerAction(CurrentTurnGUI): void
+  + tradeStage(): void
+  + giveInitialResources(): void
+  + buyCard(): boolean
+  + handleDiceRoll(): int
+  + getPlayerOfColor(Color): Player?
+  + waitForPlayerToEndTurn(CurrentTurnGUI): void
+  + buildStage(): void
+  + doTradeDialogue(boolean): ResourcesWrapper
+  + buildStructure(String, int): boolean
+  + handlePlayerTurn(CurrentTurnGUI): void
+  + populatePlayers(): void
+  + populateColors(): void
+  + getPlayerNameByColor(Color): String
+  + rotateTurns(): void
+  + playCard(): boolean
+}
+class GameBoard {
+  + hexes: Hex[]
+  + hexSideLength: int
+  + gamePanel: JPanel
+  + hexDiameter: double
+  + hexRadius: double
+  + intersections: Intersection[]
+  + roads: Road[]
+  + playerNum: int
+  + intersectionPoints: IntersectionPoint[]
+  + startingPoint: Double
+  + makeHex(Double): HexagonData
+  + placeHexes(): void
+  + drawHex(Hex, Graphics2D, Double): HexagonData
+  + drawRoadAtIndex(GraphicsWithIndex): void
+  + setIntersectionCoords(): void
+  + getStructuresOnRolledHexes(int): ArrayList<Structure>
+  + setIntersections(): void
+  + setRoads(): void
+  + findRobberIndex(): int
+  + drawIntersectionAtIndex(GraphicsWithIndex): void
+  + connectRoads(): void
+  + paintComponent(Graphics): void
+  + setHexIntersections(): void
+  + setIntersectionCoordsHelper(IntersectionHelper, int): IntersectionHelper
+  + getRoadByIntersections(int, int): Road
+  + drawHexNumberAtPosition(GraphicsWithIndex, Double): void
+  + addStructure(Structure, int): boolean
+  + getStructuresOnHexNum(int): ArrayList<Structure>
+  + mixHexes(): void
+  + moveRobber(int): void
+}
+class GameBoardTest {
+  ~ testSetIntersectionsHexes(): void
+  ~ testConstructEmptyBoard(): void
+  ~ testHexResources(): void
+  ~ testPlaceHexes(): void
+  ~ testSetRoads(): void
+  ~ testGetStructuresOnRolledHexes(): void
+  ~ testPlaceHexesNumbered(): void
+  ~ testAddStructure(): void
+  ~ testMixHexes(): void
+  ~ testGetRoadByIntersections(): void
+  ~ testInitializeRobber(): void
+  ~ testMoveRobber(): void
+}
+class GrainHex {
+  + getResource(): String
+  + getColor(): Color
+}
+class GraphicsWithIndex {
+  ~ g2: Graphics2D
+  ~ position: int
+  ~ getPosition(): int
+  ~ setNewPosition(int): void
+  ~ getGraphics(): Graphics2D
+}
+class Hex {
+  + hasRobber: boolean
+  + resourceIcon: ImageIcon
+  + number: int
+  + intersections: Intersection[]
+  + setIntersections(Intersection, Intersection, Intersection, Intersection, Intersection, Intersection): void
+  + getNumber(): int
+  + getResource(): String
+  + getColor(): Color
+  + drawIcon(Graphics2D, Double): void
+}
+class HexagonData {
+  ~ xCenter: int
+  ~ yCenter: int
+  ~ hex: Polygon
+  ~ drawHexShape(Graphics2D): void
+}
+class Intersection {
+  + roads: Road[]
+  + structure: Structure
+  + hexes: Hex[]
+  + containsRoad(Color): boolean
+  + setRoads(Road, Road): void
+  + addStructure(Structure): boolean
+  + setRoads(Road, Road, Road): void
+  + drawStructureIcon(Graphics2D, Double): void
+  + updateRoad(int, int, Road): boolean
+}
+class IntersectionHelper {
+  ~ standardHeight: boolean
+  ~ curX: double
+  ~ count: int
+  ~ curY: double
+}
+class IntersectionPoint {
+  + point: Double
+  + color: Color
+  + changeColor(Color): void
+}
+class KnightCard {
+  + getType(): String
+}
+class LargestArmy {
+  + pointValue: int
+  + getType(): String
+  + getPointValue(): int
+}
+class LumberHex {
+  + getResource(): String
+  + getColor(): Color
+}
+class Main {
+  + main(String[]): void
+}
+class MonopolyCard {
+  + getType(): String
+}
+class MostRoads {
+  + pointValue: int
+  + getPointValue(): int
+  + getType(): String
+}
+class NoResourceHex {
+  + getColor(): Color
+  + getResource(): String
+}
+class NonPlayableCard {
+  + getPointValue(): int
+  + getType(): String
+}
+class OreHex {
+  + getColor(): Color
+  + getResource(): String
+}
+class PlayableCard {
+  + getType(): String
+}
+class Player {
+  + victoryPoints: int
+  + lumberAmount: int
+  + knightCount: int
+  + hasKnightCard: boolean
+  + numCities: int
+  + oreAmount: int
+  + nCards: ArrayList<NonPlayableCard>
+  + brickAmount: int
+  + hasRoadCard: boolean
+  + resources: ArrayList<ResourceCard>
+  + pCards: ArrayList<PlayableCard>
+  + isActive: boolean
+  + numSettlements: int
+  + numRoads: int
+  + grainAmount: int
+  + woolAmount: int
+  + color: Color
+  + name: String
+  + removeNonPlayableCard(NonPlayableCard): boolean
+  + addResourceCard(ResourceCard): void
+  + removeRandomCard(): ResourceCard
+  + displayPlayableCards(): String
+  + hasAllResources(int[]): boolean
+  + clearResources(): void
+  + printResources(): void
+  + removeAllResources(ArrayList<ResourceCard>): void
+  + removeResourceCard(String): boolean
+  + containsAllResources(ArrayList<ResourceCard>): boolean
+  + addNonPlayableCard(NonPlayableCard): void
+}
+class PlayerInfo {
+  ~ playerName: String
+  ~ playerInd: int
+  ~ playerColor: Color
+}
+class PlayerStatsGUI {
+  + player: Player
+  + resourceDisplayPanel: JPanel
+  + playerNamePanel: JPanel
+  + updateResourcesView(): void
+}
+class PlayersStatsGUI {
+  + frame: JFrame
+  + players: Player[]
+  + playerStatsGUIs: PlayerStatsGUI[]
+  + updatePlayersStats(): void
+}
+class ProgressCard
+class ResourceCard {
+  + pointValue: int
+  + type: String
+  + getType(): String
+  + getPointValue(): int
+}
+enum ResourceType << enumeration >> {
+  + Ore: 
+  + Lumber: 
+  + Brick: 
+  + Wool: 
+  + Grain: 
+  + values(): ResourceType[]
+  + valueOf(String): ResourceType
+}
+class ResourcesWrapper {
+  + resourceValues: int[]
+  + resourceCards: ArrayList<ResourceCard>
+}
+class Road {
+  + indexNum: int
+  + intersection1Num: int
+  + intersection2Num: int
+  + color: Color
+  + isBetweenIntersections(int, int): boolean
+  + activateRoad(Color): void
+}
+class RoadBuildingCard {
+  + getType(): String
+}
+class Robber {
+  + activateRobber(Game): void
+}
+class Settlement {
+  + getType(): String
+}
+class SpecialtyCard
+class Structure {
+  + hexes: Hex[]
+  + color: Color
+  + structureIcon: ImageIcon
+  + getType(): String
+  + drawIcon(Graphics2D, Double): void
+}
+class VictoryPointCard {
+  + pointValue: int
+  + getType(): String
+  + getPointValue(): int
+}
+class WoolHex {
+  + getResource(): String
+  + getColor(): Color
+}
+class YearOfPlentyCard {
+  + getType(): String
+}
+
+BrickHex            -[#000082,plain]-^  Hex                
+City                -[#000082,plain]-^  Structure          
+GrainHex            -[#000082,plain]-^  Hex                
+GraphicsWithIndex   +-[#820000,plain]-  GameBoard          
+HexagonData         +-[#820000,plain]-  GameBoard          
+IntersectionHelper  +-[#820000,plain]-  GameBoard          
+IntersectionPoint   +-[#820000,plain]-  GameBoard          
+KnightCard          -[#000082,plain]-^  PlayableCard       
+LargestArmy         -[#000082,plain]-^  SpecialtyCard      
+LumberHex           -[#000082,plain]-^  Hex                
+MonopolyCard        -[#000082,plain]-^  ProgressCard       
+MostRoads           -[#000082,plain]-^  SpecialtyCard      
+NoResourceHex       -[#000082,plain]-^  Hex                
+NonPlayableCard     -[#000082,plain]-^  Buyable            
+OreHex              -[#000082,plain]-^  Hex                
+PlayableCard        -[#000082,plain]-^  Buyable            
+PlayerInfo          +-[#820000,plain]-  Game               
+ProgressCard        -[#000082,plain]-^  PlayableCard       
+ResourceCard        -[#000082,plain]-^  NonPlayableCard    
+ResourcesWrapper    +-[#820000,plain]-  Game               
+Road                -[#000082,plain]-^  Buildable          
+RoadBuildingCard    -[#000082,plain]-^  ProgressCard       
+Settlement          -[#000082,plain]-^  Structure          
+SpecialtyCard       -[#000082,plain]-^  NonPlayableCard    
+Structure           -[#000082,plain]-^  Buildable          
+VictoryPointCard    -[#000082,plain]-^  NonPlayableCard    
+WoolHex             -[#000082,plain]-^  Hex                
+YearOfPlentyCard    -[#000082,plain]-^  ProgressCard       
+@enduml
