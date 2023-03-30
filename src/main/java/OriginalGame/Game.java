@@ -237,7 +237,7 @@ public class Game extends JFrame {
 					requiredResources.add(c3);
 					requiredResources.add(c4);
 					if(inTurn.containsAllResources(requiredResources)) {
-						s = new Settlement(inTurn.color);
+						s = new Structure(inTurn.color, "Settlement");
 						inTurn.numSettlements++;
 						board.intersections[intersection].structure = s;
 						s.hexes = board.intersections[intersection].hexes;
@@ -280,7 +280,7 @@ public class Game extends JFrame {
 					requiredResources.add(c4);
 					requiredResources.add(c5);
 					if(inTurn.containsAllResources(requiredResources)) {
-						s = new City(inTurn.color);
+						s = new Structure(inTurn.color, "City");
 						inTurn.numCities++;
 						board.intersections[intersection].structure = s;
 						s.hexes = board.intersections[intersection].hexes;
@@ -435,6 +435,7 @@ public class Game extends JFrame {
 			playCard();
 			inTurn.printResources();
 		}
+		playersStats.updatePlayersStats();
 	}
 	
 	public void waitForPlayerDiceRoll(){
