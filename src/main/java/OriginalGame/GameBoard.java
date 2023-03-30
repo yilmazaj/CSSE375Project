@@ -69,14 +69,14 @@ public class GameBoard extends JPanel {
 	}
 
 	public void placeHexes() {
-		int[] nums = { 2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12, -1 };
+		int[] nums = { 2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12, 7 };
 		int grain = 0, brick = 0, wool = 0, lumber = 0;
 		for (int i = 0; i < 19; i++) {
 			int index = 0;
 			while (nums[index] == 0) {
 				index++;
 			}
-			if (nums[index] == -1) {
+			if (nums[index] == 7) {
 				hexes[i] = new NoResourceHex(nums[index]);
 				hexes[i].hasRobber = true;
 			} else if (grain < 4) {
