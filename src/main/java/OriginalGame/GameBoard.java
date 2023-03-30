@@ -78,6 +78,7 @@ public class GameBoard extends JPanel {
 			}
 			if (nums[index] == -1) {
 				hexes[i] = new NoResourceHex(nums[index]);
+				hexes[i].hasRobber = true;
 			} else if (grain < 4) {
 				hexes[i] = new GrainHex(nums[index]);
 				grain++;
@@ -95,7 +96,6 @@ public class GameBoard extends JPanel {
 			}
 			nums[index] = 0;
 		}
-		hexes[18].hasRobber = true;
 		mixHexes();
 	}
 

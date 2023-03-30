@@ -37,6 +37,8 @@ public class Game extends JFrame {
 
 	public PlayersStatsGUI playersStats;
 
+	public Robber robber;
+
 	public Game () {
 		dice = new Dice(2);
 		playerNum = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter number of players", "2"));
@@ -59,7 +61,8 @@ public class Game extends JFrame {
 		maxRoads = 2;
 		mostRoads = new MostRoads();
 		largestArmy = new LargestArmy();
-		
+		robber = new Robber();
+
 		populateColors();
 		populatePlayers();
 		inTurn = players[0];
@@ -93,7 +96,7 @@ public class Game extends JFrame {
 		}
 
 		playersStats = new PlayersStatsGUI(players);
-		
+
 	}
 
 	//Constructor for Unit Tests
@@ -352,7 +355,7 @@ public class Game extends JFrame {
 		int total = dice.getTotal();
 		//robber scenario
 		if(total == 7) {
-			activateRobber();
+			robber.activateRobber(this);
 		}
 		else {
 			giveResourcesFromRoll(total);
@@ -391,49 +394,9 @@ public class Game extends JFrame {
 			}
 		}
 	}
-	
-	public void activateRobber() {
-		for(int i = 0; i < playerNum; i++) {
-			while(players[i].resources.size() > 7) {
-				players[i].removeRandomCard();
-			}
-		}
-		int moveRobber = Integer.parseInt(JOptionPane.showInputDialog(null, "Choose a hex to move the robber to", ""));
-		while(moveRobber < 0 || moveRobber > 18) {
-			moveRobber = Integer.parseInt(JOptionPane.showInputDialog(null, "Please enter a valid hex number", ""));
-		}
-		board.moveRobber(moveRobber);
-		ArrayList<String> names = new ArrayList<String>();
-		for(int i = 0; i < 6; i++) {
-			Structure s = board.hexes[moveRobber].intersections[i].structure;
-			if(s != null) {
-				if(!s.color.equals(inTurn.color)) {
-					names.add(getPlayerNameByColor(s.color));
-				}
-			}
-		}
-		if(names.isEmpty()) {
-			return;
-		}
-		String choose = "Pick one of the following players to steal a random resource from: ";
-		for(int i = 0; i < names.size(); i++) {
-			choose = choose + names.get(i) + ", ";
-		}
-		Player stealFrom = null;
-		while(stealFrom == null) {
-			String stealName = JOptionPane.showInputDialog(null, choose, "");
-			for(int i = 0; i < playerNum; i++) {
-				if(players[i].name.equals(stealName)) {
-					stealFrom = players[i];
-					break;
-				}
-			}
-		}
-		inTurn.addResourceCard(stealFrom.removeRandomCard());
-		
-	}
 
-	private String getPlayerNameByColor(Color c) {
+
+	String getPlayerNameByColor(Color c) {
 		for(int i = 0; i < playerNum; i++) {
 			if(players[i].color.equals(c)) {
 				return players[i].name;
@@ -546,7 +509,7 @@ public class Game extends JFrame {
 			int cardIndex = Integer.parseInt(JOptionPane.showInputDialog(null, inTurn.displayPlayableCards(), ""));
 			PlayableCard pc = inTurn.pCards.get(cardIndex);
 			if(pc.getType().equals("KnightCard")) {
-				activateRobber();
+				robber.activateRobber(this);
 				inTurn.knightCount++;
 			}
 			else if(pc.getType().equals("MonopolyCard")) {

@@ -164,6 +164,7 @@ class GameTest {
     @Test
     void testActivateRobber() {
         Game game = new Game();
+        Robber r = new Robber();
         game.buildInitialStructures();
         ResourceCard c1 = new ResourceCard("Brick");
         ResourceCard c2 = new ResourceCard("Grain");
@@ -186,8 +187,43 @@ class GameTest {
         game.inTurn.addResourceCard(c9);
         game.inTurn.addResourceCard(c10);
         int indexBefore = game.board.findRobberIndex();
-        game.activateRobber();
+        Assertions.assertTrue(game.inTurn.resources.size() > 9);
+        r.activateRobber(game);
         Assertions.assertTrue(game.inTurn.resources.size() < 9);
+    }
+
+    @Test
+    void testActivateRobberWithSteal() {
+        Game game = new Game();
+        Robber r = new Robber();
+        game.buildInitialStructures();
+        ResourceCard c1 = new ResourceCard("Brick");
+        ResourceCard c2 = new ResourceCard("Grain");
+        ResourceCard c3 = new ResourceCard("Lumber");
+        ResourceCard c4 = new ResourceCard("Wool");
+        ResourceCard c5 = new ResourceCard("Ore");
+        ResourceCard c6 = new ResourceCard("Ore");
+        ResourceCard c7 = new ResourceCard("Ore");
+        ResourceCard c8 = new ResourceCard("Grain");
+        ResourceCard c9 = new ResourceCard("Grain");
+        ResourceCard c10 = new ResourceCard("Ore");
+        for(int i = 0; i<game.players.length;i++){
+            game.players[i].addResourceCard(c1);
+            game.players[i].addResourceCard(c2);
+            game.players[i].addResourceCard(c3);
+            game.players[i].addResourceCard(c4);
+            game.players[i].addResourceCard(c5);
+            game.players[i].addResourceCard(c6);
+            game.players[i].addResourceCard(c7);
+            game.players[i].addResourceCard(c8);
+            game.players[i].addResourceCard(c9);
+            game.players[i].addResourceCard(c10);
+        }
+        int indexBefore = game.board.findRobberIndex();
+        Assertions.assertTrue(game.inTurn.resources.size() > 7);
+        r.activateRobber(game);
+        Assertions.assertTrue(game.inTurn.resources.size() == 8);
+        Assertions.assertTrue(game.players[1].resources.size() == 6);
     }
 
     @Test
