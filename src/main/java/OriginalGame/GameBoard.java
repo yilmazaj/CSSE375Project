@@ -112,6 +112,7 @@ public class GameBoard extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		Point2D.Double current = startingPoint;
+
 		GraphicsWithIndex g2 = new GraphicsWithIndex((Graphics2D) g, 0);
 		for (int i = 0; i < hexes.length; i++) {
 			g2.setNewPosition(i);
@@ -593,9 +594,9 @@ public class GameBoard extends JPanel {
 		}
 	}
 
-	class IntersectionPoint {
+	public class IntersectionPoint {
 		Point2D.Double point;
-		Color color;
+		public Color color;
 
 		public IntersectionPoint(Point2D.Double curPoint) {
 			this.point = curPoint;
