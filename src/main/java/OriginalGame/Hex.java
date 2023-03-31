@@ -36,4 +36,8 @@ public abstract class Hex {
 	public void drawIcon(Graphics2D g2, Point2D.Double point) {
 		resourceIcon.paintIcon(new Canvas(), g2, (int)Math.round(point.getX()), (int)Math.round(point.getY()));
 	}
+
+	public ImageIcon getIcon(){
+		return resourceIcon;
+	}
 }

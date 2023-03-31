@@ -29,6 +29,10 @@ public class Structure extends Buildable {
         structureIcon.paintIcon(new Canvas(), g2, (int)Math.round(point.getX()),
                                 (int)Math.round(point.getY()));
     }
+
+    public ImageIcon getIcon(){
+        return structureIcon;
+    }
 }
 
 

@@ -128,7 +128,7 @@ public class GameBoard extends JPanel {
 		}
 	}
 
-	private void drawIntersectionAtIndex(GraphicsWithIndex graphic) {
+	public void drawIntersectionAtIndex(GraphicsWithIndex graphic) {
 		int height = 15;
 		int width = 15;
 		int i = graphic.getPosition();
@@ -139,7 +139,7 @@ public class GameBoard extends JPanel {
 		intersections[i].drawStructureIcon(g2, intersectionPoints[i].point);
 	}
 
-	private void drawRoadAtIndex(GraphicsWithIndex graphic) {
+	public void drawRoadAtIndex(GraphicsWithIndex graphic) {
 		int i = graphic.getPosition();
 		Graphics2D g2 = graphic.getGraphics();
 		int int1 = roads[i].intersection1Num;
@@ -155,7 +155,7 @@ public class GameBoard extends JPanel {
 		g2.setColor(curColor);
 	}
 
-	private void drawHexNumberAtPosition(GraphicsWithIndex graphic, Point2D.Double current) {
+	public void drawHexNumberAtPosition(GraphicsWithIndex graphic, Point2D.Double current) {
 		int i = graphic.getPosition();
 		Graphics2D g2 = graphic.getGraphics();
 		HexagonData currentHex;
@@ -575,7 +575,7 @@ public class GameBoard extends JPanel {
 		}
 	}
 	
-	class HexagonData {
+	public class HexagonData {
 		int xCenter;
 		int yCenter;
 		Polygon hex;
@@ -592,6 +592,16 @@ public class GameBoard extends JPanel {
 			g2.setStroke(new BasicStroke(5));
 			g2.drawPolygon(hex);
 		}
+
+		public int getXCenter(){
+			return xCenter;
+		}
+		public int getYCenter(){
+			return yCenter;
+		}
+	}
+	public HexagonData initHexagonData(int x, int y, Polygon p){
+		return new HexagonData(x, y, p);
 	}
 
 	public class IntersectionPoint {
@@ -614,7 +624,7 @@ public class GameBoard extends JPanel {
 
 	}
 
-	class GraphicsWithIndex{
+	public class GraphicsWithIndex{
 		private Graphics2D g2;
 		private int position;
 		public GraphicsWithIndex(Graphics2D g2, int position){
@@ -633,5 +643,8 @@ public class GameBoard extends JPanel {
 		private int getPosition(){
 			return position;
 		}
+	}
+	public GraphicsWithIndex initGraphicsWithIndex(Graphics2D g2, int position){
+		return new GraphicsWithIndex(g2, position);
 	}
 }
