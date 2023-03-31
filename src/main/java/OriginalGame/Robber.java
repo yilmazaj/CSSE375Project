@@ -27,7 +27,7 @@ public class Robber {
         g.board.moveRobber(moveRobber);
         ArrayList<String> names = new ArrayList<String>();
         for(int i = 0; i < 6; i++) {
-            Structure s = g.board.hexes[moveRobber].intersections[i].structure;
+            Structure s = getStuctureByHex(g, moveRobber, i);
             if(s != null) {
                 if(!s.color.equals(g.inTurn.color)) {
                     if(!names.contains(g.getPlayerNameByColor(s.color))) {
@@ -64,6 +64,7 @@ public class Robber {
         }
     }
 
+    //For automated testing
     public boolean activateRobberWithInputs(Game g, int moveRobber, String stealName) {
         for (int i = 0; i < g.playerNum; i++) {
             while (g.players[i].resources.size() > 7) {
@@ -106,5 +107,23 @@ public class Robber {
             return true;
         }
         return true;
+    }
+
+    //Public for testing purposes
+    public Structure getStuctureByHex(Game g, int hexNum, int intersectionNum){
+        if (g.board.hexes.length < hexNum){
+            return null;
+        }
+        Hex hex = g.board.hexes[hexNum];
+        if (hex == null){
+            return null;
+        } else if (hex.intersections.length < intersectionNum) {
+            return null;
+        }
+        Intersection intersection = hex.intersections[intersectionNum];
+        if (intersection == null){
+            return null;
+        }
+        return intersection.structure;
     }
 }

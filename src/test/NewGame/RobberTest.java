@@ -1,7 +1,4 @@
-import Team7.SettlersOfCatan.Game;
-import Team7.SettlersOfCatan.GameBoard;
-import Team7.SettlersOfCatan.ResourceCard;
-import Team7.SettlersOfCatan.Robber;
+import Team7.SettlersOfCatan.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -77,5 +74,32 @@ public class RobberTest {
         r.activateRobberWithInputs(game, 18, "1");
         Assertions.assertTrue(game.inTurn.resources.size() == 7);
         Assertions.assertTrue(game.players[1].resources.size() == 7);
+    }
+
+    @Test
+    void testGetStructureByHexInvalidHex() {
+        Game game = new Game(2);
+        Robber r = new Robber();
+        Structure s = r.getStuctureByHex(game,30,5);
+        Assertions.assertTrue(s== null);
+    }
+
+    @Test
+    void testGetStructureByHexInvalidIntersection() {
+        Game game = new Game(2);
+        Robber r = new Robber();
+        Structure s = r.getStuctureByHex(game,7,9);
+        Assertions.assertTrue(s == null);
+    }
+
+    @Test
+    void testGetStructureByHex() {
+        Game game = new Game(2);
+        Robber r = new Robber();
+        game.inTurn = game.players[0];
+        game.buildStructure("Settlement",0);
+        Structure s = r.getStuctureByHex(game,0,0);
+        Assertions.assertFalse(s == null);
+        Assertions.assertTrue(s.equals(game.board.intersections[0].structure));
     }
 }
