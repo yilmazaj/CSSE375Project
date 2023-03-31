@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class TradeManager {
 
+    public String testOutput;
+
     private Player findPlayer(Player[] players, String name){
         for(int i = 0; i < players.length; i++){
             if(players[i].name.equals(name)){
@@ -13,6 +15,12 @@ public class TradeManager {
             }
         }
         return null;
+    }
+
+    // method for testing, same logic without the UI elements
+    public void tradeStageTest(Player inTurn, Player[] players, String name, int[] outgoing, int[] demanded, boolean accepted){
+        Player tradePartner = findPlayer(players, name);
+        tradeTest(inTurn, tradePartner, outgoing, demanded, accepted);
     }
 
     public void tradeStage(Player inTurn, Player[] players) {
@@ -28,6 +36,38 @@ public class TradeManager {
 
             answer = JOptionPane.showConfirmDialog(null, "Would you like to trade more?", "Trade?", JOptionPane.YES_NO_OPTION);
         }
+
+    }
+
+    // method for testing, same logic without the UI elements
+    public void tradeTest(Player inTurn, Player tradePartner, int[] outgoing, int[] demanded, boolean accepted){
+        ResourcesWrapper resourcesOut;
+        ResourcesWrapper resourcesIn;
+        resourcesOut = doTradeDialogueTest(outgoing);
+        if(!inTurn.hasAllResources(resourcesOut.resourceValues)) {
+            testOutput = "You don't own all those resources";
+            return;
+        }
+        resourcesIn = doTradeDialogueTest(demanded);
+        if(!tradePartner.hasAllResources(resourcesIn.resourceValues)) {
+            testOutput = (tradePartner.name + " doesn't own all those resources");
+            return;
+        }
+        if(accepted){
+            testOutput = "Accepted";
+        } else {
+            testOutput = "Rejected";
+            return;
+        }
+
+        for(int i = 0; i < resourcesIn.resourceCards.size(); i++) {
+            inTurn.addResourceCard(resourcesIn.resourceCards.get(i));
+        }
+        inTurn.removeAllResources(resourcesOut.resourceCards);
+        for(int i = 0; i < resourcesOut.resourceCards.size(); i++) {
+            tradePartner.addResourceCard(resourcesOut.resourceCards.get(i));
+        }
+        tradePartner.removeAllResources(resourcesIn.resourceCards);
 
     }
 
@@ -63,6 +103,26 @@ public class TradeManager {
             JOptionPane.showMessageDialog(null, tradePartner.name + " declined your trade request","Trade declined!", JOptionPane.INFORMATION_MESSAGE);
             return false;
         }
+    }
+
+    private ResourcesWrapper doTradeDialogueTest(int[] toTrade){
+        ResourcesWrapper resources = new ResourcesWrapper();
+        for(int i = 0; i < toTrade[0]; i++) {
+            resources.resourceCards.add(new ResourceCard("Brick")); resources.resourceValues[0]++;
+        }
+        for(int i = 0; i < toTrade[1]; i++) {
+            resources.resourceCards.add(new ResourceCard("Grain")); resources.resourceValues[1]++;
+        }
+        for(int i = 0; i < toTrade[2]; i++) {
+            resources.resourceCards.add(new ResourceCard("Lumber")); resources.resourceValues[2]++;
+        }
+        for(int i = 0; i < toTrade[3]; i++) {
+            resources.resourceCards.add(new ResourceCard("Wool")); resources.resourceValues[3]++;
+        }
+        for(int i = 0; i < toTrade[4]; i++) {
+            resources.resourceCards.add(new ResourceCard("Ore")); resources.resourceValues[4]++;
+        }
+        return resources;
     }
 
     private ResourcesWrapper doTradeDialogue(boolean outgoing) {
