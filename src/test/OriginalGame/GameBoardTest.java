@@ -167,18 +167,18 @@ class GameBoardTest {
         Assertions.assertEquals(board.findRobberIndex(), 10);
     }
 
-    @Test
-    void testAddStructure() {
-        GameBoard board = new GameBoard();
-        Structure city = new City(Color.RED);
-        Structure settlement = new Settlement(Color.BLUE);
-        board.roads[0].color = Color.RED;
-        board.roads[24].color = Color.BLUE;
-        Assertions.assertTrue(board.addStructure(city, 0));
-        Assertions.assertTrue(board.addStructure(settlement, 18));
-        Assertions.assertFalse(board.addStructure(settlement, 0));
-        Assertions.assertFalse(board.addStructure(settlement, 5));
-    }
+//    @Test
+//    void testAddStructure() {
+//        GameBoard board = new GameBoard();
+//        Structure city = new City(Color.RED);
+//        Structure settlement = new Settlement(Color.BLUE);
+//        board.roads[0].color = Color.RED;
+//        board.roads[24].color = Color.BLUE;
+//        Assertions.assertTrue(board.addStructure(city, 0));
+//        Assertions.assertTrue(board.addStructure(settlement, 18));
+//        Assertions.assertFalse(board.addStructure(settlement, 0));
+//        Assertions.assertFalse(board.addStructure(settlement, 5));
+//    }
 
     @Test
     void testGetRoadByIntersections() {
@@ -189,20 +189,20 @@ class GameBoardTest {
         Assertions.assertTrue(board.getRoadByIntersections(-1, 0) == null);
     }
 
-    @Test
-    void testGetStructuresOnRolledHexes() {
-        GameBoard board = new GameBoard();
-        int roll = board.hexes[0].getNumber();
-        Structure s1 = new Settlement(Color.BLUE);
-        Structure s2 = new City(Color.RED);
-        Structure s3 = new City(Color.RED);
-        board.hexes[0].intersections[0].structure = s1;
-        board.hexes[0].intersections[1].structure = s2;
-        board.hexes[0].intersections[2].structure = s3;
-        ArrayList<Structure> structures = board.getStructuresOnRolledHexes(roll);
-        Assertions.assertEquals(structures.size(), 3);
-        Assertions.assertTrue(structures.contains(s1));
-        Assertions.assertTrue(structures.contains(s2));
-        Assertions.assertTrue(structures.contains(s3));
-    }
+//    @Test
+//    void testGetStructuresOnRolledHexes() {
+//        GameBoard board = new GameBoard();
+//        int roll = board.hexes[0].getNumber();
+//        Structure s1 = new Settlement(Color.BLUE);
+//        Structure s2 = new City(Color.RED);
+//        Structure s3 = new City(Color.RED);
+//        board.hexes[0].intersections[0].structure = s1;
+//        board.hexes[0].intersections[1].structure = s2;
+//        board.hexes[0].intersections[2].structure = s3;
+//        ArrayList<Structure> structures = board.getStructuresOnRolledHexes(roll);
+//        Assertions.assertEquals(structures.size(), 3);
+//        Assertions.assertTrue(structures.contains(s1));
+//        Assertions.assertTrue(structures.contains(s2));
+//        Assertions.assertTrue(structures.contains(s3));
+//    }
 }

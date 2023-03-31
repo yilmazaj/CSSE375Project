@@ -63,4 +63,48 @@ public class Robber {
             JOptionPane.showMessageDialog(null, stealFrom.name + " has no resources to steal", "Robber", JOptionPane.INFORMATION_MESSAGE);
         }
     }
+
+    public boolean activateRobberWithInputs(Game g, int moveRobber, String stealName) {
+        for (int i = 0; i < g.playerNum; i++) {
+            while (g.players[i].resources.size() > 7) {
+                g.players[i].removeRandomCard();
+                //System.out.println(g.players[i].name + " : " + g.players[i].resources.size());
+            }
+        }
+        if (moveRobber < 0 || moveRobber > 18) {
+            return false;
+        }
+        g.board.moveRobber(moveRobber);
+        ArrayList<String> names = new ArrayList<String>();
+        for (int i = 0; i < 6; i++) {
+            Structure s = g.board.hexes[moveRobber].intersections[i].structure;
+            if (s != null) {
+                if (!s.color.equals(g.inTurn.color)) {
+                    if (!names.contains(g.getPlayerNameByColor(s.color))) {
+                        names.add(g.getPlayerNameByColor(s.color));
+                    }
+                }
+            }
+        }
+        if (names.isEmpty()) {
+            return true;
+        }
+        Player stealFrom = null;
+        for (int i = 0; i < g.playerNum; i++) {
+            if (g.players[i].name.equals(stealName)) {
+                stealFrom = g.players[i];
+                break;
+            }
+        }
+        if (stealFrom == null) {
+            return false;
+        }
+        ResourceCard stolen = stealFrom.removeRandomCard();
+        if (stolen != null) {
+            g.inTurn.addResourceCard(stolen);
+        } else {
+            return true;
+        }
+        return true;
+    }
 }
