@@ -320,27 +320,29 @@ public class Game extends JFrame {
 			while(!buildStructure("Settlement", i2)) {
 				i2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Please enter a valid intersection", ""));
 			}
-			int road1Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the first intersection of your first road", ""));
-			int road1Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the second intersection of your first road", ""));
-			while(!buildRoad(road1Int1, road1Int2)) {
-				JOptionPane.showMessageDialog(null, "Please enter a valid set of intersections for your road", "Invalid road", JOptionPane.ERROR_MESSAGE);
-				road1Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "First intersection", ""));
-				road1Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Second intersection", ""));
-			}
-			int road2Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the first intersection of your second road", ""));
-			int road2Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the second intersection of your second road", ""));
-			while(!buildRoad(road2Int1, road2Int2)) {
-				JOptionPane.showMessageDialog(null, "Please enter a valid set of intersections for your road", "Invalid road", JOptionPane.ERROR_MESSAGE);
-				road2Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "First intersection", ""));
-				road2Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Second intersection", ""));
-			}
+			buildRoadsUI();
 			inTurn.clearResources();
 			rotateTurns();
-
 		}
-
 	}
-	
+
+	private void buildRoadsUI() {
+		int road1Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the first intersection of your first road", ""));
+		int road1Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the second intersection of your first road", ""));
+		while(!buildRoad(road1Int1, road1Int2)) {
+			JOptionPane.showMessageDialog(null, "Please enter a valid set of intersections for your road", "Invalid road", JOptionPane.ERROR_MESSAGE);
+			road1Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "First intersection", ""));
+			road1Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Second intersection", ""));
+		}
+		int road2Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the first intersection of your second road", ""));
+		int road2Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the second intersection of your second road", ""));
+		while(!buildRoad(road2Int1, road2Int2)) {
+			JOptionPane.showMessageDialog(null, "Please enter a valid set of intersections for your road", "Invalid road", JOptionPane.ERROR_MESSAGE);
+			road2Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "First intersection", ""));
+			road2Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Second intersection", ""));
+		}
+	}
+
 	public int handleDiceRoll() {
 		int total = dice.getTotal();
 		//robber scenario
@@ -523,20 +525,7 @@ public class Game extends JFrame {
 				inTurn.addResourceCard(r2);
 				inTurn.addResourceCard(r3);
 				inTurn.addResourceCard(r4);
-				int road1Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the first intersection of your first road", ""));
-				int road1Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the second intersection of your first road", ""));
-				while(!buildRoad(road1Int1, road1Int2)) {
-					JOptionPane.showMessageDialog(null, "Please enter a valid set of intersections for your road", "Invalid road", JOptionPane.ERROR_MESSAGE);
-					road1Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "First intersection", ""));
-					road1Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Second intersection", ""));
-				}
-				int road2Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the first intersection of your second road", ""));
-				int road2Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the second intersection of your second road", ""));
-				while(!buildRoad(road2Int1, road2Int2)) {
-					JOptionPane.showMessageDialog(null, "Please enter a valid set of intersections for your road", "Invalid road", JOptionPane.ERROR_MESSAGE);
-					road2Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "First intersection", ""));
-					road2Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Second intersection", ""));
-				}
+				buildRoadsUI();
 			}
 			else {
 				String resource1 = JOptionPane.showInputDialog(null, "Enter the first resource type you wish to acquire: Brick, Grain, Wool, Lumber, or Ore", "");
