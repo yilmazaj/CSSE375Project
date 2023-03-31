@@ -1,3 +1,5 @@
+package NewGame;
+
 import Team7.SettlersOfCatan.*;
 import org.junit.jupiter.api.Test;
 
@@ -31,5 +33,12 @@ public class StructureTest {
         assertEquals(city.getIcon().getIconHeight(), 20);
     }
 
+    @Test
+    public void structureCollapsedHierarchyTest(){
+        Structure settlement = new Structure(Color.RED, "Settlement");
+        Structure city = new Structure(Color.BLACK, "City");
+        assertEquals("Settlement", settlement.getType());
+        assertEquals("City", city.getType());
+    }
 
 }
