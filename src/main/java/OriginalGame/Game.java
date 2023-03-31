@@ -328,7 +328,7 @@ public class Game extends JFrame {
 		}
 	}
 
-	private void buildRoadsUI() {
+	public void buildRoadsUI() {
 		int road1Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the first intersection of your first road", ""));
 		int road1Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the second intersection of your first road", ""));
 		while(!buildRoad(road1Int1, road1Int2)) {
