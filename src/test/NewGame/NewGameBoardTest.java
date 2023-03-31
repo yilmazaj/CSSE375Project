@@ -72,11 +72,10 @@ public class NewGameBoardTest {
         double x = 0.0;
         double y = 0.0;
         Graphics2D g2 = initGraphics2D();
-        Color curColor = g2.getColor();
         GameBoard gb = new GameBoard(1);
         GameBoard.GraphicsWithIndex gwi = gb.initGraphicsWithIndex(g2, 1);
         gb.drawHexNumberAtPosition(gwi, new Point2D.Double(x, y));
-        assertEquals(g2.getColor(), curColor);
+        assertEquals(g2.getColor(), new Color(51,62,79));
         assertEquals(g2.getStroke(), new BasicStroke(10));
     }
 }
