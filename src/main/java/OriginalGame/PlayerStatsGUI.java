@@ -8,7 +8,8 @@ public class PlayerStatsGUI extends JPanel {
 
     Player player;
 
-    JPanel playerNamePanel, resourceDisplayPanel;
+    JPanel playerNamePanel;
+    public JPanel resourceDisplayPanel;
 
     public PlayerStatsGUI (Player player) {
 
