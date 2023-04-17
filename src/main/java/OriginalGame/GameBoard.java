@@ -6,20 +6,20 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class GameBoard extends JPanel {
 	public Hex[] hexes;
 	public Intersection[] intersections;
 	public Road[] roads;
-	public JPanel gamePanel;
+//	public JPanel gamePanel;
 	public int hexSideLength = 70;
 	public double hexDiameter = 2 * (hexSideLength * Math.sqrt(3) / 2) + 20;
 	public double hexRadius;
@@ -27,12 +27,14 @@ public class GameBoard extends JPanel {
 	public int playerNum;
 	public IntersectionPoint[] intersectionPoints;
 
+	private int selectedIntersection = -1;
+
+	ArrayList<JButton> intersectionButtons = new ArrayList<>();
+
 	public GameBoard() {
+		this.setLayout(null);
 
 		startingPoint = new Point2D.Double(100, 100);
-
-		gamePanel = new JPanel();
-		gamePanel.setSize(new Dimension(800, 800));
 
 		hexRadius = hexDiameter / 2;
 
@@ -44,7 +46,38 @@ public class GameBoard extends JPanel {
 		setIntersections();
 		setRoads();
 		setIntersectionCoords();
+		addIntersectionButtons();
+	}
 
+	public void addIntersectionButtons(){
+		for(int i = 0; i < intersectionPoints.length; i++){
+			IntersectionPoint point = intersectionPoints[i];
+			JButton intersectionButton = new JButton("");
+			intersectionButton.setBounds((int) (point.point.getX()-10),(int) (point.point.getY()-10),20,20);
+			intersectionButton.setVisible(true);
+			intersectionButton.setContentAreaFilled(false);
+			IntersectionActionListener listener = new IntersectionActionListener(i, this);
+			intersectionButton.addActionListener(listener);
+			this.add(intersectionButton);
+			intersectionButtons.add(intersectionButton);
+			this.setVisible(true);
+		}
+	}
+
+	public void enableIntersectionButtons(boolean setTo){
+		for(JButton intersectionButton : intersectionButtons){
+			intersectionButton.setVisible(setTo);
+		}
+	}
+
+	public void setSelectedIntersection(int selected){
+		selectedIntersection = selected;
+	}
+
+	public int getSelectedIntersection(){
+		int temp = selectedIntersection;
+		selectedIntersection = -1;
+		return temp;
 	}
 
 	//Testing
@@ -109,8 +142,10 @@ public class GameBoard extends JPanel {
 		}
 	}
 
+
 	@Override
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		Point2D.Double current = startingPoint;
 
 		GraphicsWithIndex g2 = new GraphicsWithIndex((Graphics2D) g, 0);
@@ -122,6 +157,7 @@ public class GameBoard extends JPanel {
 			g2.setNewPosition(i);
 			drawRoadAtIndex(g2);
 		}
+		ArrayList<JButton> intersectionButtons = new ArrayList<>();
 		for (int i = 0; i < intersectionPoints.length; i++) {
 			g2.setNewPosition(i);
 			drawIntersectionAtIndex(g2);
@@ -129,8 +165,8 @@ public class GameBoard extends JPanel {
 	}
 
 	public void drawIntersectionAtIndex(GraphicsWithIndex graphic) {
-		int height = 15;
-		int width = 15;
+		int height = 20;
+		int width = 20;
 		int i = graphic.getPosition();
 		Graphics2D g2 = graphic.getGraphics();
 		g2.setColor(intersectionPoints[i].color);
@@ -647,4 +683,6 @@ public class GameBoard extends JPanel {
 	public GraphicsWithIndex initGraphicsWithIndex(Graphics2D g2, int position){
 		return new GraphicsWithIndex(g2, position);
 	}
+
+
 }

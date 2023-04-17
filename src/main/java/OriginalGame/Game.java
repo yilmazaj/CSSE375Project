@@ -56,7 +56,9 @@ public class Game extends JFrame {
 		gameFrame.setSize(new Dimension(800, 700));
 		setDefaultCloseOperation(gameFrame.EXIT_ON_CLOSE);
 		gameFrame.setVisible(true);
-		gameFrame.add(board, BorderLayout.CENTER);
+
+		gameFrame.add(board);
+
 		
 		colors = new Color[MAX_PLAYERS];
 		players = new Player[playerNum];
@@ -314,13 +316,17 @@ public class Game extends JFrame {
 	public void buildInitialStructures() {
 		for(int i = 0; i < playerNum; i++) {
 			JOptionPane.showMessageDialog(null, "Place your initial structures", inTurn.name + "'s turn!", JOptionPane.INFORMATION_MESSAGE);
-			int i1 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the intersection to place your first settlement", ""));
+			JOptionPane.showMessageDialog(null, "Enter the intersection to place your first settlement", "Settlement Placement", JOptionPane.INFORMATION_MESSAGE);
+			int i1 = waitForPlayerIntersectionChoice();
 			while(!buildStructure("Settlement", i1)) {
-				i1 = Integer.parseInt(JOptionPane.showInputDialog(null, "Please enter a valid intersection", ""));
+				JOptionPane.showMessageDialog(null, "Please enter a valid intersection for your settlement", "Invalid Settlement", JOptionPane.ERROR_MESSAGE);
+				i1 = waitForPlayerIntersectionChoice();
 			}
-			int i2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the intersection to place your second settlement", ""));
+			JOptionPane.showMessageDialog(null, "Enter the intersection to place your second settlement", "Settlement Placement", JOptionPane.INFORMATION_MESSAGE);
+			int i2 = waitForPlayerIntersectionChoice();
 			while(!buildStructure("Settlement", i2)) {
-				i2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Please enter a valid intersection", ""));
+				JOptionPane.showMessageDialog(null, "Please enter a valid intersection for your settlement", "Invalid Settlement", JOptionPane.ERROR_MESSAGE);
+				i2 = waitForPlayerIntersectionChoice();
 			}
 			buildRoadsUI();
 			inTurn.clearResources();
@@ -328,20 +334,38 @@ public class Game extends JFrame {
 		}
 	}
 
+	public int waitForPlayerIntersectionChoice(){
+		board.enableIntersectionButtons(true);
+		int selected = -1;
+		while(selected == -1){
+			try {
+				selected = board.getSelectedIntersection();
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		board.enableIntersectionButtons(false);
+		return selected;
+	}
+
+
 	public void buildRoadsUI() {
-		int road1Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the first intersection of your first road", ""));
-		int road1Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the second intersection of your first road", ""));
+		JOptionPane.showMessageDialog(null, "Click two intersections for your first road!", inTurn.name + "'s turn!", JOptionPane.INFORMATION_MESSAGE);
+		int road1Int1 = waitForPlayerIntersectionChoice();
+		int road1Int2 = waitForPlayerIntersectionChoice();
 		while(!buildRoad(road1Int1, road1Int2)) {
 			JOptionPane.showMessageDialog(null, "Please enter a valid set of intersections for your road", "Invalid road", JOptionPane.ERROR_MESSAGE);
-			road1Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "First intersection", ""));
-			road1Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Second intersection", ""));
+			road1Int1 = waitForPlayerIntersectionChoice();
+			road1Int2 = waitForPlayerIntersectionChoice();
 		}
-		int road2Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the first intersection of your second road", ""));
-		int road2Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the second intersection of your second road", ""));
+		JOptionPane.showMessageDialog(null, "Click two intersections for your second road!", inTurn.name + "'s turn!", JOptionPane.INFORMATION_MESSAGE);
+		int road2Int1 = waitForPlayerIntersectionChoice();
+		int road2Int2 = waitForPlayerIntersectionChoice();
 		while(!buildRoad(road2Int1, road2Int2)) {
 			JOptionPane.showMessageDialog(null, "Please enter a valid set of intersections for your road", "Invalid road", JOptionPane.ERROR_MESSAGE);
-			road2Int1 = Integer.parseInt(JOptionPane.showInputDialog(null, "First intersection", ""));
-			road2Int2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Second intersection", ""));
+			road2Int1 = waitForPlayerIntersectionChoice();
+			road2Int2 = waitForPlayerIntersectionChoice();
 		}
 	}
 
@@ -419,6 +443,8 @@ public class Game extends JFrame {
 			}
 		}
 	}
+
+
 
 	private void handlePlayerAction(CurrentTurnGUI turnGUI){
 		if(turnGUI.doTradeAction()){
@@ -604,12 +630,14 @@ public class Game extends JFrame {
 			String s = JOptionPane.showInputDialog(null, "Structure or Road?", "");
 			if(s.equals("Structure")) {
 				String type = JOptionPane.showInputDialog(null, "Settlement or City?", "");
-				int i = Integer.parseInt(JOptionPane.showInputDialog(null, "What intersection should this be placed at?", ""));
+				JOptionPane.showMessageDialog(null, "What intersection should this be placed at?", "Intersection", JOptionPane.INFORMATION_MESSAGE);
+				int i = waitForPlayerIntersectionChoice();
 				this.buildStructure(type, i);
 			}
 			else if(s.equals("Road")) {
-				int i1 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the first intersection of the road.", ""));
-				int i2 = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter the second intersection of the road.", ""));
+				JOptionPane.showMessageDialog(null, "Select two intersections for the road", "Intersection", JOptionPane.INFORMATION_MESSAGE);
+				int i1 = waitForPlayerIntersectionChoice();
+				int i2 = waitForPlayerIntersectionChoice();
 				this.buildRoad(i1, i2);
 			}
 			else {

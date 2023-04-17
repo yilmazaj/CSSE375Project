@@ -58,6 +58,8 @@ public class CurrentTurnGUI {
         frame.add(panel);
         frame.pack();
         frame.setVisible(true);
+
+//        frame.setDefaultCloseOperation(0);
     }
     
     private void initializeFields(){

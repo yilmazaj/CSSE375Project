@@ -26,6 +26,7 @@ public class PlayersStatsGUI extends JFrame {
         frame.pack();
         frame.setVisible(true);
         frame.setSize(300, 500);
+//        frame.setDefaultCloseOperation(0);
     }
 
     public void updatePlayersStats() {
