@@ -204,14 +204,17 @@ public class TradeManagerGUI {
             frame.dispose();
             tM.handleTrade(playerName, resourceOut, resourceIn);
 
-            // Printing validation
-            Player jerry = players[0];
-            Player billy = players[1];
-            System.out.println("Jerry: [" + jerry.brickAmount + "," + jerry.grainAmount + "," + jerry.lumberAmount
-                    + "," + jerry.woolAmount + "," + jerry.oreAmount + "]");
-            System.out.println("Billy: [" + billy.brickAmount + "," + billy.grainAmount + "," + billy.lumberAmount
-                    + "," + billy.woolAmount + "," + billy.oreAmount + "]");
-
+        } else if (Arrays.stream(noButtons).toList().contains(e.getSource())){
+            int index = Arrays.stream(noButtons).toList().indexOf(e.getSource());
+            JButton button = noButtons[index];
+            tradeOptions.remove(button.getParent());
+            if(tradeOptions.getComponents().length == 1){
+                // Only the JLabel is left
+                JOptionPane.showMessageDialog(null, "Nobody wanted to trade","Invalid!", JOptionPane.ERROR_MESSAGE);
+                frame.dispose();
+            }
+            frame.revalidate();
+            frame.repaint();
         }
     }
 
