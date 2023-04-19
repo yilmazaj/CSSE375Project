@@ -3,7 +3,9 @@ import Team7.SettlersOfCatan.Game;
 import Team7.SettlersOfCatan.Player;
 import Team7.SettlersOfCatan.Presentation.GameBoard;
 import Team7.SettlersOfCatan.ResourceCard;
+import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
@@ -14,48 +16,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NewGameTest {
 
-    @Test //ANDREW REFACTOR
-    public void testRollForResources2(){
-        Game game = new Game(2);
-        Dice dice = game.dice;
-        dice.rollDice();
-        dice.setTotal(8);
 
-        int startingResources = game.inTurn.resources.size();
+    private Game game;
+    private Dice dice;
 
-
-        for(int i = 10; i< 14; i= i+2){
-            ResourceCard c1 = new ResourceCard("Brick");
-            ResourceCard c2 = new ResourceCard("Grain");
-            ResourceCard c3 = new ResourceCard("Lumber");
-            ResourceCard c4 = new ResourceCard("Wool");
-            game.inTurn.addResourceCard(c1);
-            game.inTurn.addResourceCard(c2);
-            game.inTurn.addResourceCard(c3);
-            game.inTurn.addResourceCard(c4);
-            game.buildStructure("Settlement", i);
-        }
-
-        assertEquals(game.inTurn.resources.size(),startingResources);
-
-        for(int i = 1; i < 15; i++){
-            if (i == 7) continue;
-            dice.setTotal(i);
-            game.handleDiceRoll();
-        }
-        assertTrue(startingResources < game.inTurn.resources.size());
-
+    @BeforeEach
+    public void setup(){
+        game = new Game(2);
+        dice = game.dice;
     }
 
-    @Test
-    public void testRollForResources1(){
-        Game game = new Game(2);
-        Dice dice = game.dice;
-        dice.rollDice();
-        dice.setTotal(8);
-
-        int startingResources = game.inTurn.resources.size();
-
+    private void giveSettlementResources(){
         ResourceCard c1 = new ResourceCard("Brick");
         ResourceCard c2 = new ResourceCard("Grain");
         ResourceCard c3 = new ResourceCard("Lumber");
@@ -64,17 +35,45 @@ public class NewGameTest {
         game.inTurn.addResourceCard(c2);
         game.inTurn.addResourceCard(c3);
         game.inTurn.addResourceCard(c4);
-        game.buildStructure("Settlement", 10);
+    }
 
+    private void doAllDiceRollValues(){
         for(int i = 1; i < 15; i++){
             if (i == 7) continue;
             dice.setTotal(i);
             game.handleDiceRoll();
         }
+    }
+    @Test
+    public void testRollForResources2(){
+        dice.rollDice();
+        dice.setTotal(8);
+        int startingResources = game.inTurn.resources.size();
+
+        for(int i = 10; i< 14; i= i+2){
+            giveSettlementResources();
+            game.buildStructure("Settlement", i);
+        }
+
+        assertEquals(game.inTurn.resources.size(),startingResources);
+        doAllDiceRollValues();
         assertTrue(startingResources < game.inTurn.resources.size());
 
     }
 
+    @Test
+    public void testRollForResources1(){
+        dice.rollDice();
+        dice.setTotal(8);
+        int startingResources = game.inTurn.resources.size();
+
+        giveSettlementResources();
+        game.buildStructure("Settlement", 10);
+
+        doAllDiceRollValues();
+        assertTrue(startingResources < game.inTurn.resources.size());
+
+    }
 
 
 
