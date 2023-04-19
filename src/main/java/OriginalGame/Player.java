@@ -142,16 +142,6 @@ public class Player {
         }
     }
 
-    public boolean hasAllResources(int[] requiredResources){
-        int tempBrick = brickAmount - requiredResources[0];
-        int tempGrain = grainAmount - requiredResources[1];
-        int tempLumber = lumberAmount - requiredResources[2];
-        int tempWool = woolAmount - requiredResources[3];
-        int tempOre = oreAmount - requiredResources[4];
-
-        return(tempBrick >= 0 && tempGrain >= 0 && tempLumber >= 0 && tempWool >= 0 && tempOre >= 0);
-    }
-
     public void printResources() {
         String s = "You have the following resource cards: ";
 

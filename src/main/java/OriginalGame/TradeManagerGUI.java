@@ -35,9 +35,6 @@ public class TradeManagerGUI {
     private JButton[] yesButtons;
     private JButton[] noButtons;
 
-    private int[] resourceOut = {0,0,0,0,0};
-    private int[] resourceIn = {0,0,0,0,0};
-
     private ArrayList<Integer> validTradees;
 
     private Player[] players;
@@ -108,27 +105,11 @@ public class TradeManagerGUI {
     public void initializeTradeInGUI(){
         label.setText("Trade For");
         enterResources.remove(tradeAway);
-        tradeFor = new JButton("Accept!");
+        tradeFor = new JButton("Accept");
         tradeFor.addActionListener(this::actionPerformed);
         enterResources.add(tradeFor);
         frame.revalidate();
         frame.repaint();
-    }
-
-    public void setResourceOut(String[] resources){
-        for(int i = 0; i < resources.length; i++){
-            if(resources[i].length() != 0){
-                resourceOut[i] = Integer.parseInt(resources[i]);
-            }
-        }
-    }
-
-    public void setResourceIn(String[] resources){
-        for(int i = 0; i < resources.length; i++){
-            if(resources[i].length() != 0){
-                resourceIn[i] = Integer.parseInt(resources[i]);
-            }
-        }
     }
 
     public void initializeTradeOptionsGUI(){
@@ -173,22 +154,20 @@ public class TradeManagerGUI {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == tradeAway){
             String[] resources = {brick.getText(), grain.getText(), lumber.getText(), wool.getText(), ore.getText()};
-            setResourceOut(resources);
-            if(tM.checkIfValidOutput(resourceOut) == false){
+            tM.setResourceOut(resources);
+            if(tM.checkIfValidOutput() == false){
                 JOptionPane.showMessageDialog(null, "You don't own all those resources","Invalid input!", JOptionPane.ERROR_MESSAGE);
                 frame.dispose();
                 return;
             }
-            System.out.println("Offering: " + resourceOut[0] + "," + resourceOut[1] + "," + resourceOut[2] + "," + resourceOut[3] + "," + resourceOut[4]);
             resetTextFields();
             initializeTradeInGUI();
 
         } else if (e.getSource() == tradeFor){
             String[] resources = {brick.getText(), grain.getText(), lumber.getText(), wool.getText(), ore.getText()};
-            setResourceIn(resources);
-            System.out.println("Receiving: " + resourceIn[0] + "," + resourceIn[1] + "," + resourceIn[2] + "," + resourceIn[3] + "," + resourceIn[4]);
+            tM.setResourceIn(resources);
             // This will be used for the next UI
-            validTradees = tM.checkIfValidTrade(resourceIn);
+            validTradees = tM.checkIfValidTrade();
             // Create a new GUI with buttons containing all players
             // validTradees will be used to gray out / not gray out "Accept" Buttons
             frame.remove(enterResources);
@@ -202,7 +181,7 @@ public class TradeManagerGUI {
             JLabel playerLabel = (JLabel) button.getParent().getComponent(0);
             String playerName = playerLabel.getText();
             frame.dispose();
-            tM.handleTrade(playerName, resourceOut, resourceIn);
+            tM.handleTrade(playerName);
 
         } else if (Arrays.stream(noButtons).toList().contains(e.getSource())){
             int index = Arrays.stream(noButtons).toList().indexOf(e.getSource());
