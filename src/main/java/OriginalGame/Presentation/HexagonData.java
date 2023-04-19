@@ -4,9 +4,9 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 public class HexagonData {
-    public int xCenter;
-    public int yCenter;
-    public Polygon hex;
+    private int xCenter;
+    private int yCenter;
+    private Polygon hex;
     
     public final int HEX_SIDE_LENGTH = 70;
 
@@ -41,8 +41,6 @@ public class HexagonData {
         g2.setStroke(new BasicStroke(5));
         g2.drawPolygon(hex);
     }
-
-
 
     public int getXCenter(){
         return xCenter;

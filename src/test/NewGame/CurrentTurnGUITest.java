@@ -1,30 +1,35 @@
 import Team7.SettlersOfCatan.Presentation.CurrentTurnGUI;
 import Team7.SettlersOfCatan.Dice;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CurrentTurnGUITest{
 
+
+    CurrentTurnGUI gui;
+    Dice dice;
+
+    @BeforeEach
+    public void setup(){
+        dice = new Dice(2);
+        gui = new CurrentTurnGUI("Roger",dice);
+    }
+
     @Test
-    public void validTurnEndTest1(){
-        Dice dice = new Dice(2);
-        CurrentTurnGUI gui = new CurrentTurnGUI("Roger",dice);
+    public void checkTurnOverOffAtStart(){
         assertFalse(gui.isTurnOver());
     }
 
     @Test
-    public void validTurnEndTest2(){
-        Dice dice = new Dice(2);
-        CurrentTurnGUI gui = new CurrentTurnGUI("Roger",dice);
+    public void checkEndTurnButton(){
         gui.endTurnButtonAction();
         assertTrue(gui.isTurnOver());
     }
 
     @Test
-    public void validTurnEndTest3(){
-        Dice dice = new Dice(2);
-        CurrentTurnGUI gui = new CurrentTurnGUI("Roger",dice);
+    public void checkNewTurnResetsTurnOver(){
         gui.endTurnButtonAction();
         gui.updateUIForNewPlayer("Todd");
         assertFalse(gui.isTurnOver());
@@ -32,9 +37,6 @@ public class CurrentTurnGUITest{
 
     @Test
     public void flagsOnTest1(){
-        Dice dice = new Dice(2);
-        CurrentTurnGUI gui = new CurrentTurnGUI("Roger",dice);
-
         assertFalse(gui.doBuildAction());
         assertFalse(gui.doCardAction());
         assertFalse(gui.doTradeAction());
@@ -42,9 +44,6 @@ public class CurrentTurnGUITest{
 
     @Test
     public void flagsOnTest2(){
-        Dice dice = new Dice(2);
-        CurrentTurnGUI gui = new CurrentTurnGUI("Roger",dice);
-
         gui.buildButtonAction();
         gui.tradeButtonAction();
         gui.cardButtonAction();

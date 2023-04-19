@@ -15,11 +15,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class NewGameBoardTest {
 
-    private GameBoard gb;
+    private GameBoard gameBoard;
 
     @BeforeEach
     public void setup(){ //ANDREW REFACTOR
-        gb = new GameBoard(1);
+        gameBoard = new GameBoard();
     }
 
     @Test
@@ -30,11 +30,11 @@ public class NewGameBoardTest {
         f.setVisible(true);
         Graphics g = f.getGraphics(); //Easiest way to get 2D graphics implementation to test
 
-        gb.paintComponent(g);
+        gameBoard.paintComponent(g);
 
         int size = 54;
-        assertEquals(g.getColor(),gb.intersectionPoints[size-1].color);
-        assertEquals(gb.startingPoint, new Point2D.Double(100, 100));
+        assertEquals(g.getColor(),gameBoard.intersectionPoints[size-1].color);
+        assertEquals(gameBoard.startingPoint, new Point2D.Double(100, 100));
         g.create();
 
     }
@@ -51,8 +51,8 @@ public class NewGameBoardTest {
         Hex testHex = new NoResourceHex(-1);
         Graphics2D g2 = initGraphics2D();
         Point2D.Double point = new Point2D.Double(x, y);
-        assertEquals(gb.drawHex(testHex, g2, point).getXCenter(), x);
-        assertEquals(gb.drawHex(testHex, g2, point).getYCenter(), y);
+        assertEquals(gameBoard.drawHex(testHex, g2, point).getXCenter(), x);
+        assertEquals(gameBoard.drawHex(testHex, g2, point).getYCenter(), y);
     }
 
     @Test
@@ -71,66 +71,9 @@ public class NewGameBoardTest {
         Graphics2D g2 = initGraphics2D();
         
         GraphicsWithIndex gwi = new GraphicsWithIndex(g2, 1);
-        gb.drawHexNumberAtPosition(gwi, new Point2D.Double(x, y));
+        gameBoard.drawHexNumberAtPosition(gwi, new Point2D.Double(x, y));
         assertEquals(g2.getColor(), new Color(51,62,79));
         assertEquals(g2.getStroke(), new BasicStroke(10));
     }
-
-    @Test
-    public void enableIntersectionButtons(){
-        gb.enableIntersectionButtons(true);
-
-        for(int i = 0; i < gb.intersectionButtons.size(); i++){
-            JButton currentButtonToTest = gb.intersectionButtons.get(i);
-            assertTrue(currentButtonToTest.isEnabled());
-        }
-
-    }
-
-    @Test
-    public void disableIntersectionButtons(){
-        gb.enableIntersectionButtons(false);
-
-        for(int i = 0; i < gb.intersectionButtons.size(); i++){
-            JButton currentButtonToTest = gb.intersectionButtons.get(i);
-            assertFalse(currentButtonToTest.isEnabled());
-        }
-
-    }
-
-    @Test
-    public void intersectionButtonsDefaultValue(){
-        for(int i = 0; i < gb.intersectionButtons.size(); i++){
-            JButton currentButtonToTest = gb.intersectionButtons.get(i);
-            assertTrue(currentButtonToTest.isEnabled());
-        }
-    }
-
-    @Test
-    public void getSelectedIntersection1(){
-        gb.enableIntersectionButtons(true);
-
-        gb.intersectionButtons.get(0).doClick();
-
-        assertEquals(0,gb.getSelectedIntersection());
-
-    }
-
-    @Test
-    public void getSelectedIntersection2(){
-        gb.enableIntersectionButtons(true);
-
-        assertEquals(-1,gb.getSelectedIntersection());
-    }
-
-    @Test
-    public void getSelectedIntersection3(){
-        gb.enableIntersectionButtons(true);
-
-        gb.intersectionButtons.get(0).doClick();
-
-        assertEquals(0,gb.getSelectedIntersection());
-
-        assertEquals(-1,gb.getSelectedIntersection());
-    }
+    
 }

@@ -10,17 +10,16 @@ public class IntersectionActionListener implements ActionListener {
 
 
     private int intersectionIndex;
-    private GameBoard board;
+    private IntersectionButtonManager manager;
 
-    public IntersectionActionListener(int intersectionIndex, GameBoard board){
+    public IntersectionActionListener(int intersectionIndex, IntersectionButtonManager manager){
         this.intersectionIndex = intersectionIndex;
-        this.board = board;
+        this.manager = manager;
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JButton button = (JButton) e.getSource();
-        board.setSelectedIntersection(intersectionIndex);
+        manager.setSelectedIntersection(intersectionIndex);
     }
 }

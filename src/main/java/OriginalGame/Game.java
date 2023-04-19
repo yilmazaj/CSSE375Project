@@ -86,7 +86,7 @@ public class Game extends JFrame {
 		mostRoads = new MostRoads();
 		largestArmy = new LargestArmy();
 
-		board = new GameBoard(2);
+		board = new GameBoard();
 
 
 		populateColors();

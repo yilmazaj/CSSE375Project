@@ -14,94 +14,43 @@ import java.util.Random;
 import javax.swing.*;
 
 public class GameBoard extends JPanel {
-	public Hex[] hexes;
-	public Intersection[] intersections;
-	public Road[] roads;
-//	public JPanel gamePanel;
-	public int hexSideLength = 70;
-	public double hexDiameter = 2 * (hexSideLength * Math.sqrt(3) / 2) + 20;
-	public double hexRadius;
-	public Point2D.Double startingPoint;
-	public int playerNum;
-	public IntersectionPoint[] intersectionPoints;
+	public Hex[] hexes = new Hex[19];
+	public Intersection[] intersections = new Intersection[54];
+	public Road[] roads = new Road[72];
+	public final int hexSideLength = 70;
+	public final double hexDiameter = 2 * (hexSideLength * Math.sqrt(3) / 2) + 20;
+	public final double hexRadius = hexDiameter / 2;
+	public final Point2D.Double startingPoint = new Point2D.Double(100, 100);
+	public IntersectionPoint[] intersectionPoints = new IntersectionPoint[54];
 
-	private int selectedIntersection = -1;
-
-	public ArrayList<JButton> intersectionButtons = new ArrayList<>();
+	public IntersectionButtonManager manager = new IntersectionButtonManager();
 
 	public GameBoard() {
 		this.setLayout(null);
 
-		startingPoint = new Point2D.Double(100, 100);
-
-		hexRadius = hexDiameter / 2;
-
-		intersections = new Intersection[54];
-		hexes = new Hex[19];
-		roads = new Road[72];
-		intersectionPoints = new IntersectionPoint[54];
 		placeHexes();
 		setIntersections();
 		setRoads();
 		setIntersectionCoords();
-		addIntersectionButtons();
+		setupIntersectionButtons();
 	}
 
-	public void addIntersectionButtons(){
+	public void setupIntersectionButtons(){
 		for(int i = 0; i < intersectionPoints.length; i++){
 			IntersectionPoint point = intersectionPoints[i];
-			JButton intersectionButton = createIntersectionButton(point, i);
-			intersectionButtons.add(intersectionButton);
+			JButton intersectionButton = manager.createIntersectionButton(point, i);
+			this.add(intersectionButton);
 		}
-	}
-
-	public JButton createIntersectionButton(IntersectionPoint point, int id){
-		JButton intersectionButton = new JButton("");
-		intersectionButton.setBounds((int) (point.point.getX()-10),(int) (point.point.getY()-10),20,20);
-		intersectionButton.setVisible(true);
-		intersectionButton.setContentAreaFilled(false);
-		IntersectionActionListener listener = new IntersectionActionListener(id, this);
-		intersectionButton.addActionListener(listener);
-		this.add(intersectionButton);
-		this.setVisible(true);
-		return intersectionButton;
-	}
-
-	public void enableIntersectionButtons(boolean setTo){
-		for(JButton intersectionButton : intersectionButtons){
-			intersectionButton.setVisible(setTo);
-			intersectionButton.setEnabled(setTo);
-		}
-	}
-
-	public void setSelectedIntersection(int selected){
-		selectedIntersection = selected;
 	}
 
 	public int getSelectedIntersection(){
-		int temp = selectedIntersection;
-		selectedIntersection = -1;
-		return temp;
+		return manager.getSelectedIntersection();
 	}
 
-	//Testing
-	public GameBoard(int settlement) {
-		this.setLayout(null);
-		startingPoint = new Point2D.Double(100, 100);
-
-
-		hexRadius = hexDiameter / 2;
-
-		intersections = new Intersection[54];
-		hexes = new Hex[19];
-		roads = new Road[72];
-		intersectionPoints = new IntersectionPoint[54];
-		placeHexes();
-		setIntersections();
-		setRoads();
-		setIntersectionCoords();
-		addIntersectionButtons();
+	public void enableIntersectionButtons(boolean setTo){
+		manager.enableIntersectionButtons(setTo);
 	}
+
 
 	public void placeHexes() {
 		int[] nums = { 2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12, 7 };
@@ -161,7 +110,6 @@ public class GameBoard extends JPanel {
 			g2.setNewPosition(i);
 			drawRoadAtIndex(g2);
 		}
-		ArrayList<JButton> intersectionButtons = new ArrayList<>();
 		for (int i = 0; i < intersectionPoints.length; i++) {
 			g2.setNewPosition(i);
 			drawIntersectionAtIndex(g2);
@@ -221,8 +169,8 @@ public class GameBoard extends JPanel {
 		Color curColor = g2.getColor();
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke(10));
-		g2.drawString("" + hexes[i].getNumber(), (int) (currentHex.xCenter),
-				(int) (currentHex.yCenter));
+		g2.drawString("" + hexes[i].getNumber(), (int) (currentHex.getXCenter()),
+				(int) (currentHex.getYCenter()));
 		g2.setColor(curColor);
 	}
 
@@ -552,13 +500,6 @@ public class GameBoard extends JPanel {
 		hexes[newIndex].hasRobber = true;
 	}
 
-	public boolean addStructure(Structure s, int location) {
-		if (intersections[location].addStructure(s)) {
-			return true;
-		}
-		return false;
-	}
-
 	public ArrayList<Structure> getStructuresOnRolledHexes(int total) {
 		ArrayList<Structure> structures = new ArrayList<Structure>();
 		for (int i = 0; i < hexes.length; i++) {
@@ -572,24 +513,5 @@ public class GameBoard extends JPanel {
 		}
 		return structures;
 	}
-
-	public ArrayList<Structure> getStructuresOnHexNum(int num) {
-		ArrayList<Structure> structures = new ArrayList<Structure>();
-		for (int i = 0; i < 6; i++) {
-			if (hexes[num].intersections[i] != null) {
-				structures.add(hexes[num].intersections[i].structure);
-			}
-		}
-		return structures;
-	}
-
-
-
-
-
-
-
-
-
 
 }
