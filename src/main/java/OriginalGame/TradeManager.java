@@ -77,33 +77,21 @@ public class TradeManager {
         for(int i = 0; i < resourcesIn.size(); i++) {
             inTurn.addResourceCard(resourcesIn.get(i));
         }
-
         for(int i = 0; i < resourcesOut.size(); i++) {
             tradee.addResourceCard(resourcesOut.get(i));
         }
 
-        // These don't work.
         inTurn.removeAllResources(resourcesOut);
         tradee.removeAllResources(resourcesIn);
     }
 
     private ArrayList<ResourceCard> createResourceCards(int[] toTrade){
         ArrayList<ResourceCard> resourceCards = new ArrayList<>();
-        for(int i = 0; i < toTrade[0]; i++) {
-            resourceCards.add(new ResourceCard("Brick"));
-        }
-        for(int i = 0; i < toTrade[1]; i++) {
-            resourceCards.add(new ResourceCard("Grain"));
-        }
-        for(int i = 0; i < toTrade[2]; i++) {
-            resourceCards.add(new ResourceCard("Lumber"));
-        }
-        for(int i = 0; i < toTrade[3]; i++) {
-            resourceCards.add(new ResourceCard("Wool"));
-        }
-        for(int i = 0; i < toTrade[4]; i++) {
-           resourceCards.add(new ResourceCard("Ore"));
-        }
+        for(int i = 0; i < toTrade[0]; i++) { resourceCards.add(new ResourceCard("Brick")); }
+        for(int i = 0; i < toTrade[1]; i++) { resourceCards.add(new ResourceCard("Grain")); }
+        for(int i = 0; i < toTrade[2]; i++) { resourceCards.add(new ResourceCard("Lumber")); }
+        for(int i = 0; i < toTrade[3]; i++) { resourceCards.add(new ResourceCard("Wool")); }
+        for(int i = 0; i < toTrade[4]; i++) { resourceCards.add(new ResourceCard("Ore")); }
         return resourceCards;
     }
 
