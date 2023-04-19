@@ -2,6 +2,7 @@ import Team7.SettlersOfCatan.*;
 import Team7.SettlersOfCatan.Presentation.GameBoard;
 import Team7.SettlersOfCatan.Presentation.GraphicsWithIndex;
 import Team7.SettlersOfCatan.Presentation.HexagonData;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
@@ -9,9 +10,16 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class NewGameBoardTest {
+
+    private GameBoard gb;
+
+    @Before
+    public void setup(){ //ANDREW REFACTOR
+        GameBoard gb = new GameBoard(1);
+    }
 
     @Test
     public void paintComponentTest(){
@@ -21,7 +29,6 @@ public class NewGameBoardTest {
         f.setVisible(true);
         Graphics g = f.getGraphics(); //Easiest way to get 2D graphics implementation to test
 
-        GameBoard gb = new GameBoard(1);
         gb.paintComponent(g);
 
         int size = 54;
@@ -38,7 +45,7 @@ public class NewGameBoardTest {
 
     @Test
     public void testDrawHex(){
-        GameBoard gb = new GameBoard(1);
+        
         double x = 0.0;
         double y = 0.0;
         Hex testHex = new NoResourceHex(-1);
@@ -50,7 +57,6 @@ public class NewGameBoardTest {
 
     @Test
     public void drawHexShapeTest(){
-        GameBoard gb = new GameBoard(1);
         HexagonData hdata = new HexagonData(1, 1, new Polygon());
         Graphics2D g2 = initGraphics2D();
         hdata.drawHexShape(g2);
@@ -63,10 +69,81 @@ public class NewGameBoardTest {
         double x = 0.0;
         double y = 0.0;
         Graphics2D g2 = initGraphics2D();
-        GameBoard gb = new GameBoard(1);
+        
         GraphicsWithIndex gwi = new GraphicsWithIndex(g2, 1);
         gb.drawHexNumberAtPosition(gwi, new Point2D.Double(x, y));
         assertEquals(g2.getColor(), new Color(51,62,79));
         assertEquals(g2.getStroke(), new BasicStroke(10));
+    }
+
+    @Test
+    public void enableIntersectionButtons(){
+        
+        gb.enableIntersectionButtons(true);
+
+        for(int i = 0; i < gb.intersectionButtons.size(); i++){
+            JButton currentButtonToTest = gb.intersectionButtons.get(i);
+            assertTrue(currentButtonToTest.isEnabled());
+        }
+
+    }
+
+    @Test
+    public void disableIntersectionButtons(){
+        
+        gb.enableIntersectionButtons(false);
+
+        for(int i = 0; i < gb.intersectionButtons.size(); i++){
+            JButton currentButtonToTest = gb.intersectionButtons.get(i);
+            assertFalse(currentButtonToTest.isEnabled());
+        }
+
+    }
+
+    @Test
+    public void intersectionButtonsDefaultValue(){
+        
+
+        for(int i = 0; i < gb.intersectionButtons.size(); i++){
+            JButton currentButtonToTest = gb.intersectionButtons.get(i);
+            assertTrue(currentButtonToTest.isEnabled());
+        }
+    }
+
+    @Test
+    public void getSelectedIntersection1(){
+        
+
+        gb.enableIntersectionButtons(true);
+
+        gb.intersectionButtons.get(0).doClick();
+
+        assertEquals(0,gb.getSelectedIntersection());
+
+    }
+
+    @Test
+    public void getSelectedIntersection2(){
+        
+
+        gb.enableIntersectionButtons(true);
+
+
+        assertEquals(-1,gb.getSelectedIntersection());
+
+    }
+
+    @Test
+    public void getSelectedIntersection3(){
+        
+
+        gb.enableIntersectionButtons(true);
+
+        gb.intersectionButtons.get(0).doClick();
+
+        assertEquals(0,gb.getSelectedIntersection());
+
+        assertEquals(-1,gb.getSelectedIntersection());
+
     }
 }
