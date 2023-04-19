@@ -50,16 +50,21 @@ public class GameBoard extends JPanel {
 	public void addIntersectionButtons(){
 		for(int i = 0; i < intersectionPoints.length; i++){
 			IntersectionPoint point = intersectionPoints[i];
-			JButton intersectionButton = new JButton("");
-			intersectionButton.setBounds((int) (point.point.getX()-10),(int) (point.point.getY()-10),20,20);
-			intersectionButton.setVisible(true);
-			intersectionButton.setContentAreaFilled(false);
-			IntersectionActionListener listener = new IntersectionActionListener(i, this);
-			intersectionButton.addActionListener(listener);
-			this.add(intersectionButton);
+			JButton intersectionButton = createIntersectionButton(point, i);
 			intersectionButtons.add(intersectionButton);
-			this.setVisible(true);
 		}
+	}
+
+	public JButton createIntersectionButton(IntersectionPoint point, int id){
+		JButton intersectionButton = new JButton("");
+		intersectionButton.setBounds((int) (point.point.getX()-10),(int) (point.point.getY()-10),20,20);
+		intersectionButton.setVisible(true);
+		intersectionButton.setContentAreaFilled(false);
+		IntersectionActionListener listener = new IntersectionActionListener(id, this);
+		intersectionButton.addActionListener(listener);
+		this.add(intersectionButton);
+		this.setVisible(true);
+		return intersectionButton;
 	}
 
 	public void enableIntersectionButtons(boolean setTo){
@@ -221,7 +226,7 @@ public class GameBoard extends JPanel {
 	}
 
 	public HexagonData drawHex(Hex hex, Graphics2D g2, Point2D.Double point) {
-		HexagonData hexShape = makeHex(point);
+		HexagonData hexShape = new HexagonData(point);
 		g2.setColor(hex.getColor());
 
 		hexShape.drawHexShape(g2);
@@ -230,24 +235,7 @@ public class GameBoard extends JPanel {
 		return hexShape;
 	}
 
-	public HexagonData makeHex(Point2D.Double center) {
-		int xCenter = (int) center.getX();
-		int yCenter = (int) center.getY();
 
-		Polygon hexagon = new Polygon();
-		hexagon.addPoint(xCenter + 1, yCenter + hexSideLength + 1);
-		hexagon.addPoint(xCenter + (int) (hexSideLength * Math.sqrt(3 / 2)) + 1,
-				yCenter + (int) (.5 * hexSideLength) + 1);
-		hexagon.addPoint(xCenter + (int) (hexSideLength * Math.sqrt(3 / 2)) + 1,
-				yCenter - (int) (.5 * hexSideLength) - 1);
-		hexagon.addPoint(xCenter + 1, yCenter - hexSideLength - 1);
-		hexagon.addPoint(xCenter - (int) (hexSideLength * Math.sqrt(3 / 2)) - 1,
-				yCenter - (int) (.5 * hexSideLength) - 1);
-		hexagon.addPoint(xCenter - (int) (hexSideLength * Math.sqrt(3 / 2)) - 1,
-				yCenter + (int) (.5 * hexSideLength) + 1);
-
-		return new HexagonData(xCenter, yCenter, hexagon);
-	}
 
 	public void setIntersections() {
 		intersections[0] = new Intersection(hexes[0]);
@@ -594,20 +582,7 @@ public class GameBoard extends JPanel {
 		return structures;
 	}
 	
-	class IntersectionHelper {
-		int count;
-		double curX;
-		double curY;
-		boolean standardHeight;
 
-		public IntersectionHelper(int c, double x, double y, boolean sH) {
-
-			this.count = c;
-			this.curX = x;
-			this.curY = y;
-			this.standardHeight = sH;
-		}
-	}
 	
 
 
