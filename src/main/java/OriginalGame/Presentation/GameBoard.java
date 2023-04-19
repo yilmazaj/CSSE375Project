@@ -27,7 +27,7 @@ public class GameBoard extends JPanel {
 
 	private int selectedIntersection = -1;
 
-	ArrayList<JButton> intersectionButtons = new ArrayList<>();
+	public ArrayList<JButton> intersectionButtons = new ArrayList<>();
 
 	public GameBoard() {
 		this.setLayout(null);
@@ -70,6 +70,7 @@ public class GameBoard extends JPanel {
 	public void enableIntersectionButtons(boolean setTo){
 		for(JButton intersectionButton : intersectionButtons){
 			intersectionButton.setVisible(setTo);
+			intersectionButton.setEnabled(setTo);
 		}
 	}
 
@@ -581,9 +582,9 @@ public class GameBoard extends JPanel {
 		}
 		return structures;
 	}
-	
 
-	
+
+
 
 
 

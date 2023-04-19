@@ -1,10 +1,12 @@
 import Team7.SettlersOfCatan.Dice;
 import Team7.SettlersOfCatan.Game;
 import Team7.SettlersOfCatan.Player;
+import Team7.SettlersOfCatan.Presentation.GameBoard;
 import Team7.SettlersOfCatan.ResourceCard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.*;
 import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -75,6 +77,10 @@ public class NewGameTest {
         assertTrue(startingResources < game.inTurn.resources.size());
 
     }
+
+
+
+
 
 //    @Test
 //    void testActivateRobber2() {

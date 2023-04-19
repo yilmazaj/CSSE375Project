@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class NewGameBoardTest {
 
@@ -68,5 +68,76 @@ public class NewGameBoardTest {
         gb.drawHexNumberAtPosition(gwi, new Point2D.Double(x, y));
         assertEquals(g2.getColor(), new Color(51,62,79));
         assertEquals(g2.getStroke(), new BasicStroke(10));
+    }
+
+    @Test
+    public void enableIntersectionButtons(){
+        GameBoard gb = new GameBoard(1);
+        gb.enableIntersectionButtons(true);
+
+        for(int i = 0; i < gb.intersectionButtons.size(); i++){
+            JButton currentButtonToTest = gb.intersectionButtons.get(i);
+            assertTrue(currentButtonToTest.isEnabled());
+        }
+
+    }
+
+    @Test
+    public void disableIntersectionButtons(){
+        GameBoard gb = new GameBoard(1);
+        gb.enableIntersectionButtons(false);
+
+        for(int i = 0; i < gb.intersectionButtons.size(); i++){
+            JButton currentButtonToTest = gb.intersectionButtons.get(i);
+            assertFalse(currentButtonToTest.isEnabled());
+        }
+
+    }
+
+    @Test
+    public void intersectionButtonsDefaultValue(){
+        GameBoard gb = new GameBoard(1);
+
+        for(int i = 0; i < gb.intersectionButtons.size(); i++){
+            JButton currentButtonToTest = gb.intersectionButtons.get(i);
+            assertTrue(currentButtonToTest.isEnabled());
+        }
+    }
+
+    @Test
+    public void getSelectedIntersection1(){
+        GameBoard gb = new GameBoard(1);
+
+        gb.enableIntersectionButtons(true);
+
+        gb.intersectionButtons.get(0).doClick();
+
+        assertEquals(0,gb.getSelectedIntersection());
+
+    }
+
+    @Test
+    public void getSelectedIntersection2(){
+        GameBoard gb = new GameBoard(1);
+
+        gb.enableIntersectionButtons(true);
+
+
+        assertEquals(-1,gb.getSelectedIntersection());
+
+    }
+
+    @Test
+    public void getSelectedIntersection3(){
+        GameBoard gb = new GameBoard(1);
+
+        gb.enableIntersectionButtons(true);
+
+        gb.intersectionButtons.get(0).doClick();
+
+        assertEquals(0,gb.getSelectedIntersection());
+
+        assertEquals(-1,gb.getSelectedIntersection());
+
     }
 }
