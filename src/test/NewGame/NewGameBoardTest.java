@@ -3,6 +3,7 @@ import Team7.SettlersOfCatan.Presentation.GameBoard;
 import Team7.SettlersOfCatan.Presentation.GraphicsWithIndex;
 import Team7.SettlersOfCatan.Presentation.HexagonData;
 import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.*;
@@ -16,9 +17,9 @@ public class NewGameBoardTest {
 
     private GameBoard gb;
 
-    @Before
+    @BeforeEach
     public void setup(){ //ANDREW REFACTOR
-        GameBoard gb = new GameBoard(1);
+        gb = new GameBoard(1);
     }
 
     @Test
@@ -45,7 +46,6 @@ public class NewGameBoardTest {
 
     @Test
     public void testDrawHex(){
-        
         double x = 0.0;
         double y = 0.0;
         Hex testHex = new NoResourceHex(-1);
@@ -78,7 +78,6 @@ public class NewGameBoardTest {
 
     @Test
     public void enableIntersectionButtons(){
-        
         gb.enableIntersectionButtons(true);
 
         for(int i = 0; i < gb.intersectionButtons.size(); i++){
@@ -90,7 +89,6 @@ public class NewGameBoardTest {
 
     @Test
     public void disableIntersectionButtons(){
-        
         gb.enableIntersectionButtons(false);
 
         for(int i = 0; i < gb.intersectionButtons.size(); i++){
@@ -102,8 +100,6 @@ public class NewGameBoardTest {
 
     @Test
     public void intersectionButtonsDefaultValue(){
-        
-
         for(int i = 0; i < gb.intersectionButtons.size(); i++){
             JButton currentButtonToTest = gb.intersectionButtons.get(i);
             assertTrue(currentButtonToTest.isEnabled());
@@ -112,8 +108,6 @@ public class NewGameBoardTest {
 
     @Test
     public void getSelectedIntersection1(){
-        
-
         gb.enableIntersectionButtons(true);
 
         gb.intersectionButtons.get(0).doClick();
@@ -124,19 +118,13 @@ public class NewGameBoardTest {
 
     @Test
     public void getSelectedIntersection2(){
-        
-
         gb.enableIntersectionButtons(true);
 
-
         assertEquals(-1,gb.getSelectedIntersection());
-
     }
 
     @Test
     public void getSelectedIntersection3(){
-        
-
         gb.enableIntersectionButtons(true);
 
         gb.intersectionButtons.get(0).doClick();
@@ -144,6 +132,5 @@ public class NewGameBoardTest {
         assertEquals(0,gb.getSelectedIntersection());
 
         assertEquals(-1,gb.getSelectedIntersection());
-
     }
 }
