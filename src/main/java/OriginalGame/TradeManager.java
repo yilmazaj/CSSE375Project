@@ -4,12 +4,11 @@ import java.util.ArrayList;
 
 public class TradeManager {
 
-    public String testOutput;
     private Player[] players;
     private Player inTurn;
 
-    private int[] resourceOut = {0,0,0,0,0};
-    private int[] resourceIn = {0,0,0,0,0};
+    public int[] resourceOut = {0,0,0,0,0};
+    public int[] resourceIn = {0,0,0,0,0};
 
     public TradeManager(Player[] players, Player inTurn){
         this.players = players;

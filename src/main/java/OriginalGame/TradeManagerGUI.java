@@ -3,7 +3,6 @@ package Team7.SettlersOfCatan;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
