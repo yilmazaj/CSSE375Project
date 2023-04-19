@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NewGameTest {
 
-    @Test
+    @Test //ANDREW REFACTOR
     public void testRollForResources2(){
         Game game = new Game(2);
         Dice dice = game.dice;
@@ -35,9 +35,6 @@ public class NewGameTest {
             game.inTurn.addResourceCard(c4);
             game.buildStructure("Settlement", i);
         }
-
-        System.out.println(game.inTurn.resources.size());
-        System.out.println(startingResources);
 
         assertEquals(game.inTurn.resources.size(),startingResources);
 
