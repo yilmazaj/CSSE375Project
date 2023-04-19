@@ -35,7 +35,7 @@ public class Game extends JFrame {
 
 	public Robber robber;
 
-	public TradeManager tradeManager;
+	public TradeManagerGUI tradeManagerGUI;
 
 	public Game () {
 		dice = new Dice(2);
@@ -71,8 +71,6 @@ public class Game extends JFrame {
 		giveInitialResources();
 
 		playersStats = new PlayersStatsGUI(players);
-
-		tradeManager = new TradeManager();
 
 	}
 
@@ -443,8 +441,7 @@ public class Game extends JFrame {
 
 	private void handlePlayerAction(CurrentTurnGUI turnGUI){
 		if(turnGUI.doTradeAction()){
-			JOptionPane.showMessageDialog(null, "Request trades with other players", "Trade stage", JOptionPane.INFORMATION_MESSAGE);
-			tradeManager.tradeStage(inTurn, players);
+			tradeManagerGUI = new TradeManagerGUI(players, inTurn);
 		}
 		if(turnGUI.doBuildAction()){
 			if(inTurn.resources.size() != 0){
