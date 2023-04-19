@@ -1,4 +1,6 @@
-package Team7.SettlersOfCatan;
+package Team7.SettlersOfCatan.Presentation;
+
+import Team7.SettlersOfCatan.Dice;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

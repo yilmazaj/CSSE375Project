@@ -1,13 +1,11 @@
-package Team7.SettlersOfCatan;
+package Team7.SettlersOfCatan.Presentation;
+
+import Team7.SettlersOfCatan.*;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.awt.Polygon;
 import java.util.ArrayList;
@@ -82,7 +80,7 @@ public class GameBoard extends JPanel {
 
 	//Testing
 	public GameBoard(int settlement) {
-
+		this.setLayout(null);
 		startingPoint = new Point2D.Double(100, 100);
 
 
@@ -96,7 +94,7 @@ public class GameBoard extends JPanel {
 		setIntersections();
 		setRoads();
 		setIntersectionCoords();
-
+		addIntersectionButtons();
 	}
 
 	public void placeHexes() {
@@ -611,78 +609,11 @@ public class GameBoard extends JPanel {
 		}
 	}
 	
-	public class HexagonData {
-		int xCenter;
-		int yCenter;
-		Polygon hex;
-		
-		public HexagonData(int x, int y, Polygon hexagon) {
-			xCenter = x;
-			yCenter = y;
-			hex = hexagon;
-		}
 
-		public void drawHexShape(Graphics2D g2) {
-			g2.fillPolygon(hex);
-			g2.setColor(new Color(51, 62, 79));
-			g2.setStroke(new BasicStroke(5));
-			g2.drawPolygon(hex);
-		}
 
-		public int getXCenter(){
-			return xCenter;
-		}
-		public int getYCenter(){
-			return yCenter;
-		}
-	}
-	public HexagonData initHexagonData(int x, int y, Polygon p){
-		return new HexagonData(x, y, p);
-	}
 
-	public class IntersectionPoint {
-		Point2D.Double point;
-		public Color color;
 
-		public IntersectionPoint(Point2D.Double curPoint) {
-			this.point = curPoint;
-			this.color = Color.BLACK;
-		}
 
-		public IntersectionPoint(Point2D.Double curPoint, Color curColor) {
-			this.point = curPoint;
-			this.color = curColor;
-		}
-
-		public void changeColor(Color newColor) {
-			this.color = newColor;
-		}
-
-	}
-
-	public class GraphicsWithIndex{
-		private Graphics2D g2;
-		private int position;
-		public GraphicsWithIndex(Graphics2D g2, int position){
-			this.g2 = g2;
-			this.position = position;
-		}
-
-		private void setNewPosition(int newPosition){
-			this.position = newPosition;
-		}
-
-		private Graphics2D getGraphics(){
-			return g2;
-		}
-
-		private int getPosition(){
-			return position;
-		}
-	}
-	public GraphicsWithIndex initGraphicsWithIndex(Graphics2D g2, int position){
-		return new GraphicsWithIndex(g2, position);
-	}
 
 
 }

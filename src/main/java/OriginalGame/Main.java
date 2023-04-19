@@ -1,5 +1,7 @@
 package Team7.SettlersOfCatan;
 
+import Team7.SettlersOfCatan.Presentation.CurrentTurnGUI;
+
 import javax.swing.*;
 
 public class Main {

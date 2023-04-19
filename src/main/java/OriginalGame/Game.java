@@ -1,19 +1,14 @@
 package Team7.SettlersOfCatan;
 
-import java.awt.BorderLayout;
+import Team7.SettlersOfCatan.Presentation.CurrentTurnGUI;
+import Team7.SettlersOfCatan.Presentation.GameBoard;
+import Team7.SettlersOfCatan.Presentation.PlayersStatsGUI;
+
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridLayout;
-import java.awt.Point;
-import java.awt.Polygon;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;

@@ -1,7 +1,5 @@
 import Team7.SettlersOfCatan.Game;
-import Team7.SettlersOfCatan.GameBoard;
 import Team7.SettlersOfCatan.ResourceCard;
-import Team7.SettlersOfCatan.Structure;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

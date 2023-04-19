@@ -1,4 +1,4 @@
-import Team7.SettlersOfCatan.CurrentTurnGUI;
+import Team7.SettlersOfCatan.Presentation.CurrentTurnGUI;
 import Team7.SettlersOfCatan.Dice;
 import org.junit.jupiter.api.Test;
 
