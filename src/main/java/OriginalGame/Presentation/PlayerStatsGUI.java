@@ -1,4 +1,6 @@
-package Team7.SettlersOfCatan;
+package Team7.SettlersOfCatan.Presentation;
+
+import Team7.SettlersOfCatan.Player;
 
 import javax.swing.*;
 import java.awt.*;

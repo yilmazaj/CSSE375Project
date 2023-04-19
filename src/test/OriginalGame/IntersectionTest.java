@@ -6,6 +6,8 @@
 import Team7.SettlersOfCatan.*;
 
 import java.awt.Color;
+
+import Team7.SettlersOfCatan.Presentation.Intersection;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -1,4 +1,8 @@
-package Team7.SettlersOfCatan;
+package Team7.SettlersOfCatan.Presentation;
+
+import Team7.SettlersOfCatan.Hex;
+import Team7.SettlersOfCatan.Road;
+import Team7.SettlersOfCatan.Structure;
 
 import java.awt.*;
 import java.awt.geom.Point2D;

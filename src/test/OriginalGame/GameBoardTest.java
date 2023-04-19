@@ -6,10 +6,8 @@
 
 
 
-import java.awt.Color;
-import java.util.ArrayList;
-
 import Team7.SettlersOfCatan.*;
+import Team7.SettlersOfCatan.Presentation.GameBoard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

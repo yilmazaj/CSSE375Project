@@ -8,8 +8,8 @@ package Team7.SettlersOfCatan;
 import java.awt.Color;
 
 public class Road extends Buildable {
-    protected int intersection1Num;
-    protected int intersection2Num;
+    public int intersection1Num;
+    public int intersection2Num;
     protected int indexNum;
     public Color color;
 

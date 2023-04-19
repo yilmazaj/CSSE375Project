@@ -1,5 +1,7 @@
 package Team7.SettlersOfCatan;
 
+import Team7.SettlersOfCatan.Presentation.Intersection;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -8,7 +10,7 @@ public abstract class Hex {
 	
 	private int number;
 	public Intersection[] intersections = new Intersection[6];
-	protected boolean hasRobber;
+	public boolean hasRobber;
 	private ImageIcon resourceIcon;
 	
 	public Hex(int i) {

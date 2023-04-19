@@ -5,6 +5,8 @@
 
 package Team7.SettlersOfCatan;
 
+import Team7.SettlersOfCatan.Presentation.Intersection;
+
 import javax.swing.*;
 import java.util.ArrayList;
 
