@@ -1,12 +1,42 @@
 package Team7.SettlersOfCatan;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 
 public class TradeManager {
 
     public String testOutput;
+    private Player[] players;
+    private Player inTurn;
+
+    public TradeManager(Player[] players, Player inTurn){
+        this.players = players;
+        this.inTurn = inTurn;
+    }
+
+    public boolean checkIfValidOutput(int[] resourcesOffered){
+        return (resourcesOffered[0] <= inTurn.brickAmount) &&
+               (resourcesOffered[1] <= inTurn.grainAmount) &&
+               (resourcesOffered[2] <= inTurn.lumberAmount) &&
+               (resourcesOffered[3] <= inTurn.woolAmount) &&
+               (resourcesOffered[4] <= inTurn.oreAmount);
+    }
+
+    public ArrayList<Integer> checkIfValidTrade(int[] resourcesDemanded){
+        ArrayList<Integer> valid = new ArrayList<>();
+        for(int i = 0; i < players.length; i++){
+            // Players cannot trade with themselves
+            if(players[i].name.equals(inTurn.name) == false){
+                if((resourcesDemanded[0] <= players[i].brickAmount) &&
+                   (resourcesDemanded[1] <= players[i].grainAmount) &&
+                   (resourcesDemanded[2] <= players[i].lumberAmount) &&
+                   (resourcesDemanded[3] <= players[i].woolAmount) &&
+                   (resourcesDemanded[4] <= players[i].oreAmount)){
+                    valid.add(i);
+                }
+            }
+        }
+        return valid;
+    }
 
     private Player findPlayer(Player[] players, String name){
         for(int i = 0; i < players.length; i++){
@@ -17,151 +47,43 @@ public class TradeManager {
         return null;
     }
 
-    // method for testing, same logic without the UI elements
-    public void tradeStageTest(Player inTurn, Player[] players, String name, int[] outgoing, int[] demanded, boolean accepted){
-        Player tradePartner = findPlayer(players, name);
-        tradeTest(inTurn, tradePartner, outgoing, demanded, accepted);
+    public void handleTrade(String tradeWith, int[] outgoing, int[] demanded){
+        Player tradee = findPlayer(players, tradeWith);
+
+        ArrayList<ResourceCard> resourcesOut = doTrade(outgoing);
+        ArrayList<ResourceCard> resourcesIn = doTrade(demanded);
+
+        for(int i = 0; i < resourcesIn.size(); i++) {
+            inTurn.addResourceCard(resourcesIn.get(i));
+        }
+
+        for(int i = 0; i < resourcesOut.size(); i++) {
+            tradee.addResourceCard(resourcesOut.get(i));
+        }
+
+        // These don't work.
+        inTurn.removeAllResources(resourcesOut);
+        tradee.removeAllResources(resourcesIn);
     }
 
-    public void tradeStage(Player inTurn, Player[] players) {
-        int answer = JOptionPane.showConfirmDialog(null, "Would you like to trade?", "Trade?", JOptionPane.YES_NO_OPTION);
-        while(answer == JOptionPane.YES_OPTION) {
-            String name = JOptionPane.showInputDialog(null, "Who do you want to trade with?", "");
-            Player tradePartner = findPlayer(players, name);
-            while(tradePartner == null || tradePartner.name.equals(inTurn.name)) {
-                name = JOptionPane.showInputDialog(null, "Please enter the name of another player", "");
-                tradePartner = findPlayer(players, name);
-            }
-            trade(inTurn, tradePartner);
-
-            answer = JOptionPane.showConfirmDialog(null, "Would you like to trade more?", "Trade?", JOptionPane.YES_NO_OPTION);
-        }
-
-    }
-
-    // method for testing, same logic without the UI elements
-    public void tradeTest(Player inTurn, Player tradePartner, int[] outgoing, int[] demanded, boolean accepted){
-        ResourcesWrapper resourcesOut;
-        ResourcesWrapper resourcesIn;
-        resourcesOut = doTradeDialogueTest(outgoing);
-        if(!inTurn.hasAllResources(resourcesOut.resourceValues)) {
-            testOutput = "You don't own all those resources";
-            return;
-        }
-        resourcesIn = doTradeDialogueTest(demanded);
-        if(!tradePartner.hasAllResources(resourcesIn.resourceValues)) {
-            testOutput = (tradePartner.name + " doesn't own all those resources");
-            return;
-        }
-        if(accepted){
-            testOutput = "Accepted";
-        } else {
-            testOutput = "Rejected";
-            return;
-        }
-
-        for(int i = 0; i < resourcesIn.resourceCards.size(); i++) {
-            inTurn.addResourceCard(resourcesIn.resourceCards.get(i));
-        }
-        inTurn.removeAllResources(resourcesOut.resourceCards);
-        for(int i = 0; i < resourcesOut.resourceCards.size(); i++) {
-            tradePartner.addResourceCard(resourcesOut.resourceCards.get(i));
-        }
-        tradePartner.removeAllResources(resourcesIn.resourceCards);
-
-    }
-
-    public boolean trade(Player inTurn, Player tradePartner) {
-        ResourcesWrapper resourcesOut;
-        ResourcesWrapper resourcesIn;
-        resourcesOut = doTradeDialogue(true);
-        if(!inTurn.hasAllResources(resourcesOut.resourceValues)) {
-            JOptionPane.showMessageDialog(null, "You don't own all those resources","Invalid input!", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        resourcesIn = doTradeDialogue(false);
-        if(!tradePartner.hasAllResources(resourcesIn.resourceValues)) {
-            JOptionPane.showMessageDialog(null, tradePartner.name + " doesn't own all those resources", "Invalid input!", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-        int answer = JOptionPane.showConfirmDialog(null, "Do you accept the trade?",
-                tradePartner.name, JOptionPane.YES_NO_OPTION);
-        if(answer == JOptionPane.YES_OPTION) {
-            JOptionPane.showMessageDialog(null, tradePartner.name + " accepted your trade request","Trade accepted!", JOptionPane.INFORMATION_MESSAGE);
-            for(int i = 0; i < resourcesIn.resourceCards.size(); i++) {
-                inTurn.addResourceCard(resourcesIn.resourceCards.get(i));
-            }
-            inTurn.removeAllResources(resourcesOut.resourceCards);
-            for(int i = 0; i < resourcesOut.resourceCards.size(); i++) {
-                tradePartner.addResourceCard(resourcesOut.resourceCards.get(i));
-            }
-            tradePartner.removeAllResources(resourcesIn.resourceCards);
-
-            return true;
-        }
-        else {
-            JOptionPane.showMessageDialog(null, tradePartner.name + " declined your trade request","Trade declined!", JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-    }
-
-    private ResourcesWrapper doTradeDialogueTest(int[] toTrade){
-        ResourcesWrapper resources = new ResourcesWrapper();
+    private ArrayList<ResourceCard> doTrade(int[] toTrade){
+        ArrayList<ResourceCard> resourceCards = new ArrayList<>();
         for(int i = 0; i < toTrade[0]; i++) {
-            resources.resourceCards.add(new ResourceCard("Brick")); resources.resourceValues[0]++;
+            resourceCards.add(new ResourceCard("Brick"));
         }
         for(int i = 0; i < toTrade[1]; i++) {
-            resources.resourceCards.add(new ResourceCard("Grain")); resources.resourceValues[1]++;
+            resourceCards.add(new ResourceCard("Grain"));
         }
         for(int i = 0; i < toTrade[2]; i++) {
-            resources.resourceCards.add(new ResourceCard("Lumber")); resources.resourceValues[2]++;
+            resourceCards.add(new ResourceCard("Lumber"));
         }
         for(int i = 0; i < toTrade[3]; i++) {
-            resources.resourceCards.add(new ResourceCard("Wool")); resources.resourceValues[3]++;
+            resourceCards.add(new ResourceCard("Wool"));
         }
         for(int i = 0; i < toTrade[4]; i++) {
-            resources.resourceCards.add(new ResourceCard("Ore")); resources.resourceValues[4]++;
+           resourceCards.add(new ResourceCard("Ore"));
         }
-        return resources;
-    }
-
-    private ResourcesWrapper doTradeDialogue(boolean outgoing) {
-        if(outgoing) {
-            JOptionPane.showMessageDialog(null, "Enter how much of each resource you want to trade away.", "Trade Away", JOptionPane.INFORMATION_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(null, "Enter how much of each resource you want to trade for.", "Trade For", JOptionPane.INFORMATION_MESSAGE);
-        }
-        ResourcesWrapper resources = new ResourcesWrapper();
-        int numBrick = Integer.parseInt(JOptionPane.showInputDialog(null, "How many brick?", ""));
-        int numGrain = Integer.parseInt(JOptionPane.showInputDialog(null, "How many grain?", ""));
-        int numLumber = Integer.parseInt(JOptionPane.showInputDialog(null, "How many lumber?", ""));
-        int numWool = Integer.parseInt(JOptionPane.showInputDialog(null, "How many wool?", ""));
-        int numOre = Integer.parseInt(JOptionPane.showInputDialog(null, "How many ore?", ""));
-        for(int i = 0; i < numBrick; i++) {
-            resources.resourceCards.add(new ResourceCard("Brick")); resources.resourceValues[0]++;
-        }
-        for(int i = 0; i < numGrain; i++) {
-            resources.resourceCards.add(new ResourceCard("Grain")); resources.resourceValues[1]++;
-        }
-        for(int i = 0; i < numLumber; i++) {
-            resources.resourceCards.add(new ResourceCard("Lumber")); resources.resourceValues[2]++;
-        }
-        for(int i = 0; i < numWool; i++) {
-            resources.resourceCards.add(new ResourceCard("Wool")); resources.resourceValues[3]++;
-        }
-        for(int i = 0; i < numOre; i++) {
-            resources.resourceCards.add(new ResourceCard("Ore")); resources.resourceValues[4]++;
-        }
-        return resources;
-    }
-
-    public class ResourcesWrapper {
-        ArrayList<ResourceCard> resourceCards;
-        int[] resourceValues;
-        public ResourcesWrapper() {
-            this.resourceCards = new ArrayList<>();
-            this.resourceValues = new int[5];
-        }
+        return resourceCards;
     }
 
 }
