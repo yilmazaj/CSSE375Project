@@ -8,29 +8,32 @@ public class TradeManager {
     private Player[] players;
     private Player inTurn;
 
+    private int[] resourceOut = {0,0,0,0,0};
+    private int[] resourceIn = {0,0,0,0,0};
+
     public TradeManager(Player[] players, Player inTurn){
         this.players = players;
         this.inTurn = inTurn;
     }
 
-    public boolean checkIfValidOutput(int[] resourcesOffered){
-        return (resourcesOffered[0] <= inTurn.brickAmount) &&
-               (resourcesOffered[1] <= inTurn.grainAmount) &&
-               (resourcesOffered[2] <= inTurn.lumberAmount) &&
-               (resourcesOffered[3] <= inTurn.woolAmount) &&
-               (resourcesOffered[4] <= inTurn.oreAmount);
+    public boolean checkIfValidOutput(){
+        return (resourceOut[0] <= inTurn.brickAmount) &&
+               (resourceOut[1] <= inTurn.grainAmount) &&
+               (resourceOut[2] <= inTurn.lumberAmount) &&
+               (resourceOut[3] <= inTurn.woolAmount) &&
+               (resourceOut[4] <= inTurn.oreAmount);
     }
 
-    public ArrayList<Integer> checkIfValidTrade(int[] resourcesDemanded){
+    public ArrayList<Integer> checkIfValidTrade(){
         ArrayList<Integer> valid = new ArrayList<>();
         for(int i = 0; i < players.length; i++){
             // Players cannot trade with themselves
             if(players[i].name.equals(inTurn.name) == false){
-                if((resourcesDemanded[0] <= players[i].brickAmount) &&
-                   (resourcesDemanded[1] <= players[i].grainAmount) &&
-                   (resourcesDemanded[2] <= players[i].lumberAmount) &&
-                   (resourcesDemanded[3] <= players[i].woolAmount) &&
-                   (resourcesDemanded[4] <= players[i].oreAmount)){
+                if((resourceIn[0] <= players[i].brickAmount) &&
+                   (resourceIn[1] <= players[i].grainAmount) &&
+                   (resourceIn[2] <= players[i].lumberAmount) &&
+                   (resourceIn[3] <= players[i].woolAmount) &&
+                   (resourceIn[4] <= players[i].oreAmount)){
                     valid.add(i);
                 }
             }
@@ -47,11 +50,29 @@ public class TradeManager {
         return null;
     }
 
-    public void handleTrade(String tradeWith, int[] outgoing, int[] demanded){
+    public void setResourceOut(String[] resources){
+        for(int i = 0; i < resources.length; i++){
+            if(resources[i].length() != 0){
+                resourceOut[i] = Integer.parseInt(resources[i]);
+            }
+        }
+        System.out.println("Offering: " + resourceOut[0] + "," + resourceOut[1] + "," + resourceOut[2] + "," + resourceOut[3] + "," + resourceOut[4]);
+    }
+
+    public void setResourceIn(String[] resources){
+        for(int i = 0; i < resources.length; i++){
+            if(resources[i].length() != 0){
+                resourceIn[i] = Integer.parseInt(resources[i]);
+            }
+        }
+        System.out.println("Receiving: " + resourceIn[0] + "," + resourceIn[1] + "," + resourceIn[2] + "," + resourceIn[3] + "," + resourceIn[4]);
+    }
+
+    public void handleTrade(String tradeWith){
         Player tradee = findPlayer(players, tradeWith);
 
-        ArrayList<ResourceCard> resourcesOut = doTrade(outgoing);
-        ArrayList<ResourceCard> resourcesIn = doTrade(demanded);
+        ArrayList<ResourceCard> resourcesOut = createResourceCards(resourceOut);
+        ArrayList<ResourceCard> resourcesIn = createResourceCards(resourceIn);
 
         for(int i = 0; i < resourcesIn.size(); i++) {
             inTurn.addResourceCard(resourcesIn.get(i));
@@ -66,7 +87,7 @@ public class TradeManager {
         tradee.removeAllResources(resourcesIn);
     }
 
-    private ArrayList<ResourceCard> doTrade(int[] toTrade){
+    private ArrayList<ResourceCard> createResourceCards(int[] toTrade){
         ArrayList<ResourceCard> resourceCards = new ArrayList<>();
         for(int i = 0; i < toTrade[0]; i++) {
             resourceCards.add(new ResourceCard("Brick"));
