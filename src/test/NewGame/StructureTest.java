@@ -1,5 +1,3 @@
-package NewGame;
-
 import Domain.Structure;
 import org.junit.jupiter.api.Test;
 
