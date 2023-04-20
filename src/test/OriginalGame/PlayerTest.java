@@ -49,29 +49,33 @@ class PlayerTest {
 
     @Test
     void testContainsAllResources() {
-        Player p1 = new Player("Player1", Color.WHITE);
         ResourceCard c1 = new ResourceCard("Lumber");
         ResourceCard c2 = new ResourceCard("Brick");
         ResourceCard c3 = new ResourceCard("Ore");
         ResourceCard c4 = new ResourceCard("Ore");
-        p1.addResourceCard(c1);
-        p1.addResourceCard(c2);
-        p1.addResourceCard(c3);
-        p1.addResourceCard(c4);
-        Player p2 = new Player("Player2", Color.BLUE);
-        p2.addResourceCard(c1);
-        p2.addResourceCard(c2);
-        p2.addResourceCard(c3);
-        Player p3 = new Player("Player3", Color.RED);
         ArrayList<ResourceCard> test = new ArrayList();
         test.add(c1);
         test.add(c2);
         test.add(c3);
         test.add(c4);
+        Player p1 = testContainAllResourcesPlayerSetupHelper("Player1", Color.WHITE, test);
+        Player p2 = testContainAllResourcesPlayerSetupHelper("Player2", Color.BLUE, test.subList(0,3));
+        Player p3 = testContainAllResourcesPlayerSetupHelper("Player3", Color.RED, test.subList(0,0));
         Assertions.assertTrue(p1.containsAllResources(test));
         Assertions.assertFalse(p2.containsAllResources(test));
         Assertions.assertFalse(p3.containsAllResources(test));
     }
+
+    private Player testContainAllResourcesPlayerSetupHelper(String name,
+                                                            Color color,
+                                                            ArrayList<ResourceCard> resourceCards){
+        Player p1 = new Player("Player1", Color.WHITE);
+        for (ResourceCard r : resourceCards){
+            p1.addResourceCard(r);
+        }
+        return  p1;
+    }
+
 
     @Test
     void testRemoveAllResources() {

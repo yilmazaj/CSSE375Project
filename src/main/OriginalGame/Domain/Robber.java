@@ -44,15 +44,15 @@ public class Robber {
     }
 
 
-    public void activateRobber(Game g) {
+    private void moreThanSevenCards(Game g){
         for(int i = 0; i < g.playerNum; i++) {
             while(g.players[i].resources.size() > 7) {
                 g.players[i].removeRandomCard();
-                //System.out.println(g.players[i].name + " : " + g.players[i].resources.size());
             }
         }
-        int moveRobber = moveRobberTile(g);
-        g.gameBuildingHandler.board.moveRobber(moveRobber);
+    }
+
+    private ArrayList<String> retrieveRobberTargets(Game g, int moveRobber){
         ArrayList<String> names = new ArrayList<String>();
         for(int i = 0; i < 6; i++) {
             Structure s = getStuctureByHex(g, moveRobber, i);
@@ -65,9 +65,14 @@ public class Robber {
             }
         }
         if(names.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No adjacent players to steal from", "Robber", JOptionPane.INFORMATION_MESSAGE);
-            return;
+            JOptionPane.showMessageDialog(null, "No adjacent players to steal from",
+                    "Robber", JOptionPane.INFORMATION_MESSAGE);
+            return new ArrayList<String>();
         }
+        return names;
+    }
+
+    private void handleSteal(Game g, ArrayList<String> names){
         String choose = "Pick one of the following players to steal a random resource from: ";
         for(int i = 0; i < names.size(); i++) {
             choose = choose + names.get(i) + ", ";
@@ -88,8 +93,18 @@ public class Robber {
             g.inTurn.addResourceCard(stolen);
         }
         else{
-            JOptionPane.showMessageDialog(null, stealFrom.name + " has no resources to steal", "Domain.Robber", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, stealFrom.name + " has no resources to steal",
+                    "Domain.Robber", JOptionPane.INFORMATION_MESSAGE);
         }
+    }
+
+
+    public void activateRobber(Game g) {
+        moreThanSevenCards(g);
+        int moveRobber = moveRobberTile(g);
+        g.gameBuildingHandler.board.moveRobber(moveRobber);
+        ArrayList<String> names = retrieveRobberTargets(g, moveRobber);
+        handleSteal(g, names);
     }
 
     //For automated testing
