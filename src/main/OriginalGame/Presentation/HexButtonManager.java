@@ -22,10 +22,12 @@ public class HexButtonManager {
     }
 
     public JButton createHexButton(HexPoint point, int id){
-        JButton hexButton = new JButton("");
-        hexButton.setBounds((int) (point.point.getX()-10),(int) (point.point.getY()-30),20,20);
-        hexButton.setVisible(true);
+        JButton hexButton = new HexButton("");
+        hexButton.setBounds((int) (point.point.getX()-38),(int) (point.point.getY()-40),80,80);
         hexButton.setContentAreaFilled(false);
+
+        hexButton.setFocusPainted( false );
+        hexButton.setVisible(false);
         HexActionListener listener = new HexActionListener(id, this);
         hexButton.addActionListener(listener);
         hexButtons.add(hexButton);

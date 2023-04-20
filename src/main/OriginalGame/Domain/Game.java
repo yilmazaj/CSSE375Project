@@ -236,7 +236,7 @@ public class Game extends JFrame {
 	private void waitForPlayerToEndTurn(CurrentTurnGUI turnGUI){
 		while(!turnGUI.isTurnOver()){
 			try {
-				Thread.sleep(1);
+				Thread.sleep(10);
 				handlePlayerAction(turnGUI);
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
