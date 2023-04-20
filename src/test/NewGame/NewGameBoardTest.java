@@ -5,7 +5,6 @@ import Presentation.GraphicsWithIndex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -23,11 +22,12 @@ public class NewGameBoardTest {
 
     @Test
     public void paintComponentTest(){
-        JFrame f = new JFrame();
-        JPanel panel = new JPanel();
-        f.add(panel);
-        f.setVisible(true);
-        Graphics g = f.getGraphics(); //Easiest way to get 2D graphics implementation to test
+//        JFrame f = new JFrame();
+//        JPanel panel = new JPanel();
+//        f.add(panel);
+//        f.setVisible(true);
+//        Graphics g = f.getGraphics(); //Easiest way to get 2D graphics implementation to test
+        Graphics g =  initGraphics2D();
 
         gameBoard.paintComponent(g);
 

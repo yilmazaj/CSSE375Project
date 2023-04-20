@@ -50,16 +50,20 @@ public class CurrentTurnGUI {
         turnEnded = false;
 
         resetFlags();
-        
-        initializeFields();
 
-        initializeSwingUI();
+        if (!GraphicsEnvironment.isHeadless()){
+            initializeFields();
+
+            initializeSwingUI();
+
+            attachActionListeners();
+            frame.add(panel);
+            frame.pack();
+            frame.setVisible(true);
+        }
+
         
-        attachActionListeners();
-        
-        frame.add(panel);
-        frame.pack();
-        frame.setVisible(true);
+
 
 //        frame.setDefaultCloseOperation(0);
     }
@@ -88,11 +92,16 @@ public class CurrentTurnGUI {
     public void updateUIForNewPlayer(String playerName){
         this.playerName = playerName;
         turnEnded = false;
-        playerNameLabel.setText("Player " +playerName + "'s Turn");
+        if (!GraphicsEnvironment.isHeadless()){
+            playerNameLabel.setText("Player " +playerName + "'s Turn");
+        }
         resetContent();
     }
 
     private void resetButtons(){
+        if(GraphicsEnvironment.isHeadless()){
+            return;
+        }
         tradeButton.setEnabled(false);
         endTurnButton.setEnabled(false);
         buildButton.setEnabled(false);
@@ -115,6 +124,9 @@ public class CurrentTurnGUI {
 
     private void resetDice(){
         dice.invalidatePreviousRoll();
+        if(GraphicsEnvironment.isHeadless()){
+            return;
+        }
         for(int i = 0; i < dice.getNumDice(); i++){
             updateDiceImage(0,i);
         }

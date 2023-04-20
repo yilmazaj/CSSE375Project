@@ -9,6 +9,7 @@ repositories {
 }
 test {
     useJUnitPlatform()
+    jvmArgs "-Djava.awt.headless=true"
 }
 sourceSets {
     main {
@@ -26,6 +27,7 @@ sourceSets {
         resources {
             srcDirs "images"
         }
+
     }
 }
 dependencies {

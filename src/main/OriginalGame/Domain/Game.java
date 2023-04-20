@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Game extends JFrame {
+public class Game {
 
 	public GameBuildingHandler gameBuildingHandler = new GameBuildingHandler(false);
 	public int playerNum;
@@ -41,9 +41,11 @@ public class Game extends JFrame {
 		}
 		playerPanels = new JPanel[playerNum];
 
+
+
 		gameFrame = new JFrame();
 		gameFrame.setSize(new Dimension(800, 700));
-		setDefaultCloseOperation(gameFrame.EXIT_ON_CLOSE);
+		gameFrame.setDefaultCloseOperation(gameFrame.EXIT_ON_CLOSE);
 		gameFrame.setVisible(true);
 
 		gameFrame.add(gameBuildingHandler.board);
