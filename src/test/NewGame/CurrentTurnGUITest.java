@@ -1,9 +1,10 @@
-import Team7.SettlersOfCatan.Presentation.CurrentTurnGUI;
-import Team7.SettlersOfCatan.Dice;
+import Domain.Dice;
+import Presentation.CurrentTurnGUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CurrentTurnGUITest{
 

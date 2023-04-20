@@ -1,4 +1,4 @@
-import Team7.SettlersOfCatan.Dice;
+import Domain.Dice;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

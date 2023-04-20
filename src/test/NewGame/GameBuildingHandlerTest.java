@@ -1,9 +1,7 @@
-import Team7.SettlersOfCatan.Player;
-import org.junit.jupiter.api.Test;
+import Domain.GameBuildingHandler;
+import Domain.Player;
 import org.junit.jupiter.api.BeforeEach;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import Team7.SettlersOfCatan.GameBuildingHandler;
+import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 

@@ -1,5 +1,5 @@
-import Team7.SettlersOfCatan.Presentation.IntersectionButtonManager;
-import Team7.SettlersOfCatan.Presentation.IntersectionPoint;
+import Presentation.IntersectionButtonManager;
+import Presentation.IntersectionPoint;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

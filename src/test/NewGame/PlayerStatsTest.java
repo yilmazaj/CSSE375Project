@@ -1,5 +1,5 @@
-import Team7.SettlersOfCatan.Player;
-import Team7.SettlersOfCatan.Presentation.PlayerStatsGUI;
+import Domain.*;
+import Presentation.PlayerStatsGUI;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

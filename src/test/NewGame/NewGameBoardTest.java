@@ -1,8 +1,7 @@
-import Team7.SettlersOfCatan.*;
-import Team7.SettlersOfCatan.Presentation.GameBoard;
-import Team7.SettlersOfCatan.Presentation.GraphicsWithIndex;
-import Team7.SettlersOfCatan.Presentation.HexagonData;
-//import org.junit.Before;
+import Domain.Hex;
+import Domain.NoResourceHex;
+import Presentation.GameBoard;
+import Presentation.GraphicsWithIndex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +10,7 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class NewGameBoardTest {
 

@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+group 'Team7'
+version '1.0-SNAPSHOT'
+repositories {
+    mavenCentral()
+}
+test {
+    useJUnitPlatform()
+}
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/OriginalGame']
+        }
+        resources {
+            srcDirs "images"
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/NewGame']
+        }
+    }
+}
+dependencies {
+    implementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+}

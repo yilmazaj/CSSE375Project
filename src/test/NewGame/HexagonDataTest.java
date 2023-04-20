@@ -1,7 +1,5 @@
-import Team7.SettlersOfCatan.Hex;
-import Team7.SettlersOfCatan.NoResourceHex;
-import Team7.SettlersOfCatan.Presentation.GraphicsWithIndex;
-import Team7.SettlersOfCatan.Presentation.HexagonData;
+import Presentation.GraphicsWithIndex;
+import Presentation.HexagonData;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;

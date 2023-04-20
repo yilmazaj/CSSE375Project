@@ -1,15 +1,8 @@
-import Team7.SettlersOfCatan.Dice;
-import Team7.SettlersOfCatan.Game;
-import Team7.SettlersOfCatan.Player;
-import Team7.SettlersOfCatan.Presentation.GameBoard;
-import Team7.SettlersOfCatan.ResourceCard;
-//import org.junit.Before;
-import org.junit.jupiter.api.Assertions;
+import Domain.Dice;
+import Domain.Game;
+import Domain.ResourceCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import javax.swing.*;
-import java.awt.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -80,31 +73,31 @@ public class NewGameTest {
 
 //    @Test
 //    void testActivateRobber2() {
-//        Game game = new Game(2);
-//        Dice dice = game.dice;
+//        Domain.Game game = new Domain.Game(2);
+//        Domain.Dice dice = game.dice;
 //        dice.rollDice();
 //        dice.setTotal(8);
 //
-//        ResourceCard c1 = new ResourceCard("Brick");
-//        ResourceCard c2 = new ResourceCard("Grain");
-//        ResourceCard c3 = new ResourceCard("Lumber");
-//        ResourceCard c4 = new ResourceCard("Wool");
+//        Domain.ResourceCard c1 = new Domain.ResourceCard("Brick");
+//        Domain.ResourceCard c2 = new Domain.ResourceCard("Grain");
+//        Domain.ResourceCard c3 = new Domain.ResourceCard("Lumber");
+//        Domain.ResourceCard c4 = new Domain.ResourceCard("Wool");
 //        game.inTurn.addResourceCard(c1);
 //        game.inTurn.addResourceCard(c2);
 //        game.inTurn.addResourceCard(c3);
 //        game.inTurn.addResourceCard(c4);
 //        game.buildStructure("Settlement", 1);
 //
-//        ResourceCard c1 = new ResourceCard("Brick");
-//        ResourceCard c2 = new ResourceCard("Grain");
-//        ResourceCard c3 = new ResourceCard("Lumber");
-//        ResourceCard c4 = new ResourceCard("Wool");
-//        ResourceCard c5 = new ResourceCard("Ore");
-//        ResourceCard c6 = new ResourceCard("Ore");
-//        ResourceCard c7 = new ResourceCard("Ore");
-//        ResourceCard c8 = new ResourceCard("Grain");
-//        ResourceCard c9 = new ResourceCard("Grain");
-//        ResourceCard c10 = new ResourceCard("Ore");
+//        Domain.ResourceCard c1 = new Domain.ResourceCard("Brick");
+//        Domain.ResourceCard c2 = new Domain.ResourceCard("Grain");
+//        Domain.ResourceCard c3 = new Domain.ResourceCard("Lumber");
+//        Domain.ResourceCard c4 = new Domain.ResourceCard("Wool");
+//        Domain.ResourceCard c5 = new Domain.ResourceCard("Ore");
+//        Domain.ResourceCard c6 = new Domain.ResourceCard("Ore");
+//        Domain.ResourceCard c7 = new Domain.ResourceCard("Ore");
+//        Domain.ResourceCard c8 = new Domain.ResourceCard("Grain");
+//        Domain.ResourceCard c9 = new Domain.ResourceCard("Grain");
+//        Domain.ResourceCard c10 = new Domain.ResourceCard("Ore");
 //        game.inTurn.addResourceCard(c1);
 //        game.inTurn.addResourceCard(c2);
 //        game.inTurn.addResourceCard(c3);
@@ -122,15 +115,15 @@ public class NewGameTest {
 
 //    @Test
 //    void testRollForResources() {
-//        Game game = new Game();
+//        Domain.Game game = new Domain.Game();
 //        int numResources = game.inTurn.resources.size();
 //
 //        int roll;
 //        for(roll = 0; roll < 19; ++roll) {
-//            ResourceCard c1 = new ResourceCard("Brick");
-//            ResourceCard c2 = new ResourceCard("Grain");
-//            ResourceCard c3 = new ResourceCard("Lumber");
-//            ResourceCard c4 = new ResourceCard("Wool");
+//            Domain.ResourceCard c1 = new Domain.ResourceCard("Brick");
+//            Domain.ResourceCard c2 = new Domain.ResourceCard("Grain");
+//            Domain.ResourceCard c3 = new Domain.ResourceCard("Lumber");
+//            Domain.ResourceCard c4 = new Domain.ResourceCard("Wool");
 //            game.inTurn.addResourceCard(c1);
 //            game.inTurn.addResourceCard(c2);
 //            game.inTurn.addResourceCard(c3);
@@ -148,18 +141,18 @@ public class NewGameTest {
 
 //    @Test
 //    void testActivateRobber() {
-//        Game game = new Game();
+//        Domain.Game game = new Domain.Game();
 //        game.buildInitialStructures();
-//        ResourceCard c1 = new ResourceCard("Brick");
-//        ResourceCard c2 = new ResourceCard("Grain");
-//        ResourceCard c3 = new ResourceCard("Lumber");
-//        ResourceCard c4 = new ResourceCard("Wool");
-//        ResourceCard c5 = new ResourceCard("Ore");
-//        ResourceCard c6 = new ResourceCard("Ore");
-//        ResourceCard c7 = new ResourceCard("Ore");
-//        ResourceCard c8 = new ResourceCard("Grain");
-//        ResourceCard c9 = new ResourceCard("Grain");
-//        ResourceCard c10 = new ResourceCard("Ore");
+//        Domain.ResourceCard c1 = new Domain.ResourceCard("Brick");
+//        Domain.ResourceCard c2 = new Domain.ResourceCard("Grain");
+//        Domain.ResourceCard c3 = new Domain.ResourceCard("Lumber");
+//        Domain.ResourceCard c4 = new Domain.ResourceCard("Wool");
+//        Domain.ResourceCard c5 = new Domain.ResourceCard("Ore");
+//        Domain.ResourceCard c6 = new Domain.ResourceCard("Ore");
+//        Domain.ResourceCard c7 = new Domain.ResourceCard("Ore");
+//        Domain.ResourceCard c8 = new Domain.ResourceCard("Grain");
+//        Domain.ResourceCard c9 = new Domain.ResourceCard("Grain");
+//        Domain.ResourceCard c10 = new Domain.ResourceCard("Ore");
 //        game.inTurn.addResourceCard(c1);
 //        game.inTurn.addResourceCard(c2);
 //        game.inTurn.addResourceCard(c3);

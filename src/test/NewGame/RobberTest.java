@@ -1,5 +1,8 @@
-import Team7.SettlersOfCatan.*;
-import Team7.SettlersOfCatan.Presentation.GameBoard;
+import Domain.Game;
+import Domain.ResourceCard;
+import Domain.Robber;
+import Domain.Structure;
+import Presentation.GameBoard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

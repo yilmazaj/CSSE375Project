@@ -1,12 +1,13 @@
-import Team7.SettlersOfCatan.Player;
-import Team7.SettlersOfCatan.ResourceCard;
-import Team7.SettlersOfCatan.TradeManager;
+import Domain.Player;
+import Domain.ResourceCard;
+import Domain.TradeManager;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TradeManagerTest {
 
