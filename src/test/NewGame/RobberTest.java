@@ -6,6 +6,8 @@ import Presentation.GameBoard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class RobberTest {
     @Test
     void testInitializeRobber() {
@@ -105,5 +107,14 @@ public class RobberTest {
         Structure s = r.getStuctureByHex(game,0,0);
         Assertions.assertFalse(s == null);
         Assertions.assertTrue(s.equals(game.gameBuildingHandler.board.intersections[0].structure));
+    }
+
+    @Test
+    public void testWaitForPlayerIntersectionChoice()
+    {
+        Robber r = new Robber();
+        Game g = new Game();
+        int result = r.waitForPlayerHexChoice(g, true);
+        assertEquals(0, result);
     }
 }
