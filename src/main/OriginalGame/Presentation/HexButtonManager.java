@@ -23,7 +23,7 @@ public class HexButtonManager {
 
     public JButton createHexButton(HexPoint point, int id){
         JButton hexButton = new JButton("");
-        hexButton.setBounds((int) (point.point.getX()-10),(int) (point.point.getY()-10),20,20);
+        hexButton.setBounds((int) (point.point.getX()-10),(int) (point.point.getY()-30),20,20);
         hexButton.setVisible(true);
         hexButton.setContentAreaFilled(false);
         HexActionListener listener = new HexActionListener(id, this);

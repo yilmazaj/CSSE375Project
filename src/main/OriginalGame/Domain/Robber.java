@@ -13,7 +13,8 @@ public class Robber {
 
     }
 
-    public int moveRobberTile(Game g){
+    public int moveRobberTile(Game g) {
+        g.gameBuildingHandler.board.setupHexButtons();
         JOptionPane.showMessageDialog(null, "Click on a Hex to Move the Robber", "Robber", JOptionPane.INFORMATION_MESSAGE);
 
 

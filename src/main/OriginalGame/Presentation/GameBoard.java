@@ -29,7 +29,6 @@ public class GameBoard extends JPanel {
 		setRoads();
 		setIntersectionCoords();
 		setupIntersectionButtons();
-		setupHexButtons();
 	}
 
 	private void setupIntersectionButtons(){
@@ -48,10 +47,12 @@ public class GameBoard extends JPanel {
 		manager.enableIntersectionButtons(setTo);
 	}
 
-	private void setupHexButtons(){
+	public void setupHexButtons(){
 		for(int i = 0; i < hexes.length; i++){
-			Point2D.Double center = hexes[i].center;
-			HexPoint point = new HexPoint(center);
+			Point2D.Double hexCenter = hexes[i].center;
+//			System.out.println(hexes[i].center);
+//			System.out.println(hexCenter.x + " " + hexCenter.y);
+			HexPoint point = new HexPoint(hexCenter);
 			JButton hexButton = hexButtonManager.createHexButton(point, i);
 			this.add(hexButton);
 		}
