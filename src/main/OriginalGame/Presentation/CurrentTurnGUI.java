@@ -18,30 +18,20 @@ public class CurrentTurnGUI {
     private JLabel[] diceLabels;
 
     private JButton rollDiceButton;
-
     private JButton tradeButton;
-
     private JButton endTurnButton;
-
     private JButton buildButton;
-
     private JButton cardButton;
 
-    private String playerName;
+    protected String playerName;
 
     private JLabel playerNameLabel;
 
+    protected Dice dice;
 
-
-    private Dice dice;
-
-    private boolean turnEnded;
-
-
+    protected boolean turnEnded;
     private boolean cardActionFlag;
-
     private boolean buildActionFlag;
-
     private boolean tradeActionFlag;
 
     public CurrentTurnGUI(String playerName, Dice dice){
@@ -49,19 +39,18 @@ public class CurrentTurnGUI {
         this.playerName = playerName;
         turnEnded = false;
 
-        resetFlags();
-        
-        initializeFields();
+        initialize();
+    }
 
+    public void initialize(){
+        resetFlags();
+        initializeFields();
         initializeSwingUI();
-        
         attachActionListeners();
-        
+
         frame.add(panel);
         frame.pack();
         frame.setVisible(true);
-
-//        frame.setDefaultCloseOperation(0);
     }
     
     private void initializeFields(){
@@ -79,7 +68,6 @@ public class CurrentTurnGUI {
         endTurnButton.addActionListener(e -> endTurnButtonAction());
         cardButton.addActionListener(e -> cardButtonAction());
     }
-
 
     public boolean isTurnOver(){
         return turnEnded;
@@ -101,19 +89,19 @@ public class CurrentTurnGUI {
         rollDiceButton.setEnabled(true);
     }
 
-    private void resetContent(){
+    public void resetContent(){
         resetButtons();
         resetDice();
         resetFlags();
     }
 
-    private void resetFlags(){
+    protected void resetFlags(){
         cardActionFlag =false;
         buildActionFlag = false;
         tradeActionFlag = false;
     }
 
-    private void resetDice(){
+    public void resetDice(){
         dice.invalidatePreviousRoll();
         for(int i = 0; i < dice.getNumDice(); i++){
             updateDiceImage(0,i);
