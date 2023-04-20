@@ -6,20 +6,18 @@
 package Team7.SettlersOfCatan;
 
 public class ResourceCard extends NonPlayableCard {
-    protected String type;
-    int pointValue = 0;
 
-    public ResourceCard(String t) {
-        this.type = t;
+    protected String type;
+
+    public ResourceCard(String type) {
+        this.type = type;
     }
 
     public String getType() {
         return this.type;
     }
 
-
-
     public int getPointValue() {
-        return this.pointValue;
+        return 0;
     }
 }

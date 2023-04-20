@@ -9,9 +9,7 @@ public class SpecialtyCard extends NonPlayableCard {
 
     private String type;
 
-    public SpecialtyCard(String type) {
-        this.type = type;
-    }
+    public SpecialtyCard(String type) { this.type = type; }
 
     public int getPointValue() {
         return 2;
