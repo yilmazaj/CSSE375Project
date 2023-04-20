@@ -2,7 +2,7 @@
 # Settlers of Catan
 ## Team 3
 ### By Andrew Kosikowski, AJ Yilmaz, Jared Krauss, Justin Kim
- 
+
 
 src/test/NewGame contains most recent test files for 375.
 
