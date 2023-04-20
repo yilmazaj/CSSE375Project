@@ -6,13 +6,12 @@
 package Team7.SettlersOfCatan;
 
 public class VictoryPointCard extends NonPlayableCard {
-    int pointValue = 1;
 
     public VictoryPointCard() {
     }
 
     public int getPointValue() {
-        return this.pointValue;
+        return 1;
     }
 
     public String getType() {

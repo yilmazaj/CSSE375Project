@@ -3,6 +3,7 @@ package Team7.SettlersOfCatan;
 import Team7.SettlersOfCatan.Presentation.CurrentTurnGUI;
 import Team7.SettlersOfCatan.Presentation.GameBoard;
 import Team7.SettlersOfCatan.Presentation.PlayersStatsGUI;
+import Team7.SettlersOfCatan.Presentation.TradeManagerGUI;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -26,8 +27,8 @@ public class Game extends JFrame {
 	public int inTurnIndex;
 	public int maxKnights;
 	public int maxRoads;
-	public MostRoads mostRoads;
-	public LargestArmy largestArmy;
+	public SpecialtyCard mostRoads;
+	public SpecialtyCard largestArmy;
 
 	public Dice dice;
 
@@ -59,8 +60,8 @@ public class Game extends JFrame {
 		players = new Player[playerNum];
 		maxKnights = 0;
 		maxRoads = 2;
-		mostRoads = new MostRoads();
-		largestArmy = new LargestArmy();
+		mostRoads = new SpecialtyCard("MostRoads");
+		largestArmy = new SpecialtyCard("LargestArmy");
 		robber = new Robber();
 
 		populateColors();
@@ -83,8 +84,8 @@ public class Game extends JFrame {
 		players = new Player[playerNum];
 		maxKnights = 0;
 		maxRoads = 2;
-		mostRoads = new MostRoads();
-		largestArmy = new LargestArmy();
+		mostRoads = new SpecialtyCard("MostRoads");
+		largestArmy = new SpecialtyCard("LargestArmy");
 
 		board = new GameBoard();
 
