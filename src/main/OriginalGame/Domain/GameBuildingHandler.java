@@ -46,7 +46,8 @@ public class GameBuildingHandler implements Serializable {
                 // AJ CODE
                 return true;
             } else {
-                JOptionPane.showMessageDialog(null, "Domain.Player does not have enough resources to build a road", "Failed to build road", JOptionPane.ERROR_MESSAGE);
+                if(!this.testMode)
+                    JOptionPane.showMessageDialog(null, "Player does not have enough resources to build a road", "Failed to build road", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         }
@@ -65,15 +66,18 @@ public class GameBuildingHandler implements Serializable {
                     // AJ CODE
                     return true;
                 } else {
-                    JOptionPane.showMessageDialog(null, "Domain.Player does not have enough resources to build a road", "Failed to build road", JOptionPane.ERROR_MESSAGE);
+                    if(!this.testMode)
+                        JOptionPane.showMessageDialog(null, "Player does not have enough resources to build a road", "Failed to build road", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "New road connects to no friendly structures or roads", "Failed to build road", JOptionPane.ERROR_MESSAGE);
+                if(!this.testMode)
+                    JOptionPane.showMessageDialog(null, "New road connects to no friendly structures or roads", "Failed to build road", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         } else if (!board.intersections[i1].structure.color.equals(inTurn.color) && !board.intersections[i1].structure.color.equals(inTurn.color)) {
-            JOptionPane.showMessageDialog(null, "Can't place a road between two enemy structures", "Failed to build road", JOptionPane.ERROR_MESSAGE);
+            if(!this.testMode)
+                JOptionPane.showMessageDialog(null, "Can't place a road between two enemy structures", "Failed to build road", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return false;
@@ -82,7 +86,8 @@ public class GameBuildingHandler implements Serializable {
 
     public boolean buildStructure(String type, int intersection, Player inTurn) {
         if (intersection < 0 || intersection > 53) {
-            JOptionPane.showMessageDialog(null, "Invalid intersection number entered", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
+            if(!this.testMode)
+                JOptionPane.showMessageDialog(null, "Invalid intersection number entered", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         Structure s = null;
@@ -111,15 +116,18 @@ public class GameBuildingHandler implements Serializable {
                         // AJ CODE
                         return true;
                     } else {
-                        JOptionPane.showMessageDialog(null, "Domain.Player does not have the resources required to build a settlement", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
+                        if(!this.testMode)
+                            JOptionPane.showMessageDialog(null, "Player does not have the resources required to build a settlement", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
                         return false;
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Domain.Player can not place any more settlements", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
+                    if(!this.testMode)
+                        JOptionPane.showMessageDialog(null, "Player can not place any more settlements", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Intersection already has a structure", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
+                if(!this.testMode)
+                    JOptionPane.showMessageDialog(null, "Intersection already has a structure", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         } else if (type.equals("City") || type.equals("city")) {
@@ -145,20 +153,24 @@ public class GameBuildingHandler implements Serializable {
                         inTurn.removeAllResources(requiredResources);
                         return true;
                     } else {
-                        JOptionPane.showMessageDialog(null, "Domain.Player does not have the resources required to build a city", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
+                        if(!this.testMode)
+                            JOptionPane.showMessageDialog(null, "Player does not have the resources required to build a city", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
                         return false;
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Domain.Player can not place any more cities", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
+                    if(!this.testMode)
+                        JOptionPane.showMessageDialog(null, "Player can not place any more cities", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Domain.Player must already have a settlement at this intersection", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
+                if(!this.testMode)
+                    JOptionPane.showMessageDialog(null, "Player must already have a settlement at this intersection", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
 
         } else {
-            JOptionPane.showMessageDialog(null, "Invalid Domain.Structure name entered", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
+            if(!this.testMode)
+                JOptionPane.showMessageDialog(null, "Invalid Structure name entered", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
@@ -168,7 +180,10 @@ public class GameBuildingHandler implements Serializable {
         int selected = -1;
         while (selected == -1) {
             try {
-                selected = board.getSelectedIntersection();
+                if(!this.testMode)
+                    selected = board.getSelectedIntersection();
+                else
+                    selected = 0;
                 Thread.sleep(10);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
