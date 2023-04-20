@@ -3,6 +3,7 @@ package Team7.SettlersOfCatan;
 import Team7.SettlersOfCatan.Presentation.CurrentTurnGUI;
 import Team7.SettlersOfCatan.Presentation.GameBoard;
 import Team7.SettlersOfCatan.Presentation.PlayersStatsGUI;
+import Team7.SettlersOfCatan.Presentation.TradeManagerGUI;
 
 import java.awt.Color;
 import java.awt.Dimension;
