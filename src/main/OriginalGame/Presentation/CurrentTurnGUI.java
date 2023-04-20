@@ -18,30 +18,20 @@ public class CurrentTurnGUI {
     private JLabel[] diceLabels;
 
     private JButton rollDiceButton;
-
     private JButton tradeButton;
-
     private JButton endTurnButton;
-
     private JButton buildButton;
-
     private JButton cardButton;
 
-    private String playerName;
+    protected String playerName;
 
     private JLabel playerNameLabel;
 
+    protected Dice dice;
 
-
-    private Dice dice;
-
-    private boolean turnEnded;
-
-
+    protected boolean turnEnded;
     private boolean cardActionFlag;
-
     private boolean buildActionFlag;
-
     private boolean tradeActionFlag;
 
     public CurrentTurnGUI(String playerName, Dice dice){
@@ -49,22 +39,22 @@ public class CurrentTurnGUI {
         this.playerName = playerName;
         turnEnded = false;
 
-        resetFlags();
-        
-        initializeFields();
+        initialize();
+    }
 
+    public void initialize(){
+        resetFlags();
+        initializeFields();
         initializeSwingUI();
-        
         attachActionListeners();
-        
+
         frame.add(panel);
         frame.pack();
         frame.setVisible(true);
-
-//        frame.setDefaultCloseOperation(0);
     }
-    
+
     private void initializeFields(){
+        if(GraphicsEnvironment.isHeadless()) return;
         frame = new JFrame();
         frame.setLayout(new GridLayout());
         panel = new JPanel();
@@ -73,6 +63,7 @@ public class CurrentTurnGUI {
         panel.setLayout(layout);
     }
     private void attachActionListeners(){
+        if(GraphicsEnvironment.isHeadless()) return;
         rollDiceButton.addActionListener(e -> rollDiceButtonAction());
         tradeButton.addActionListener(e -> tradeButtonAction());
         buildButton.addActionListener(e -> buildButtonAction());
@@ -80,19 +71,25 @@ public class CurrentTurnGUI {
         cardButton.addActionListener(e -> cardButtonAction());
     }
 
-
     public boolean isTurnOver(){
         return turnEnded;
     }
 
     public void updateUIForNewPlayer(String playerName){
-        this.playerName = playerName;
-        turnEnded = false;
+        if(!GraphicsEnvironment.isHeadless()){
+            this.playerName = playerName;
+            turnEnded = false;
+            resetContent();
+        }
+
         playerNameLabel.setText("Player " +playerName + "'s Turn");
-        resetContent();
+
     }
 
     private void resetButtons(){
+        if(GraphicsEnvironment.isHeadless()){
+            return;
+        }
         tradeButton.setEnabled(false);
         endTurnButton.setEnabled(false);
         buildButton.setEnabled(false);
@@ -101,20 +98,23 @@ public class CurrentTurnGUI {
         rollDiceButton.setEnabled(true);
     }
 
-    private void resetContent(){
+    public void resetContent(){
         resetButtons();
         resetDice();
         resetFlags();
     }
 
-    private void resetFlags(){
+    protected void resetFlags(){
         cardActionFlag =false;
         buildActionFlag = false;
         tradeActionFlag = false;
     }
 
-    private void resetDice(){
+    public void resetDice(){
         dice.invalidatePreviousRoll();
+        if(GraphicsEnvironment.isHeadless()){
+            return;
+        }
         for(int i = 0; i < dice.getNumDice(); i++){
             updateDiceImage(0,i);
         }
@@ -123,43 +123,46 @@ public class CurrentTurnGUI {
 
     private void initializeSwingUI(){
 
-        GridBagConstraints constraints = new GridBagConstraints();
+        if(!GraphicsEnvironment.isHeadless()){
+            GridBagConstraints constraints = new GridBagConstraints();
 
-        setGridBagConstraints(constraints,0,0,7,2);
-        constraints.insets = new Insets(20,60,20,60);
-        constraints.anchor = GridBagConstraints.CENTER;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.weightx = 1;
-        playerNameLabel = new JLabel("Player " +playerName + "'s Turn");
-        playerNameLabel.setHorizontalAlignment(JLabel.CENTER);
-        panel.add(playerNameLabel,constraints);
+            setGridBagConstraints(constraints,0,0,7,2);
+            constraints.insets = new Insets(20,60,20,60);
+            constraints.anchor = GridBagConstraints.CENTER;
+            constraints.fill = GridBagConstraints.HORIZONTAL;
+            constraints.weightx = 1;
+            playerNameLabel = new JLabel("Player " +playerName + "'s Turn");
+            playerNameLabel.setHorizontalAlignment(JLabel.CENTER);
+            panel.add(playerNameLabel,constraints);
 
-        setGridBagConstraints(constraints, 2,5,3,1);
-        rollDiceButton = new JButton("Roll Dice");
-        constraints.weightx = 1;
-        constraints.insets = new Insets(10,60,10,60);
-        panel.add(rollDiceButton,constraints);
+            setGridBagConstraints(constraints, 2,5,3,1);
+            rollDiceButton = new JButton("Roll Dice");
+            constraints.weightx = 1;
+            constraints.insets = new Insets(10,60,10,60);
+            panel.add(rollDiceButton,constraints);
 
-        setGridBagConstraints(constraints, 1,6,3,1);
-        tradeButton = new JButton("Trade");
-        constraints.weightx = 0.5;
-        constraints.insets = new Insets(10,40,10,10);
-        panel.add(tradeButton,constraints);
+            setGridBagConstraints(constraints, 1,6,3,1);
+            tradeButton = new JButton("Trade");
+            constraints.weightx = 0.5;
+            constraints.insets = new Insets(10,40,10,10);
+            panel.add(tradeButton,constraints);
 
-        setGridBagConstraints(constraints, 4,6,3,1);
-        buildButton = new JButton("Build");
-        constraints.insets = new Insets(10,10,10,40);
-        panel.add(buildButton,constraints);
+            setGridBagConstraints(constraints, 4,6,3,1);
+            buildButton = new JButton("Build");
+            constraints.insets = new Insets(10,10,10,40);
+            panel.add(buildButton,constraints);
 
-        setGridBagConstraints(constraints, 1,7,3,1);
-        cardButton = new JButton("Buy/View Cards");
-        constraints.insets = new Insets(10,40,10,10);
-        panel.add(cardButton,constraints);
+            setGridBagConstraints(constraints, 1,7,3,1);
+            cardButton = new JButton("Buy/View Cards");
+            constraints.insets = new Insets(10,40,10,10);
+            panel.add(cardButton,constraints);
 
-        setGridBagConstraints(constraints, 4,7,3,1);
-        endTurnButton = new JButton("End Turn");
-        constraints.insets = new Insets(10,10,10,40);
-        panel.add(endTurnButton,constraints);
+            setGridBagConstraints(constraints, 4,7,3,1);
+            endTurnButton = new JButton("End Turn");
+            constraints.insets = new Insets(10,10,10,40);
+            panel.add(endTurnButton,constraints);
+        }
+
 
         resetButtons();
         resetDice();
@@ -211,6 +214,9 @@ public class CurrentTurnGUI {
     private void rollDiceButtonAction(){
 
         int[] rolls = dice.rollDice();
+        if(GraphicsEnvironment.isHeadless()){
+            return;
+        }
         for(int i = 0; i < diceLabels.length; i++){
             updateDiceImage(rolls[i], i);
         }
