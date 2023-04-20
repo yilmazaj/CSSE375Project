@@ -113,7 +113,7 @@ public class RobberTest {
     public void testWaitForPlayerIntersectionChoice()
     {
         Robber r = new Robber();
-        Game g = new Game();
+        Game g = new Game(2);
         int result = r.waitForPlayerHexChoice(g, true);
         assertEquals(0, result);
     }
