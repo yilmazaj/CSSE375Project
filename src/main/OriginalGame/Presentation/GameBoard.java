@@ -21,6 +21,8 @@ public class GameBoard extends JPanel {
 	public IntersectionButtonManager manager = new IntersectionButtonManager();
 	public HexButtonManager hexButtonManager = new HexButtonManager();
 
+	private boolean firstTime = true;
+
 	public GameBoard() {
 		this.setLayout(null);
 
@@ -29,6 +31,8 @@ public class GameBoard extends JPanel {
 		setRoads();
 		setIntersectionCoords();
 		setupIntersectionButtons();
+
+
 	}
 
 	private void setupIntersectionButtons(){
@@ -128,6 +132,11 @@ public class GameBoard extends JPanel {
 			g2.setNewPosition(i);
 			drawIntersectionAtIndex(g2);
 		}
+		if(firstTime){
+			setupHexButtons();
+			firstTime = false;
+		}
+
 	}
 
 	public void drawIntersectionAtIndex(GraphicsWithIndex graphic) {
