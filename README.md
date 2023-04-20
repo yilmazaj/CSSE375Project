@@ -1,3 +1,4 @@
+![Gradle Build](https://github.com/yilmazaj/CSSE375Project//actions/workflows/gradle.yml/badge.svg)
 # Settlers of Catan
 ## Team 3
 ### By Andrew Kosikowski, AJ Yilmaz, Jared Krauss, Justin Kim
