@@ -88,7 +88,7 @@ public class CurrentTurnGUI {
     public void updateUIForNewPlayer(String playerName){
         this.playerName = playerName;
         turnEnded = false;
-        playerNameLabel.setText("Domain.Player " +playerName + "'s Turn");
+        playerNameLabel.setText("Player " +playerName + "'s Turn");
         resetContent();
     }
 
@@ -97,7 +97,7 @@ public class CurrentTurnGUI {
         endTurnButton.setEnabled(false);
         buildButton.setEnabled(false);
         cardButton.setEnabled(false);
-        rollDiceButton.setText("Roll Domain.Dice");
+        rollDiceButton.setText("Roll Dice");
         rollDiceButton.setEnabled(true);
     }
 
@@ -130,12 +130,12 @@ public class CurrentTurnGUI {
         constraints.anchor = GridBagConstraints.CENTER;
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.weightx = 1;
-        playerNameLabel = new JLabel("Domain.Player " +playerName + "'s Turn");
+        playerNameLabel = new JLabel("Player " +playerName + "'s Turn");
         playerNameLabel.setHorizontalAlignment(JLabel.CENTER);
         panel.add(playerNameLabel,constraints);
 
         setGridBagConstraints(constraints, 2,5,3,1);
-        rollDiceButton = new JButton("Roll Domain.Dice");
+        rollDiceButton = new JButton("Roll Dice");
         constraints.weightx = 1;
         constraints.insets = new Insets(10,60,10,60);
         panel.add(rollDiceButton,constraints);
