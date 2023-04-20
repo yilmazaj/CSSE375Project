@@ -5,6 +5,6 @@
  
 
 src/test/NewGame contains most recent test files for 375.
-
+ 
 SoftwareArtifacts folder contains all of our software artifacts, including pre 375 UML,
 needs/features/requirements doc, and a design document.
