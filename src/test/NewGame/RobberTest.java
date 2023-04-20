@@ -101,6 +101,6 @@ public class RobberTest {
         game.buildStructure("Settlement",0);
         Structure s = r.getStuctureByHex(game,0,0);
         Assertions.assertFalse(s == null);
-        Assertions.assertTrue(s.equals(game.board.intersections[0].structure));
+        Assertions.assertTrue(s.equals(game.gameBuildingHandler.board.intersections[0].structure));
     }
 }

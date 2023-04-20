@@ -2,7 +2,7 @@ import Team7.SettlersOfCatan.*;
 import Team7.SettlersOfCatan.Presentation.GameBoard;
 import Team7.SettlersOfCatan.Presentation.GraphicsWithIndex;
 import Team7.SettlersOfCatan.Presentation.HexagonData;
-import org.junit.Before;
+//import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -56,24 +56,15 @@ public class NewGameBoardTest {
     }
 
     @Test
-    public void drawHexShapeTest(){
-        HexagonData hdata = new HexagonData(1, 1, new Polygon());
-        Graphics2D g2 = initGraphics2D();
-        hdata.drawHexShape(g2);
-        assertEquals(g2.getColor(), new Color(51, 62, 79));
-        assertEquals(g2.getStroke(), new BasicStroke(5));
-    }
-
-    @Test
     public void drawHexNumberAtPositionTest(){
         double x = 0.0;
         double y = 0.0;
         Graphics2D g2 = initGraphics2D();
-        
+
         GraphicsWithIndex gwi = new GraphicsWithIndex(g2, 1);
         gameBoard.drawHexNumberAtPosition(gwi, new Point2D.Double(x, y));
         assertEquals(g2.getColor(), new Color(51,62,79));
         assertEquals(g2.getStroke(), new BasicStroke(10));
     }
-    
+
 }

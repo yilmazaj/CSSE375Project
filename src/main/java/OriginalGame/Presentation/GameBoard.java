@@ -35,7 +35,7 @@ public class GameBoard extends JPanel {
 		setupIntersectionButtons();
 	}
 
-	public void setupIntersectionButtons(){
+	private void setupIntersectionButtons(){
 		for(int i = 0; i < intersectionPoints.length; i++){
 			IntersectionPoint point = intersectionPoints[i];
 			JButton intersectionButton = manager.createIntersectionButton(point, i);

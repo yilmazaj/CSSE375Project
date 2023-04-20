@@ -21,7 +21,4 @@ public class GraphicsWithIndex{
     public int getPosition(){
         return position;
     }
-    public GraphicsWithIndex initGraphicsWithIndex(Graphics2D g2, int position){
-        return new GraphicsWithIndex(g2, position);
-    }
 }

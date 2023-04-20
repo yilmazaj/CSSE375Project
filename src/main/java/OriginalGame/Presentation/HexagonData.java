@@ -6,8 +6,8 @@ import java.awt.geom.Point2D;
 public class HexagonData {
     private int xCenter;
     private int yCenter;
-    private Polygon hex;
-    
+    private  Polygon hex;
+
     public final int HEX_SIDE_LENGTH = 70;
 
     public HexagonData(int x, int y, Polygon hexagon) {

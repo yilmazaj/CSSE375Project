@@ -45,6 +45,16 @@ public class Dice {
         return rolls.clone();
     }
 
+    public void waitForPlayerDiceRoll(){
+        while(!hasPlayerMadeRoll()){
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     public int getTotal(){
         return total;
     }

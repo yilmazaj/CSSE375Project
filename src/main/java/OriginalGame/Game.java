@@ -15,10 +15,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Game extends JFrame {
-	
+
+	public GameBuildingHandler gameBuildingHandler = new GameBuildingHandler(false);
 	public int playerNum;
 	public JPanel[] playerPanels;
-	public GameBoard board;
 	public JFrame gameFrame;
 	public Color[] colors;
 	public int MAX_PLAYERS = 6;
@@ -45,15 +45,13 @@ public class Game extends JFrame {
 			playerNum = Integer.parseInt(JOptionPane.showInputDialog(null, "There must be between 2 and 4 players", "2"));
 		}
 		playerPanels = new JPanel[playerNum];
-		
-		board = new GameBoard();
 
 		gameFrame = new JFrame();
 		gameFrame.setSize(new Dimension(800, 700));
 		setDefaultCloseOperation(gameFrame.EXIT_ON_CLOSE);
 		gameFrame.setVisible(true);
 
-		gameFrame.add(board);
+		gameFrame.add(gameBuildingHandler.board);
 
 		
 		colors = new Color[MAX_PLAYERS];
@@ -87,11 +85,7 @@ public class Game extends JFrame {
 		mostRoads = new SpecialtyCard("MostRoads");
 		largestArmy = new SpecialtyCard("LargestArmy");
 
-		board = new GameBoard();
-
-
 		populateColors();
-
 
 		for(int i = 0; i < playerNum; i++){
 			players[i] = new Player(String.valueOf(i), colors[i]);
@@ -149,217 +143,35 @@ public class Game extends JFrame {
 	}
 	
 	public boolean buildRoad(int i1, int i2) {
-		Road temp = board.getRoadByIntersections(i1, i2);
-		ArrayList<ResourceCard> requiredResources = new ArrayList<ResourceCard>();
-		ResourceCard c1 = new ResourceCard("Brick");
-		ResourceCard c2 = new ResourceCard("Lumber");
-		requiredResources.add(c1);
-		requiredResources.add(c2);
-		if(temp == null) {
-			JOptionPane.showMessageDialog(null, "There is no path between those two intersections", "Failed to build road", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		else if(temp.color != null) {
-			JOptionPane.showMessageDialog(null, "There is already a road between those two intersections", "Failed to build road", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		if((board.intersections[i1].structure != null && board.intersections[i1].structure.color.equals(inTurn.color)) 
-				|| (board.intersections[i2].structure != null && board.intersections[i2].structure.color.equals(inTurn.color))) {
-			if(inTurn.containsAllResources(requiredResources)) {
-				board.roads[temp.indexNum].activateRoad(inTurn.color);
-				board.intersections[i1].updateRoad(i1, i2, board.roads[temp.indexNum]);
-				board.intersections[i2].updateRoad(i2, i1, board.roads[temp.indexNum]);
-				inTurn.numRoads++;
-				inTurn.removeAllResources(requiredResources);
-				// AJ CODE
-				board.invalidate();
-				board.roads[temp.indexNum].color = inTurn.color;
-				board.repaint();
-				// AJ CODE
-				return true;
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Player does not have enough resources to build a road", "Failed to build road", JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
-		}
-		if(board.intersections[i1].structure == null || board.intersections[i2].structure == null) {
-			if(board.intersections[i1].containsRoad(inTurn.color) || board.intersections[i2].containsRoad(inTurn.color)) {
-				if(inTurn.containsAllResources(requiredResources)) {
-					board.roads[temp.indexNum].activateRoad(inTurn.color);
-					board.intersections[i1].updateRoad(i1, i2, board.roads[temp.indexNum]);
-					board.intersections[i2].updateRoad(i2, i1, board.roads[temp.indexNum]);
-					inTurn.numRoads++;
-					inTurn.removeAllResources(requiredResources);
-					// AJ CODE
-					board.invalidate();
-					board.roads[temp.indexNum].color = inTurn.color;
-					board.repaint();
-					// AJ CODE
-					return true;
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "Player does not have enough resources to build a road", "Failed to build road", JOptionPane.ERROR_MESSAGE);
-					return false;
-				}
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "New road connects to no friendly structures or roads", "Failed to build road", JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
-		}
-		else if(!board.intersections[i1].structure.color.equals(inTurn.color) && !board.intersections[i1].structure.color.equals(inTurn.color)) {
-			JOptionPane.showMessageDialog(null, "Can't place a road between two enemy structures", "Failed to build road", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		return false;
-		
+		return gameBuildingHandler.buildRoad(i1, i2, inTurn);
 	}
 	
 	public boolean buildStructure(String type, int intersection) {
-		if(intersection < 0 || intersection > 53) {
-			JOptionPane.showMessageDialog(null, "Invalid intersection number entered", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
-		Structure s = null;
-		ArrayList<ResourceCard> requiredResources = new ArrayList<ResourceCard>();
-		if(type.equals("Settlement") || type.equals("settlement")) {
-			if(board.intersections[intersection].structure == null) {
-				if(inTurn.numSettlements < 5) {
-					ResourceCard c1 = new ResourceCard("Brick");
-					ResourceCard c2 = new ResourceCard("Grain");
-					ResourceCard c3 = new ResourceCard("Lumber");
-					ResourceCard c4 = new ResourceCard("Wool");
-					requiredResources.add(c1);
-					requiredResources.add(c2);
-					requiredResources.add(c3);
-					requiredResources.add(c4);
-					if(inTurn.containsAllResources(requiredResources)) {
-						s = new Structure(inTurn.color, "Settlement");
-						inTurn.numSettlements++;
-						board.intersections[intersection].structure = s;
-						s.hexes = board.intersections[intersection].hexes;
-						inTurn.removeAllResources(requiredResources);
-						// AJ CODE
-						board.invalidate();
-						board.intersectionPoints[intersection].color = inTurn.color;
-						board.repaint();
-						// AJ CODE
-						return true;
-					}
-					else {
-						JOptionPane.showMessageDialog(null, "Player does not have the resources required to build a settlement", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
-						return false;
-					}
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "Player can not place any more settlements", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
-					return false;
-				}
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Intersection already has a structure", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
-		}
-		else if (type.equals("City") || type.equals("city")) {
-			if(board.intersections[intersection].structure != null && 
-					board.intersections[intersection].structure.color.equals(inTurn.color) && 
-					board.intersections[intersection].structure.getType().equals("Settlement")) {
-				if(inTurn.numCities < 4) {
-					ResourceCard c1 = new ResourceCard("Ore");
-					ResourceCard c2 = new ResourceCard("Ore");
-					ResourceCard c3 = new ResourceCard("Ore");
-					ResourceCard c4 = new ResourceCard("Grain");
-					ResourceCard c5 = new ResourceCard("Grain");
-					requiredResources.add(c1);
-					requiredResources.add(c2);
-					requiredResources.add(c3);
-					requiredResources.add(c4);
-					requiredResources.add(c5);
-					if(inTurn.containsAllResources(requiredResources)) {
-						s = new Structure(inTurn.color, "City");
-						inTurn.numCities++;
-						board.intersections[intersection].structure = s;
-						s.hexes = board.intersections[intersection].hexes;
-						inTurn.removeAllResources(requiredResources);
-						return true;
-					}
-					else {
-						JOptionPane.showMessageDialog(null, "Player does not have the resources required to build a city", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
-						return false;
-					}
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "Player can not place any more cities", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
-					return false;
-				}
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Player must already have a settlement at this intersection", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
-			
-		}
-		else {
-			JOptionPane.showMessageDialog(null, "Invalid Structure name entered", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
-			return false;
-		}
+		return gameBuildingHandler.buildStructure(type, intersection, inTurn);
+	}
+
+	public void buildRoadsUI(){
+		gameBuildingHandler.buildRoadsUI(inTurn);
 	}
 	
 	public void buildInitialStructures() {
 		for(int i = 0; i < playerNum; i++) {
 			JOptionPane.showMessageDialog(null, "Place your initial structures", inTurn.name + "'s turn!", JOptionPane.INFORMATION_MESSAGE);
 			JOptionPane.showMessageDialog(null, "Enter the intersection to place your first settlement", "Settlement Placement", JOptionPane.INFORMATION_MESSAGE);
-			int i1 = waitForPlayerIntersectionChoice();
-			while(!buildStructure("Settlement", i1)) {
+			int i1 = gameBuildingHandler.waitForPlayerIntersectionChoice();
+			while(!gameBuildingHandler.buildStructure("Settlement", i1, inTurn)) {
 				JOptionPane.showMessageDialog(null, "Please enter a valid intersection for your settlement", "Invalid Settlement", JOptionPane.ERROR_MESSAGE);
-				i1 = waitForPlayerIntersectionChoice();
+				i1 = gameBuildingHandler.waitForPlayerIntersectionChoice();
 			}
 			JOptionPane.showMessageDialog(null, "Enter the intersection to place your second settlement", "Settlement Placement", JOptionPane.INFORMATION_MESSAGE);
-			int i2 = waitForPlayerIntersectionChoice();
-			while(!buildStructure("Settlement", i2)) {
+			int i2 = gameBuildingHandler.waitForPlayerIntersectionChoice();
+			while(!gameBuildingHandler.buildStructure("Settlement", i2, inTurn)) {
 				JOptionPane.showMessageDialog(null, "Please enter a valid intersection for your settlement", "Invalid Settlement", JOptionPane.ERROR_MESSAGE);
-				i2 = waitForPlayerIntersectionChoice();
+				i2 = gameBuildingHandler.waitForPlayerIntersectionChoice();
 			}
-			buildRoadsUI();
+			gameBuildingHandler.buildRoadsUI(inTurn);
 			inTurn.clearResources();
 			rotateTurns();
-		}
-	}
-
-	public int waitForPlayerIntersectionChoice(){
-		board.enableIntersectionButtons(true);
-		int selected = -1;
-		while(selected == -1){
-			try {
-				selected = board.getSelectedIntersection();
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-		}
-		board.enableIntersectionButtons(false);
-		return selected;
-	}
-
-
-	public void buildRoadsUI() {
-		JOptionPane.showMessageDialog(null, "Click two intersections for your first road!", inTurn.name + "'s turn!", JOptionPane.INFORMATION_MESSAGE);
-		int road1Int1 = waitForPlayerIntersectionChoice();
-		int road1Int2 = waitForPlayerIntersectionChoice();
-		while(!buildRoad(road1Int1, road1Int2)) {
-			JOptionPane.showMessageDialog(null, "Please enter a valid set of intersections for your road", "Invalid road", JOptionPane.ERROR_MESSAGE);
-			road1Int1 = waitForPlayerIntersectionChoice();
-			road1Int2 = waitForPlayerIntersectionChoice();
-		}
-		JOptionPane.showMessageDialog(null, "Click two intersections for your second road!", inTurn.name + "'s turn!", JOptionPane.INFORMATION_MESSAGE);
-		int road2Int1 = waitForPlayerIntersectionChoice();
-		int road2Int2 = waitForPlayerIntersectionChoice();
-		while(!buildRoad(road2Int1, road2Int2)) {
-			JOptionPane.showMessageDialog(null, "Please enter a valid set of intersections for your road", "Invalid road", JOptionPane.ERROR_MESSAGE);
-			road2Int1 = waitForPlayerIntersectionChoice();
-			road2Int2 = waitForPlayerIntersectionChoice();
 		}
 	}
 
@@ -378,7 +190,7 @@ public class Game extends JFrame {
 
 	private void giveResourcesFromRoll(int total){
 		ArrayList<Structure> structures;
-		structures = board.getStructuresOnRolledHexes(total);
+		structures = gameBuildingHandler.getStructuresOnRolledHexes(total);
 		//may not work if structure is on both rolled hexes
 		for(int i = 0; i < structures.size(); i++) {
 			String resource = "None";
@@ -392,7 +204,7 @@ public class Game extends JFrame {
 				}
 			}
 			if(resource.equals("None")) {
-				continue;
+				return;
 			}
 			Player currentPlayer = getPlayerOfColor(structures.get(i).color);
 			if(structures.get(i).getType().equals("Settlement")) {
@@ -407,7 +219,6 @@ public class Game extends JFrame {
 			}
 		}
 	}
-
 
 	String getPlayerNameByColor(Color c) {
 		for(int i = 0; i < playerNum; i++) {
@@ -447,7 +258,7 @@ public class Game extends JFrame {
 		if(turnGUI.doBuildAction()){
 			if(inTurn.resources.size() != 0){
 				JOptionPane.showMessageDialog(null, "Use your resources to build structures and roads", "Build stage", JOptionPane.INFORMATION_MESSAGE);
-				buildStage();
+				gameBuildingHandler.buildStage(inTurn);
 			} else {
 				JOptionPane.showMessageDialog(null, "You have no resources to build.");
 			}
@@ -460,26 +271,14 @@ public class Game extends JFrame {
 		}
 		playersStats.updatePlayersStats();
 	}
-	
-	public void waitForPlayerDiceRoll(){
-		while(!dice.hasPlayerMadeRoll()){
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
-		}
-	}
 
 	public void handlePlayerTurn(CurrentTurnGUI turnGUI){
 		turnGUI.updateUIForNewPlayer(inTurn.name);
-		waitForPlayerDiceRoll();
+		dice.waitForPlayerDiceRoll();
 		handleDiceRoll();
 		waitForPlayerToEndTurn(turnGUI);
 		checkSpecialties();
 	}
-
-
 	
 	public void checkSpecialties() {
 		if(inTurn.knightCount > this.maxKnights) {
@@ -546,7 +345,7 @@ public class Game extends JFrame {
 				inTurn.addResourceCard(r2);
 				inTurn.addResourceCard(r3);
 				inTurn.addResourceCard(r4);
-				buildRoadsUI();
+				gameBuildingHandler.buildRoadsUI(inTurn);
 			}
 			else {
 				String resource1 = JOptionPane.showInputDialog(null, "Enter the first resource type you wish to acquire: Brick, Grain, Wool, Lumber, or Ore", "");
@@ -615,29 +414,6 @@ public class Game extends JFrame {
 		}
 		return false;
 		
-	}
-
-	private void buildStage() {
-		int answer = JOptionPane.showConfirmDialog(null, "Would you like to build?", "Build?", JOptionPane.YES_NO_OPTION);
-		while(answer == JOptionPane.YES_OPTION) {
-			String s = JOptionPane.showInputDialog(null, "Structure or Road?", "");
-			if(s.equals("Structure")) {
-				String type = JOptionPane.showInputDialog(null, "Settlement or City?", "");
-				JOptionPane.showMessageDialog(null, "What intersection should this be placed at?", "Intersection", JOptionPane.INFORMATION_MESSAGE);
-				int i = waitForPlayerIntersectionChoice();
-				this.buildStructure(type, i);
-			}
-			else if(s.equals("Road")) {
-				JOptionPane.showMessageDialog(null, "Select two intersections for the road", "Intersection", JOptionPane.INFORMATION_MESSAGE);
-				int i1 = waitForPlayerIntersectionChoice();
-				int i2 = waitForPlayerIntersectionChoice();
-				this.buildRoad(i1, i2);
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "You must input either Structure or Road", "Invalid input!", JOptionPane.ERROR_MESSAGE);
-			}
-			answer = JOptionPane.showConfirmDialog(null, "Would you like to build more?", "Build?", JOptionPane.YES_NO_OPTION);
-		}
 	}
 
 	private Player getPlayerByName(String name) {
