@@ -5,17 +5,15 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TradeManagerTest {
 
     public Player[] initializePlayers(){
-        Player[] players = new Player[3];
+        Player[] players = new Player[2];
         players[0] = new Player("Jerry", Color.BLACK);
         players[1] = new Player("Bill", Color.WHITE);
-        players[2] = new Player("Sam", Color.RED);
-        players[0].brickAmount = 3;
-        players[1].oreAmount = 2;
         for(int i = 0; i < 3; i++){ players[0].addResourceCard(new ResourceCard("Brick")); }
         for(int i = 0; i < 2; i++){ players[1].addResourceCard(new ResourceCard("Ore")); }
 
@@ -48,29 +46,43 @@ public class TradeManagerTest {
         assertTrue(tM.checkIfValidOutput());
     }
 
-//    @Test
-//    public void testValidRejectedTrade(){
-//        TradeManager tradeManager = new TradeManager();
-//
-//        Player[] players = new Player[3];
-//        players[0] = new Player("Jerry", Color.BLACK);
-//        players[1] = new Player("Bill", Color.WHITE);
-//        players[2] = new Player("Sam", Color.RED);
-//        players[0].brickAmount = 3;
-//        players[1].oreAmount = 2;
-//
-//        int[] outgoing = {1,0,0,0,0};
-//        int[] demanded = {0,0,0,0,1};
-//
-//        tradeManager.tradeStageTest(players[0], players, "Bill", outgoing, demanded, false);
-//
-//        assertEquals("Rejected", tradeManager.testOutput);
-//        assertEquals(3, players[0].brickAmount);
-//        assertEquals(0, players[0].oreAmount);
-//        assertEquals(0, players[1].brickAmount);
-//        assertEquals(2, players[1].oreAmount);
-//    }
-//
+    @Test
+    public void testInputFromTradees(){
+        Player[] players = initializePlayers();
+        TradeManager tM = new TradeManager(players, players[0]);
 
+        // one player has no resources, other has [0,0,0,0,2] on initialization
+        tM.resourceIn = new int[] {0,0,0,0,3};
+        ArrayList<Integer> testArr = tM.checkIfValidTrade();
+        assertEquals(0, testArr.size());
+
+        // should now be a single player w/ the demanded resources
+        tM.setResourceIn(new String[] {"0", "0", "0", "0", "1"});
+        testArr = tM.checkIfValidTrade();
+        assertEquals(1, testArr.size());
+    }
+
+    @Test
+    public void testSuccessfulTrade(){
+        Player[] players = initializePlayers();
+        TradeManager tM = new TradeManager(players, players[0]);
+
+        tM.resourceOut = new int[] {1,0,0,0,0};
+        tM.resourceIn = new int[] {0,0,0,0,1};
+
+        // players[0] is inTurn / trader, players[1] is tradee
+        tM.handleTrade(players[1].name);
+
+        int[] traderNewAmounts = new int[] {players[0].brickAmount, players[0].grainAmount,
+                                            players[0].lumberAmount,players[0].woolAmount,
+                                            players[0].oreAmount};
+
+        int[] tradeeNewAmounts = new int[] {players[1].brickAmount, players[1].grainAmount,
+                                            players[1].lumberAmount,players[1].woolAmount,
+                                            players[1].oreAmount};
+
+        assertTrue(Arrays.equals(new int[] {2,0,0,0,1}, traderNewAmounts));
+        assertTrue(Arrays.equals(new int[] {1,0,0,0,1}, tradeeNewAmounts));
+    }
 
 }
