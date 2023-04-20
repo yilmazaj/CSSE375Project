@@ -19,6 +19,7 @@ public class GameBoard extends JPanel {
 	public IntersectionPoint[] intersectionPoints = new IntersectionPoint[54];
 
 	public IntersectionButtonManager manager = new IntersectionButtonManager();
+	public HexButtonManager hexButtonManager = new HexButtonManager();
 
 	public GameBoard() {
 		this.setLayout(null);
@@ -28,6 +29,7 @@ public class GameBoard extends JPanel {
 		setRoads();
 		setIntersectionCoords();
 		setupIntersectionButtons();
+		setupHexButtons();
 	}
 
 	private void setupIntersectionButtons(){
@@ -46,6 +48,22 @@ public class GameBoard extends JPanel {
 		manager.enableIntersectionButtons(setTo);
 	}
 
+	private void setupHexButtons(){
+		for(int i = 0; i < hexes.length; i++){
+			Point2D.Double center = hexes[i].center;
+			HexPoint point = new HexPoint(center);
+			JButton hexButton = hexButtonManager.createHexButton(point, i);
+			this.add(hexButton);
+		}
+	}
+
+	public int getSelectedHex(){
+		return hexButtonManager.getSelectedHex();
+	}
+
+	public void enableHexButtons(boolean setTo){
+		hexButtonManager.enableHexButtons(setTo);
+	}
 
 	public void placeHexes() {
 		int[] nums = { 2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12, 7 };
@@ -138,25 +156,30 @@ public class GameBoard extends JPanel {
 		g2.setColor(curColor);
 	}
 
+	private Point2D.Double calculateHexCenter(Point2D.Double current, int hexNum){
+		if (hexNum < 3) {
+			current.x = current.x + hexNum * hexDiameter + hexDiameter;
+		} else if (hexNum < 7) {
+			current.x = current.x + (hexNum - 3) * hexDiameter + 0.5 * hexDiameter - 1;
+			current.y = current.y + 1.5 * hexSideLength + 1;
+		} else if (hexNum < 12) {
+			current.x = current.x + (hexNum - 7) * hexDiameter - 1;
+			current.y = current.y + 3 * hexSideLength + 2;
+		} else if (hexNum < 16) {
+			current.x = current.x + (hexNum - 12) * hexDiameter + 0.5 * hexDiameter - 1;
+			current.y = current.y + 4.5 * hexSideLength + 3;
+		} else if (hexNum < 19) {
+			current.x = current.x + (hexNum - 16) * hexDiameter + hexDiameter - 1;
+			current.y = current.y + 6 * hexSideLength + 5;
+		}
+		return current;
+	}
+
 	public void drawHexNumberAtPosition(GraphicsWithIndex graphic, Point2D.Double current) {
 		int i = graphic.getPosition();
 		Graphics2D g2 = graphic.getGraphics();
 		HexagonData currentHex;
-		if (i < 3) {
-			current.x = current.x + i * hexDiameter + hexDiameter;
-		} else if (i < 7) {
-			current.x = current.x + (i - 3) * hexDiameter + 0.5 * hexDiameter - 1;
-			current.y = current.y + 1.5 * hexSideLength + 1;
-		} else if (i < 12) {
-			current.x = current.x + (i - 7) * hexDiameter - 1;
-			current.y = current.y + 3 * hexSideLength + 2;
-		} else if (i < 16) {
-			current.x = current.x + (i - 12) * hexDiameter + 0.5 * hexDiameter - 1;
-			current.y = current.y + 4.5 * hexSideLength + 3;
-		} else if (i < 19) {
-			current.x = current.x + (i - 16) * hexDiameter + hexDiameter - 1;
-			current.y = current.y + 6 * hexSideLength + 5;
-		}
+		current = calculateHexCenter(current,i);
 		currentHex = drawHex(hexes[i], g2, current);
 		current.x = 100;
 		current.y = 100;
@@ -164,6 +187,7 @@ public class GameBoard extends JPanel {
 		Color curColor = g2.getColor();
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke(10));
+		hexes[i].setCenter((int) (currentHex.getXCenter()), (int) (currentHex.getYCenter()));
 		g2.drawString("" + hexes[i].getNumber(), (int) (currentHex.getXCenter()),
 				(int) (currentHex.getYCenter()));
 		g2.setColor(curColor);

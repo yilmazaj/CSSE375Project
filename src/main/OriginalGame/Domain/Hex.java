@@ -12,7 +12,8 @@ public abstract class Hex {
 	public Intersection[] intersections = new Intersection[6];
 	public boolean hasRobber;
 	private ImageIcon resourceIcon;
-	
+	public Point2D.Double center;
+
 	public Hex(int i) {
 		hasRobber = false;
 		number = i;
@@ -41,5 +42,9 @@ public abstract class Hex {
 
 	public ImageIcon getIcon(){
 		return resourceIcon;
+	}
+
+	public void setCenter(int x, int y){
+		center = new Point2D.Double(x, y);
 	}
 }

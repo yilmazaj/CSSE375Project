@@ -13,6 +13,37 @@ public class Robber {
 
     }
 
+    public int moveRobberTile(Game g){
+        JOptionPane.showMessageDialog(null, "Click on a Hex to Move the Robber", "Robber", JOptionPane.INFORMATION_MESSAGE);
+
+
+        int moveRobber = waitForPlayerHexChoice(g, false);
+        while(moveRobber < 0 || moveRobber > 18) {
+            JOptionPane.showMessageDialog(null, "Click on a Hex to Move the Robber", "Robber", JOptionPane.INFORMATION_MESSAGE);
+            moveRobber = waitForPlayerHexChoice(g, false);
+        }
+        return moveRobber;
+    }
+
+    public int waitForPlayerHexChoice(Game g, boolean testMode) {
+        g.gameBuildingHandler.board.enableHexButtons(true);
+        int selected = -1;
+        while (selected == -1) {
+            try {
+                if(!testMode)
+                    selected = g.gameBuildingHandler.board.getSelectedHex();
+                else
+                    selected = 0;
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        g.gameBuildingHandler.board.enableHexButtons(false);
+        return selected;
+    }
+
+
     public void activateRobber(Game g) {
         for(int i = 0; i < g.playerNum; i++) {
             while(g.players[i].resources.size() > 7) {
@@ -20,10 +51,7 @@ public class Robber {
                 //System.out.println(g.players[i].name + " : " + g.players[i].resources.size());
             }
         }
-        int moveRobber = Integer.parseInt(JOptionPane.showInputDialog(null, "Choose a hex to move the robber to", ""));
-        while(moveRobber < 0 || moveRobber > 18) {
-            moveRobber = Integer.parseInt(JOptionPane.showInputDialog(null, "Please enter a valid hex number", ""));
-        }
+        int moveRobber = moveRobberTile(g);
         g.gameBuildingHandler.board.moveRobber(moveRobber);
         ArrayList<String> names = new ArrayList<String>();
         for(int i = 0; i < 6; i++) {
@@ -37,7 +65,7 @@ public class Robber {
             }
         }
         if(names.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "No adjacent players to steal from", "Domain.Robber", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "No adjacent players to steal from", "Robber", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
         String choose = "Pick one of the following players to steal a random resource from: ";
