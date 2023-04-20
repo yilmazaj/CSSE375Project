@@ -17,8 +17,4 @@ public class IntersectionPoint {
         this.color = curColor;
     }
 
-    public void changeColor(Color newColor) {
-        this.color = newColor;
-    }
-
 }
