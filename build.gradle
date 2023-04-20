@@ -23,6 +23,9 @@ sourceSets {
         java {
             srcDirs = ['src/test/NewGame']
         }
+        resources {
+            srcDirs "images"
+        }
     }
 }
 dependencies {

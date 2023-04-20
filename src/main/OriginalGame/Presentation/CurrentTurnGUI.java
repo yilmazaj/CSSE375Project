@@ -236,7 +236,7 @@ public class CurrentTurnGUI {
     private void scaleAndSetDiceImage(int diceRoll, int dicePosition){
         BufferedImage dice = null;
         try {
-            dice = ImageIO.read(new File("images/DiceFaces/Domain.Dice" + diceRoll + ".png"));
+            dice = ImageIO.read(new File("images/DiceFaces/Dice" + diceRoll + ".png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
