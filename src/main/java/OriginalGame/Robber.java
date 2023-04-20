@@ -26,7 +26,7 @@ public class Robber {
         while(moveRobber < 0 || moveRobber > 18) {
             moveRobber = Integer.parseInt(JOptionPane.showInputDialog(null, "Please enter a valid hex number", ""));
         }
-        g.board.moveRobber(moveRobber);
+        g.gameBuildingHandler.board.moveRobber(moveRobber);
         ArrayList<String> names = new ArrayList<String>();
         for(int i = 0; i < 6; i++) {
             Structure s = getStuctureByHex(g, moveRobber, i);
@@ -77,10 +77,10 @@ public class Robber {
         if (moveRobber < 0 || moveRobber > 18) {
             return false;
         }
-        g.board.moveRobber(moveRobber);
+        g.gameBuildingHandler.board.moveRobber(moveRobber);
         ArrayList<String> names = new ArrayList<String>();
         for (int i = 0; i < 6; i++) {
-            Structure s = g.board.hexes[moveRobber].intersections[i].structure;
+            Structure s = g.gameBuildingHandler.board.hexes[moveRobber].intersections[i].structure;
             if (s != null) {
                 if (!s.color.equals(g.inTurn.color)) {
                     if (!names.contains(g.getPlayerNameByColor(s.color))) {
@@ -113,10 +113,10 @@ public class Robber {
 
     //Public for testing purposes
     public Structure getStuctureByHex(Game g, int hexNum, int intersectionNum){
-        if (g.board.hexes.length < hexNum){
+        if (g.gameBuildingHandler.board.hexes.length < hexNum){
             return null;
         }
-        Hex hex = g.board.hexes[hexNum];
+        Hex hex = g.gameBuildingHandler.board.hexes[hexNum];
         if (hex == null){
             return null;
         } else if (hex.intersections.length < intersectionNum) {
