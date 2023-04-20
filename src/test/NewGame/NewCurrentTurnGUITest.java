@@ -1,21 +1,20 @@
 import Domain.Dice;
-import Presentation.CurrentTurnGUI;
+import Presentation.CurrentTurnGUITest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CurrentTurnGUITest{
+public class NewCurrentTurnGUITest {
 
-
-    CurrentTurnGUI gui;
+    CurrentTurnGUITest gui;
     Dice dice;
 
     @BeforeEach
     public void setup(){
         dice = new Dice(2);
-        gui = new CurrentTurnGUI("Roger",dice);
+        gui = new CurrentTurnGUITest("Roger",dice);
     }
 
     @Test
