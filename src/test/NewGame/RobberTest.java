@@ -6,6 +6,8 @@ import Presentation.GameBoard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RobberTest {
@@ -81,6 +83,44 @@ public class RobberTest {
         Assertions.assertTrue(game.inTurn.resources.size() == 7);
         Assertions.assertTrue(game.players[1].resources.size() == 7);
     }
+
+    @Test
+    void testStealMethod() {
+        Game game = new Game(2);
+        Robber r = new Robber();
+        game.inTurn = game.players[1];
+        game.buildStructure("Settlement",0);
+        game.gameBuildingHandler.board.moveRobber(0);
+        game.inTurn = game.players[0];
+        Assertions.assertTrue(game.inTurn.resources.size() == 12); //Initial resources
+        Assertions.assertTrue(game.players[1].resources.size() == 8);
+        r.handleStealWithInput(game,game.players[1]);
+        Assertions.assertTrue(game.inTurn.resources.size() == 13);
+        Assertions.assertTrue(game.players[1].resources.size() == 7); //Adjusted resources
+    }
+
+    @Test
+    void testTooManyCardsMethod() {
+        Game game = new Game(2);
+        Robber r = new Robber();
+        Assertions.assertTrue(game.inTurn.resources.size() > 7);
+        r.moreThanSevenCards(game);
+        Assertions.assertTrue(game.inTurn.resources.size() == 7);
+        Assertions.assertTrue(game.players[1].resources.size() == 7);
+    }
+
+    @Test
+    void testRetrieveAdjacentPlayer() {
+        Game game = new Game(2);
+        Robber r = new Robber();
+        game.inTurn = game.players[1];
+        game.buildStructure("Settlement",0);
+        game.inTurn = game.players[0];
+        ArrayList<String> expected = r.retrieveRobberTargetsWithInput(game, 0);
+        Assertions.assertTrue(expected.size() == 1);
+        Assertions.assertTrue(expected.contains("1"));
+    }
+
 
     @Test
     void testGetStructureByHexInvalidHex() {

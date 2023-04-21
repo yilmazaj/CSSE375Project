@@ -30,7 +30,7 @@ public class NewGameTest {
     }
 
     private void doAllDiceRollValues(){
-        for(int i = 1; i < 15; i++){
+        for(int i = 2; i < 13; i++){
             if (i == 7) continue;
             game.simulateHandleDiceRoll(i);
         }
