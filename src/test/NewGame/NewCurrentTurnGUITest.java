@@ -1,5 +1,5 @@
 import Domain.Dice;
-import Presentation.CurrentTurnGUITest;
+import TestClasses.CurrentTurnGUITest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
