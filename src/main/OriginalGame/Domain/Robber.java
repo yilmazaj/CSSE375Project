@@ -132,9 +132,8 @@ public class Robber {
         if (stolen != null){
             g.inTurn.addResourceCard(stolen);
         }
-        else{
-            JOptionPane.showMessageDialog(null, stealFrom.name + " has no resources to steal",
-                    "Domain.Robber", JOptionPane.INFORMATION_MESSAGE);
+        else{;
+            return;
         }
     }
     public boolean activateRobberWithInputs(Game g, int moveRobber, String stealName) {
