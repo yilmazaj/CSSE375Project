@@ -1,5 +1,6 @@
 import Domain.Dice;
 import Domain.Game;
+import Domain.GameTest;
 import Domain.ResourceCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,13 +11,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class NewGameTest {
 
 
-    private Game game;
-    private Dice dice;
+    private GameTest game;
 
     @BeforeEach
     public void setup(){
-        game = new Game(2);
-        dice = game.dice;
+        game = new GameTest(2);
     }
 
     private void giveSettlementResources(){
@@ -33,14 +32,11 @@ public class NewGameTest {
     private void doAllDiceRollValues(){
         for(int i = 2; i < 13; i++){
             if (i == 7) continue;
-            dice.setTotal(i);
-            game.handleDiceRoll();
+            game.simulateHandleDiceRoll(i);
         }
     }
     @Test
     public void testRollForResources2(){
-        dice.rollDice();
-        dice.setTotal(8);
         int startingResources = game.inTurn.resources.size();
 
         for(int i = 10; i< 14; i= i+2){
@@ -56,8 +52,6 @@ public class NewGameTest {
 
     @Test
     public void testRollForResources1(){
-        dice.rollDice();
-        dice.setTotal(8);
         int startingResources = game.inTurn.resources.size();
 
         giveSettlementResources();

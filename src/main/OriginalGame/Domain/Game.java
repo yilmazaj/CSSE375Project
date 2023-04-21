@@ -185,7 +185,7 @@ public class Game {
 		return total;
 	}
 
-	private void giveResourcesFromRoll(int total){
+	public void giveResourcesFromRoll(int total){
 		ArrayList<Structure> structures;
 		structures = gameBuildingHandler.getStructuresOnRolledHexes(total);
 		//may not work if structure is on both rolled hexes
