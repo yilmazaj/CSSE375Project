@@ -40,7 +40,6 @@ public class HexButtonManagerTest {
             JButton currentButtonToTest = hexButtons.get(i);
             assertTrue(currentButtonToTest.isEnabled());
         }
-
     }
 
     @Test
@@ -51,7 +50,6 @@ public class HexButtonManagerTest {
             JButton currentButtonToTest = hexButtons.get(i);
             assertFalse(currentButtonToTest.isEnabled());
         }
-
     }
 
     @Test
@@ -65,28 +63,21 @@ public class HexButtonManagerTest {
     @Test
     public void getSelectedHex1(){
         manager.enableHexButtons(true);
-
         hexButtons.get(0).doClick();
-
         assertEquals(0,manager.getSelectedHex());
-
     }
 
     @Test
     public void getSelectedHex2(){
         manager.enableHexButtons(true);
-
         assertEquals(-1,manager.getSelectedHex());
     }
 
     @Test
     public void getSelectedHex3(){
         manager.enableHexButtons(true);
-
         hexButtons.get(0).doClick();
-
         assertEquals(0,manager.getSelectedHex());
-
         assertEquals(-1,manager.getSelectedHex());
     }
 }

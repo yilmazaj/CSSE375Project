@@ -6,6 +6,8 @@ import Presentation.GameBoard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RobberTest {
@@ -81,6 +83,88 @@ public class RobberTest {
         Assertions.assertTrue(game.inTurn.resources.size() == 7);
         Assertions.assertTrue(game.players[1].resources.size() == 7);
     }
+
+
+//    @Test
+//    void testActivateRobberWithStealMethod() {
+//        Game game = new Game(2);
+//        Robber r = new Robber();
+//        game.inTurn = game.players[1];
+//        ResourceCard c1 = new ResourceCard("Brick");
+//        ResourceCard c2 = new ResourceCard("Grain");
+//        ResourceCard c3 = new ResourceCard("Lumber");
+//        ResourceCard c4 = new ResourceCard("Wool");
+//        ResourceCard c5 = new ResourceCard("Ore");
+//        ResourceCard c6 = new ResourceCard("Ore");
+//        ResourceCard c7 = new ResourceCard("Ore");
+//        for(int i = 0; i<game.players.length;i++){
+//            game.players[i].addResourceCard(c1);
+//            game.players[i].addResourceCard(c2);
+//            game.players[i].addResourceCard(c3);
+//            game.players[i].addResourceCard(c4);
+//            game.players[i].addResourceCard(c5);
+//            game.players[i].addResourceCard(c6);
+//            game.players[i].addResourceCard(c7);
+//        }
+//        game.buildStructure("Settlement",0);
+//        game.inTurn = game.players[0];
+//        r.handleStealWithInput(game,game.players[0]);
+//        Assertions.assertTrue(game.inTurn.resources.size() == 8);
+//        Assertions.assertTrue(game.players[1].resources.size() == 6); //7 initial - 1 stolen
+//    }
+
+    @Test
+    void testActivateRobberTooManyCardsMethod() {
+        Game game = new Game(2);
+        Robber r = new Robber();
+        ResourceCard c1 = new ResourceCard("Brick");
+        ResourceCard c2 = new ResourceCard("Grain");
+        ResourceCard c3 = new ResourceCard("Lumber");
+        ResourceCard c4 = new ResourceCard("Wool");
+        ResourceCard c5 = new ResourceCard("Ore");
+        ResourceCard c6 = new ResourceCard("Ore");
+        ResourceCard c7 = new ResourceCard("Ore");
+        ResourceCard c8 = new ResourceCard("Grain");
+        ResourceCard c9 = new ResourceCard("Grain");
+        ResourceCard c10 = new ResourceCard("Ore");
+        for(int i = 0; i<game.players.length;i++){
+            game.players[i].addResourceCard(c1);
+            game.players[i].addResourceCard(c2);
+            game.players[i].addResourceCard(c3);
+            game.players[i].addResourceCard(c4);
+            game.players[i].addResourceCard(c5);
+            game.players[i].addResourceCard(c6);
+            game.players[i].addResourceCard(c7);
+            game.players[i].addResourceCard(c8);
+            game.players[i].addResourceCard(c9);
+            game.players[i].addResourceCard(c10);
+        }
+        Assertions.assertTrue(game.inTurn.resources.size() > 7);
+        r.moreThanSevenCards(game);
+        Assertions.assertTrue(game.inTurn.resources.size() == 7);
+        Assertions.assertTrue(game.players[1].resources.size() == 7);
+    }
+
+//    @Test
+//    void testRetrieveAdjacentPlayer() {
+//        Game game = new Game(2);
+//        Robber r = new Robber();
+//        game.inTurn = game.players[1];
+//        ResourceCard c1 = new ResourceCard("Brick");
+//        ResourceCard c2 = new ResourceCard("Grain");
+//        ResourceCard c3 = new ResourceCard("Lumber");
+//        ResourceCard c4 = new ResourceCard("Wool");
+//        for(int i = 0; i<game.players.length;i++) {
+//            game.players[i].addResourceCard(c1);
+//            game.players[i].addResourceCard(c2);
+//            game.players[i].addResourceCard(c3);
+//            game.players[i].addResourceCard(c4);
+//        }
+//        game.buildStructure("Settlement",0);
+//        ArrayList<String> expected = r.retrieveRobberTargetsWithInput(game, 0);
+//        Assertions.assertTrue(expected.size() == 1);
+//    }
+
 
     @Test
     void testGetStructureByHexInvalidHex() {

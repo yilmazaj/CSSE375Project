@@ -44,7 +44,8 @@ public class Robber {
     }
 
 
-    private void moreThanSevenCards(Game g){
+    //Public for testing
+    public void moreThanSevenCards(Game g){
         for(int i = 0; i < g.playerNum; i++) {
             while(g.players[i].resources.size() > 7) {
                 g.players[i].removeRandomCard();
@@ -108,6 +109,34 @@ public class Robber {
     }
 
     //For automated testing
+
+    public ArrayList<String> retrieveRobberTargetsWithInput(Game g, int moveRobber){
+        ArrayList<String> names = new ArrayList<String>();
+        for(int i = 0; i < 6; i++) {
+            Structure s = getStuctureByHex(g, moveRobber, i);
+            if(s != null) {
+                if(!s.color.equals(g.inTurn.color)) {
+                    if(!names.contains(g.getPlayerNameByColor(s.color))) {
+                        names.add(g.getPlayerNameByColor(s.color));
+                    }
+                }
+            }
+        }
+        if(names.isEmpty()) {
+            return new ArrayList<String>();
+        }
+        return names;
+    }
+    public void handleStealWithInput(Game g, Player stealFrom){
+        ResourceCard stolen = stealFrom.removeRandomCard();
+        if (stolen != null){
+            g.inTurn.addResourceCard(stolen);
+        }
+        else{
+            JOptionPane.showMessageDialog(null, stealFrom.name + " has no resources to steal",
+                    "Domain.Robber", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
     public boolean activateRobberWithInputs(Game g, int moveRobber, String stealName) {
         for (int i = 0; i < g.playerNum; i++) {
             while (g.players[i].resources.size() > 7) {
