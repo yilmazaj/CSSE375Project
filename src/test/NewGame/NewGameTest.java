@@ -1,6 +1,4 @@
-import Domain.Dice;
-import Domain.Game;
-import Domain.GameTest;
+import TestClasses.GameTest;
 import Domain.ResourceCard;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

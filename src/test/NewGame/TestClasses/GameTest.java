@@ -1,6 +1,8 @@
-package Domain;
+package TestClasses;
 
-public class GameTest extends Game{
+import Domain.Game;
+
+public class GameTest extends Game {
     public GameTest(int numPlayers){
         super(numPlayers);
     }

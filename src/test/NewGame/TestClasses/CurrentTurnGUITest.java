@@ -1,5 +1,6 @@
-package Presentation;
+package TestClasses;
 import Domain.Dice;
+import Presentation.CurrentTurnGUI;
 
 public class CurrentTurnGUITest extends CurrentTurnGUI {
 
