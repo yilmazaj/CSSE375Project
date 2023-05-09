@@ -154,17 +154,13 @@ public class Game {
 	
 	public void buildInitialStructures() {
 		for(int i = 0; i < playerNum; i++) {
-			JOptionPane.showMessageDialog(null, "Place your initial structures", inTurn.name + "'s turn!", JOptionPane.INFORMATION_MESSAGE);
-			JOptionPane.showMessageDialog(null, "Enter the intersection to place your first settlement", "Settlement Placement", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Place two starting settlements", inTurn.name + "'s turn!", JOptionPane.INFORMATION_MESSAGE);
 			int i1 = gameBuildingHandler.waitForPlayerIntersectionChoice();
 			while(!gameBuildingHandler.buildStructure("Settlement", i1, inTurn)) {
-				JOptionPane.showMessageDialog(null, "Please enter a valid intersection for your settlement", "Invalid Settlement", JOptionPane.ERROR_MESSAGE);
 				i1 = gameBuildingHandler.waitForPlayerIntersectionChoice();
 			}
-			JOptionPane.showMessageDialog(null, "Enter the intersection to place your second settlement", "Settlement Placement", JOptionPane.INFORMATION_MESSAGE);
 			int i2 = gameBuildingHandler.waitForPlayerIntersectionChoice();
 			while(!gameBuildingHandler.buildStructure("Settlement", i2, inTurn)) {
-				JOptionPane.showMessageDialog(null, "Please enter a valid intersection for your settlement", "Invalid Settlement", JOptionPane.ERROR_MESSAGE);
 				i2 = gameBuildingHandler.waitForPlayerIntersectionChoice();
 			}
 			gameBuildingHandler.buildRoadsUI(inTurn);
