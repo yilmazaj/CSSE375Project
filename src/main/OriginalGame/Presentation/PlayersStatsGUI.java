@@ -37,6 +37,7 @@ public class PlayersStatsGUI {
             frame.pack();
             frame.setVisible(true);
             frame.setSize(300, 500);
+            frame.setLocation(1100,0);
         }
 
 

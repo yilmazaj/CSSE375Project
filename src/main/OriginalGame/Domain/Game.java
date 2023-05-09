@@ -1,5 +1,6 @@
 package Domain;
 
+import Presentation.CardGUI;
 import Presentation.CurrentTurnGUI;
 import Presentation.PlayersStatsGUI;
 import Presentation.TradeManagerGUI;
@@ -262,8 +263,9 @@ public class Game {
 		}
 		if(turnGUI.doCardAction()){
 			JOptionPane.showMessageDialog(null, "Buy and play cards", "Card stage", JOptionPane.INFORMATION_MESSAGE);
-			buyCard();
-			playCard();
+			CardGUI cardGUI = new CardGUI(inTurn);
+//			buyCard();
+//			playCard();
 			inTurn.printResources();
 		}
 		playersStats.updatePlayersStats();
