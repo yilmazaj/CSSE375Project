@@ -48,8 +48,10 @@ public class CurrentTurnGUI {
         initializeSwingUI();
         attachActionListeners();
 
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.add(panel);
         frame.pack();
+        frame.setLocation(790,0);
         frame.setVisible(true);
     }
 
