@@ -8,6 +8,6 @@ public class YearOfPlentyCard extends ProgressCard {
     }
 
     public String getType() {
-        return "Domain.YearOfPlentyCard";
+        return "YearOfPlentyCard";
     }
 }
