@@ -260,8 +260,8 @@ public class Game {
 		if(turnGUI.doCardAction()){
 			JOptionPane.showMessageDialog(null, "Buy and play cards", "Card stage", JOptionPane.INFORMATION_MESSAGE);
 			CardGUI cardGUI = new CardGUI(inTurn);
-//			buyCard();
-//			playCard();
+			buyCard();
+			playCard();
 			inTurn.printResources();
 		}
 		playersStats.updatePlayersStats();
@@ -317,11 +317,11 @@ public class Game {
 			JOptionPane.showMessageDialog(null, "Enter the number of the card you want to play in the next window", "Choose a card", JOptionPane.INFORMATION_MESSAGE);
 			int cardIndex = Integer.parseInt(JOptionPane.showInputDialog(null, inTurn.displayPlayableCards(), ""));
 			PlayableCard pc = inTurn.pCards.get(cardIndex);
-			if(pc.getType().equals("Domain.KnightCard")) {
+			if(pc.getType().equals("KnightCard")) {
 				robber.activateRobber(this);
 				inTurn.knightCount++;
 			}
-			else if(pc.getType().equals("Domain.MonopolyCard")) {
+			else if(pc.getType().equals("MonopolyCard")) {
 				String resource = JOptionPane.showInputDialog(null, "Enter the resource type you wish to acquire: Brick, Grain, Wool, Lumber, or Ore", "");
 				for(int i = 0; i < playerNum; i++) {
 					if(!players[i].name.equals(inTurn.name)) {
@@ -331,7 +331,7 @@ public class Game {
 					}
 				}
 			}
-			else if(pc.getType().equals("Domain.RoadBuildingCard")) {
+			else if(pc.getType().equals("RoadBuildingCard")) {
 				ResourceCard r1 = new ResourceCard("Brick");
 				ResourceCard r2 = new ResourceCard("Lumber");
 				ResourceCard r3 = new ResourceCard("Brick");
@@ -367,6 +367,9 @@ public class Game {
 			cards.add(c2);
 			cards.add(c3);
 			if(inTurn.containsAllResources(cards)) {
+				inTurn.removeResourceCard("Ore");
+				inTurn.removeResourceCard("Grain");
+				inTurn.removeResourceCard("Wool");
 				Random r = new Random();
 				double bound = r.nextDouble();
 				NonPlayableCard nc = null;
