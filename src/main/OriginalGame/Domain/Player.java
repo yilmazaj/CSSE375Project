@@ -152,7 +152,7 @@ public class Player {
 
     public void addNonPlayableCard(NonPlayableCard c) {
         this.nCards.add(c);
-        if (c.getType().equals("Domain.VictoryPointCard")) {
+        if (c.getType().equals("VictoryPointCard")) {
             ++this.victoryPoints;
         } else if (c.getType().equals("MostRoads")) {
             ++this.victoryPoints;
