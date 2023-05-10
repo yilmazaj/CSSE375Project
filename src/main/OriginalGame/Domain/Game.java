@@ -307,7 +307,7 @@ public class Game {
 		
 	}
 
-	public boolean playCard() {
+	public boolean playCard() { //Had domain. in types
 		int answer = JOptionPane.showConfirmDialog(null, "Would you like to play a development card?", "Play a card?", JOptionPane.YES_NO_OPTION);
 		if(answer == JOptionPane.YES_OPTION) {
 			if(inTurn.pCards.isEmpty()) {
