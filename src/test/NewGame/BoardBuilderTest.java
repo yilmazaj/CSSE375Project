@@ -61,4 +61,29 @@ public class BoardBuilderTest {
         Hex returnedHex = boardBuilder.createHexOfTypeAndNumber("qwerty", 1);
         assertEquals(returnedHex, null);
     }
+    @Test
+    public void checkHexNumberCannotBeLessThan2(){
+        int number = boardBuilder.validateManualHexNumberString("1");
+        assertEquals(number, -1);
+    }
+    @Test
+    public void checkHexNumberCannotBeGreaterThan12(){
+        int number = boardBuilder.validateManualHexNumberString("13");
+        assertEquals(number, -1);
+    }
+    @Test
+    public void checkHexNumberCannotBe7(){
+        int number = boardBuilder.validateManualHexNumberString("7");
+        assertEquals(number, -1);
+    }
+    @Test
+    public void checkHexNumberMustBeNumeric(){
+        int number = boardBuilder.validateManualHexNumberString("abc");
+        assertEquals(number, -1);
+    }
+    @Test
+    public void checkValidHexNumber(){
+        int number = boardBuilder.validateManualHexNumberString("6");
+        assertEquals(number, 6);
+    }
 }
