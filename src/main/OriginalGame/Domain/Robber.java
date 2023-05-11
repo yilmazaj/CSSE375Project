@@ -74,6 +74,9 @@ public class Robber {
     }
 
     private void handleSteal(Game g, ArrayList<String> names){
+        if(names.isEmpty()){
+            return;
+        }
         String choose = "Pick one of the following players to steal a random resource from: ";
         for(int i = 0; i < names.size(); i++) {
             choose = choose + names.get(i) + ", ";

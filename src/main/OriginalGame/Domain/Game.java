@@ -34,6 +34,8 @@ public class Game {
 
 	public TradeManagerGUI tradeManagerGUI;
 
+	public CardGUI cardGUI;
+
 	public Game () {
 		dice = new Dice(2);
 		playerNum = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter number of players", "2"));
@@ -42,14 +44,16 @@ public class Game {
 		}
 		playerPanels = new JPanel[playerNum];
 
-
-
 		gameFrame = new JFrame();
 		gameFrame.setSize(new Dimension(800, 700));
 		gameFrame.setDefaultCloseOperation(gameFrame.EXIT_ON_CLOSE);
 		gameFrame.setVisible(true);
 
 		gameFrame.add(gameBuildingHandler.board);
+
+		int useCustomBoard = JOptionPane.showConfirmDialog(null, "Would you like to set board resources manually?", "Use custom board?", JOptionPane.YES_NO_OPTION);
+		this.gameBuildingHandler.board.setResources(useCustomBoard);
+		gameFrame.repaint();
 
 		
 		colors = new Color[MAX_PLAYERS];
@@ -68,6 +72,7 @@ public class Game {
 		giveInitialResources();
 
 		playersStats = new PlayersStatsGUI(players);
+		cardGUI = new CardGUI(inTurn,false);
 
 	}
 
@@ -75,6 +80,8 @@ public class Game {
 	public Game (int playerNum) {
 		this.playerNum = playerNum;
 		dice = new Dice(2);
+
+		this.gameBuildingHandler.board.setResources(1);
 
 		colors = new Color[MAX_PLAYERS];
 		players = new Player[playerNum];
@@ -97,7 +104,7 @@ public class Game {
 		giveInitialResources();
 
 		playersStats = new PlayersStatsGUI(players);
-
+		cardGUI = new CardGUI(inTurn,false);
 	}
 
 	private void giveInitialResources(){
@@ -245,6 +252,7 @@ public class Game {
 
 
 
+
 	private void handlePlayerAction(CurrentTurnGUI turnGUI){
 		if(turnGUI.doTradeAction()){
 			tradeManagerGUI = new TradeManagerGUI(players, inTurn);
@@ -258,13 +266,25 @@ public class Game {
 			}
 		}
 		if(turnGUI.doCardAction()){
-			JOptionPane.showMessageDialog(null, "Buy and play cards", "Card stage", JOptionPane.INFORMATION_MESSAGE);
-			CardGUI cardGUI = new CardGUI(inTurn);
+//			JOptionPane.showMessageDialog(null, "Buy and play cards", "Card stage", JOptionPane.INFORMATION_MESSAGE);
+			handleCardAction();
+		}
+		if(cardGUI.isActive() && cardGUI.isBuyingCard()){
 			buyCard();
+			cardGUI.notifyInvalidation();
+		}
+		if(cardGUI.isActive() && cardGUI.isPlayingCard()){
 			playCard();
-			inTurn.printResources();
+			cardGUI.notifyInvalidation();
 		}
 		playersStats.updatePlayersStats();
+	}
+
+	private void handleCardAction(){
+		if(!cardGUI.isActive()){
+			cardGUI = new CardGUI(inTurn,true);
+		}
+		inTurn.printResources();
 	}
 
 	public void handlePlayerTurn(CurrentTurnGUI turnGUI){
@@ -273,6 +293,7 @@ public class Game {
 		handleDiceRoll();
 		waitForPlayerToEndTurn(turnGUI);
 		checkSpecialties();
+		cardGUI.notifyInvalidation();
 	}
 	
 	public void checkSpecialties() {
@@ -308,109 +329,124 @@ public class Game {
 	}
 
 	public boolean playCard() { //Had domain. in types
-		int answer = JOptionPane.showConfirmDialog(null, "Would you like to play a development card?", "Play a card?", JOptionPane.YES_NO_OPTION);
-		if(answer == JOptionPane.YES_OPTION) {
-			if(inTurn.pCards.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "You don't own any playable cards", "No available cards", JOptionPane.ERROR_MESSAGE);
-				return false;
-			}
-			JOptionPane.showMessageDialog(null, "Enter the number of the card you want to play in the next window", "Choose a card", JOptionPane.INFORMATION_MESSAGE);
-			int cardIndex = Integer.parseInt(JOptionPane.showInputDialog(null, inTurn.displayPlayableCards(), ""));
-			PlayableCard pc = inTurn.pCards.get(cardIndex);
-			if(pc.getType().equals("KnightCard")) {
-				robber.activateRobber(this);
-				inTurn.knightCount++;
-			}
-			else if(pc.getType().equals("MonopolyCard")) {
-				String resource = JOptionPane.showInputDialog(null, "Enter the resource type you wish to acquire: Brick, Grain, Wool, Lumber, or Ore", "");
-				for(int i = 0; i < playerNum; i++) {
-					if(!players[i].name.equals(inTurn.name)) {
-						ResourceCard r = new ResourceCard(resource);
-						players[i].removeResourceCard(resource);
-						inTurn.addResourceCard(r);
-					}
+//		int answer = JOptionPane.showConfirmDialog(null, "Would you like to play a development card?", "Play a card?", JOptionPane.YES_NO_OPTION);
+//		if(answer == JOptionPane.YES_OPTION) {
+		if(inTurn.pCards.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "You don't own any playable cards", "No available cards", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+//		JOptionPane.showMessageDialog(null, "Enter the number of the card you want to play in the next window", "Choose a card", JOptionPane.INFORMATION_MESSAGE);
+//		String
+//		int cardIndex = Integer.parseInt(JOptionPane.showInputDialog(null, inTurn.displayPlayableCards(), ""));
+		int cardIndex = getIndexOfFirstPlayableCardofType(cardGUI.getCardtoPlay());
+		if(cardIndex == -1){
+			return false;
+		}
+		PlayableCard pc = inTurn.pCards.get(cardIndex);
+		if(pc.getType().equals("KnightCard")) {
+			robber.activateRobber(this);
+			inTurn.knightCount++;
+		}
+		else if(pc.getType().equals("MonopolyCard")) {
+			String resource = JOptionPane.showInputDialog(null, "Enter the resource type you wish to acquire: Brick, Grain, Wool, Lumber, or Ore", "");
+			for(int i = 0; i < playerNum; i++) {
+				if(!players[i].name.equals(inTurn.name)) {
+					ResourceCard r = new ResourceCard(resource);
+					players[i].removeResourceCard(resource);
+					inTurn.addResourceCard(r);
 				}
 			}
-			else if(pc.getType().equals("RoadBuildingCard")) {
-				ResourceCard r1 = new ResourceCard("Brick");
-				ResourceCard r2 = new ResourceCard("Lumber");
-				ResourceCard r3 = new ResourceCard("Brick");
-				ResourceCard r4 = new ResourceCard("Lumber");
-				inTurn.addResourceCard(r1);
-				inTurn.addResourceCard(r2);
-				inTurn.addResourceCard(r3);
-				inTurn.addResourceCard(r4);
-				gameBuildingHandler.buildRoadsUI(inTurn);
-			}
-			else {
-				String resource1 = JOptionPane.showInputDialog(null, "Enter the first resource type you wish to acquire: Brick, Grain, Wool, Lumber, or Ore", "");
-				String resource2 = JOptionPane.showInputDialog(null, "Enter the second resource type you wish to acquire: Brick, Grain, Wool, Lumber, or Ore", "");
-				ResourceCard r1 = new ResourceCard(resource1);
-				ResourceCard r2 = new ResourceCard(resource2);
-				inTurn.addResourceCard(r1);
-				inTurn.addResourceCard(r2);
-			}
-			inTurn.pCards.remove(cardIndex);
-			return true;
 		}
-		return false;
+		else if(pc.getType().equals("RoadBuildingCard")) {
+			ResourceCard r1 = new ResourceCard("Brick");
+			ResourceCard r2 = new ResourceCard("Lumber");
+			ResourceCard r3 = new ResourceCard("Brick");
+			ResourceCard r4 = new ResourceCard("Lumber");
+			inTurn.addResourceCard(r1);
+			inTurn.addResourceCard(r2);
+			inTurn.addResourceCard(r3);
+			inTurn.addResourceCard(r4);
+			gameBuildingHandler.buildRoadsUI(inTurn);
+		}
+		else {
+			String resource1 = JOptionPane.showInputDialog(null, "Enter the first resource type you wish to acquire: Brick, Grain, Wool, Lumber, or Ore", "");
+			String resource2 = JOptionPane.showInputDialog(null, "Enter the second resource type you wish to acquire: Brick, Grain, Wool, Lumber, or Ore", "");
+			ResourceCard r1 = new ResourceCard(resource1);
+			ResourceCard r2 = new ResourceCard(resource2);
+			inTurn.addResourceCard(r1);
+			inTurn.addResourceCard(r2);
+		}
+		inTurn.pCards.remove(cardIndex);
+		return true;
+//		}
+//		return false;
+	}
+
+	private int getIndexOfFirstPlayableCardofType(String targetType){
+		for(int i = 0; i < inTurn.pCards.size();i++){
+			PlayableCard pc = inTurn.pCards.get(i);
+			if(pc.getType().equals(targetType)){
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	public boolean buyCard() {
-		int answer = JOptionPane.showConfirmDialog(null, "Would you like to buy a development card?", "Buy a card?", JOptionPane.YES_NO_OPTION);
-		if(answer == JOptionPane.YES_OPTION) {
-			ResourceCard c1 = new ResourceCard("Ore");
-			ResourceCard c2 = new ResourceCard("Wool");
-			ResourceCard c3 = new ResourceCard("Grain");
-			ArrayList<ResourceCard> cards = new ArrayList<ResourceCard>();
-			cards.add(c1);
-			cards.add(c2);
-			cards.add(c3);
-			if(inTurn.containsAllResources(cards)) {
-				inTurn.removeResourceCard("Ore");
-				inTurn.removeResourceCard("Grain");
-				inTurn.removeResourceCard("Wool");
-				Random r = new Random();
-				double bound = r.nextDouble();
-				NonPlayableCard nc = null;
-				PlayableCard pc = null;
-				if(bound <= .45) {
-					nc = new VictoryPointCard();
-					inTurn.addNonPlayableCard(nc);
+//		int answer = JOptionPane.showConfirmDialog(null, "Would you like to buy a development card?", "Buy a card?", JOptionPane.YES_NO_OPTION);
+//		if(answer == JOptionPane.YES_OPTION) {
+		ResourceCard c1 = new ResourceCard("Ore");
+		ResourceCard c2 = new ResourceCard("Wool");
+		ResourceCard c3 = new ResourceCard("Grain");
+		ArrayList<ResourceCard> cards = new ArrayList<ResourceCard>();
+		cards.add(c1);
+		cards.add(c2);
+		cards.add(c3);
+		if(inTurn.containsAllResources(cards)) {
+			inTurn.removeResourceCard("Ore");
+			inTurn.removeResourceCard("Grain");
+			inTurn.removeResourceCard("Wool");
+			Random r = new Random();
+			double bound = r.nextDouble();
+			NonPlayableCard nc = null;
+			PlayableCard pc = null;
+			if(bound <= .45) {
+				nc = new VictoryPointCard();
+				inTurn.addNonPlayableCard(nc);
+			}
+			else if(bound > .45 && bound <= .8) {
+				pc = new KnightCard();
+				inTurn.pCards.add(pc);
+			}
+			else {
+				int progCard = r.nextInt(3);
+				if(progCard == 0) {
+					pc = new MonopolyCard();
+					inTurn.pCards.add(pc);
 				}
-				else if(bound > .45 && bound <= .8) {
-					pc = new KnightCard();
+				else if(progCard == 1) {
+					pc = new RoadBuildingCard();
 					inTurn.pCards.add(pc);
 				}
 				else {
-					int progCard = r.nextInt(3);
-					if(progCard == 0) {
-						pc = new MonopolyCard();
-						inTurn.pCards.add(pc);
-					}
-					else if(progCard == 1) {
-						pc = new RoadBuildingCard();
-						inTurn.pCards.add(pc);
-					}
-					else {
-						pc = new YearOfPlentyCard();
-						inTurn.pCards.add(pc);
-					}
+					pc = new YearOfPlentyCard();
+					inTurn.pCards.add(pc);
 				}
-				if(nc == null) {
-					JOptionPane.showMessageDialog(null, "You have received a " + pc.getType() + " card", "Development card purchased", JOptionPane.INFORMATION_MESSAGE);
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "You have received a " + nc.getType() + " card", "Development card purchased", JOptionPane.INFORMATION_MESSAGE);
-				}
-				return true;
+			}
+			if(nc == null) {
+				JOptionPane.showMessageDialog(null, "You have received a " + pc.getType() + " card", "Development card purchased", JOptionPane.INFORMATION_MESSAGE);
 			}
 			else {
-				JOptionPane.showMessageDialog(null, "You don't have enough resources to buy a development card", "Not enough resources", JOptionPane.ERROR_MESSAGE);
-				return false;
+				JOptionPane.showMessageDialog(null, "You have received a " + nc.getType() + " card", "Development card purchased", JOptionPane.INFORMATION_MESSAGE);
 			}
+			return true;
 		}
-		return false;
+		else {
+			JOptionPane.showMessageDialog(null, "You don't have enough resources to buy a development card", "Not enough resources", JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
+//		}
+//		return false;
 		
 	}
 
