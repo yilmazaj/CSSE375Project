@@ -8,6 +8,6 @@ public class RoadBuildingCard extends ProgressCard {
     }
 
     public String getType() {
-        return "Domain.RoadBuildingCard";
+        return "RoadBuildingCard";
     }
 }

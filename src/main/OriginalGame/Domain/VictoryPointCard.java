@@ -13,6 +13,6 @@ public class VictoryPointCard extends NonPlayableCard {
     }
 
     public String getType() {
-        return "Domain.VictoryPointCard";
+        return "VictoryPointCard";
     }
 }
