@@ -52,6 +52,7 @@ public class GameBoard extends JPanel {
 			hexes[i] = new NoResourceHex(7);
 			hexes[i].hasRobber = false;
 		}
+		hexes[0].hasRobber = true;
 	}
 	public void placeManualHexes(){
 		int continueEditingBoard = JOptionPane.YES_OPTION;

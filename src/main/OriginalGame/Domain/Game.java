@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class Game {
 
-	public GameBuildingHandler gameBuildingHandler;
+	public GameBuildingHandler gameBuildingHandler = new GameBuildingHandler(false);
 	public int playerNum;
 	public JPanel[] playerPanels;
 	public JFrame gameFrame;
@@ -43,9 +43,6 @@ public class Game {
 			playerNum = Integer.parseInt(JOptionPane.showInputDialog(null, "There must be between 2 and 4 players", "2"));
 		}
 		playerPanels = new JPanel[playerNum];
-
-		gameBuildingHandler = new GameBuildingHandler(false);
-
 
 		gameFrame = new JFrame();
 		gameFrame.setSize(new Dimension(800, 700));
@@ -83,6 +80,8 @@ public class Game {
 	public Game (int playerNum) {
 		this.playerNum = playerNum;
 		dice = new Dice(2);
+
+		this.gameBuildingHandler.board.setResources(1);
 
 		colors = new Color[MAX_PLAYERS];
 		players = new Player[playerNum];
