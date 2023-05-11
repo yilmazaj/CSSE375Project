@@ -66,4 +66,11 @@ public class NewGameBoardTest {
         assertEquals(g2.getStroke(), new BasicStroke(10));
     }
 
+    @Test
+    public void testPlaceManualHexes(){
+        gameBoard.placeManualHexes();
+        assertEquals(gameBoard.hexes[0].getResource(), "Grain");
+        assertEquals(gameBoard.hexes[0].getNumber(), 2);
+        assertEquals(gameBoard.hexes[0].hasRobber, true);
+    }
 }
