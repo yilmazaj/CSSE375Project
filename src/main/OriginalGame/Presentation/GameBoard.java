@@ -25,14 +25,123 @@ public class GameBoard extends JPanel {
 
 	public GameBoard() {
 		this.setLayout(null);
+		initCustomBoard();
+		setupIntersections();
+	}
 
-		placeHexes();
+	public void setResources(int option){
+		if(option == JOptionPane.YES_OPTION){
+			placeManualHexes();
+			setupIntersections();
+		} else {
+			placeRandomHexes();
+			setupIntersections();
+		}
+		setupIntersectionButtons();
+	}
+
+	public void setupIntersections(){
 		setIntersections();
 		setRoads();
 		setIntersectionCoords();
-		setupIntersectionButtons();
+//		setupIntersectionButtons();
+	}
 
+	public void initCustomBoard(){
+		for (int i = 0; i < 19; i++) {
+			hexes[i] = new NoResourceHex(7);
+			hexes[i].hasRobber = false;
+		}
+	}
+	public void placeManualHexes(){
+		int continueEditingBoard = JOptionPane.YES_OPTION;
+		JOptionPane.showMessageDialog(null, "Click a hex to set its resource and number", "Configure board", JOptionPane.INFORMATION_MESSAGE);
+		while(continueEditingBoard == JOptionPane.YES_OPTION){
+			this.enableHexButtons(true);
+			int selected = -1;
+			while (selected == -1) {
+				try {
+					if(true)
+						selected = this.getSelectedHex();
+					else
+						selected = 0;
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			}
+			this.enableHexButtons(false);
+			boolean resourceSelected = false;
+			while(!resourceSelected)
+			{
+				String resource = JOptionPane.showInputDialog(null, "Enter resource type (Grain, Wool, Lumber, Brick, Ore, None)");
+				if(resource == null){
+					break;
+				} else if(resource.toLowerCase().equals("none")){
+					hexes[selected] = new NoResourceHex(7);
+					break;
+				}
+				int hexNum = this.getManualHexNumber();
+				if(hexNum == 0){
+					break;
+				} else if(resource.toLowerCase().equals("grain")){
+					hexes[selected] = new GrainHex(hexNum);
+					resourceSelected = true;
+				} else if(resource.toLowerCase().equals("wool")){
+					hexes[selected] = new WoolHex(hexNum);
+					resourceSelected = true;
+				} else if(resource.toLowerCase().equals("lumber")){
+					hexes[selected] = new LumberHex(hexNum);
+					resourceSelected = true;
+				} else if(resource.toLowerCase().equals("brick")){
+					hexes[selected] = new BrickHex(hexNum);
+					resourceSelected = true;
+				} else if(resource.toLowerCase().equals("ore")){
+					hexes[selected] = new OreHex(hexNum);
+					resourceSelected = true;
+				} else {
+					resourceSelected = false;
+				}
+			}
+			continueEditingBoard = JOptionPane.showConfirmDialog(null, "Would you like to continue setting resources?", "Continue?", JOptionPane.YES_NO_OPTION);
+		}
+		initManualRobberPosition();
+	}
 
+	public void initManualRobberPosition(){
+		JOptionPane.showMessageDialog(null, "Click a hex to place the robber and finish board setup", "Place robber", JOptionPane.INFORMATION_MESSAGE);
+		this.enableHexButtons(true);
+		int selected = -1;
+		while (selected == -1) {
+			try {
+				if(true)
+					selected = this.getSelectedHex();
+				else
+					selected = 0;
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		this.enableHexButtons(false);
+		hexes[selected].hasRobber = true;
+	}
+
+	public int getManualHexNumber(){
+		String numberStr = JOptionPane.showInputDialog(null, "Enter this hex's number (2-12 and can't be 7)", "2");
+		if(numberStr == null){
+			return 0;
+		}
+		int number = Integer.parseInt(numberStr);
+		while(number < 2 || number > 12 || number == 7){
+			JOptionPane.showMessageDialog(null, "Hex numbers must be from 2-12 and can not be 7", "Invalid number", JOptionPane.INFORMATION_MESSAGE);
+			numberStr = JOptionPane.showInputDialog(null, "Enter this hex's number (2-12 and can't be 7)", "2");
+			if(numberStr == null){
+				return 0;
+			}
+			number = Integer.parseInt(numberStr);
+		}
+		return number;
 	}
 
 	private void setupIntersectionButtons(){
@@ -70,7 +179,7 @@ public class GameBoard extends JPanel {
 		hexButtonManager.enableHexButtons(setTo);
 	}
 
-	public void placeHexes() {
+	public void placeRandomHexes() {
 		int[] nums = { 2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12, 7 };
 		int grain = 0, brick = 0, wool = 0, lumber = 0;
 		for (int i = 0; i < 19; i++) {

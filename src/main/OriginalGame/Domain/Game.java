@@ -12,7 +12,7 @@ import java.util.Random;
 
 public class Game {
 
-	public GameBuildingHandler gameBuildingHandler = new GameBuildingHandler(false);
+	public GameBuildingHandler gameBuildingHandler;
 	public int playerNum;
 	public JPanel[] playerPanels;
 	public JFrame gameFrame;
@@ -42,6 +42,7 @@ public class Game {
 		}
 		playerPanels = new JPanel[playerNum];
 
+		gameBuildingHandler = new GameBuildingHandler(false);
 
 
 		gameFrame = new JFrame();
@@ -50,6 +51,10 @@ public class Game {
 		gameFrame.setVisible(true);
 
 		gameFrame.add(gameBuildingHandler.board);
+
+		int useCustomBoard = JOptionPane.showConfirmDialog(null, "Would you like to set board resources manually?", "Use custom board?", JOptionPane.YES_NO_OPTION);
+		this.gameBuildingHandler.board.setResources(useCustomBoard);
+		gameFrame.repaint();
 
 		
 		colors = new Color[MAX_PLAYERS];
