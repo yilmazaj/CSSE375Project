@@ -219,19 +219,19 @@ public class GameBuildingHandler implements Serializable {
     public void buildStage(Player inTurn) {
         int answer = JOptionPane.showConfirmDialog(null, "Would you like to build?", "Build?", JOptionPane.YES_NO_OPTION);
         while (answer == JOptionPane.YES_OPTION) {
-            String s = JOptionPane.showInputDialog(null, "Domain.Structure or Domain.Road?", "");
-            if (s.equals("Domain.Structure")) {
+            String s = JOptionPane.showInputDialog(null, "Structure or Road?", "");
+            if (s.equals("Structure")) {
                 String type = JOptionPane.showInputDialog(null, "Settlement or City?", "");
                 JOptionPane.showMessageDialog(null, "What intersection should this be placed at?", "Intersection", JOptionPane.INFORMATION_MESSAGE);
                 int i = waitForPlayerIntersectionChoice();
                 buildStructure(type, i, inTurn);
-            } else if (s.equals("Domain.Road")) {
+            } else if (s.equals("Road")) {
                 JOptionPane.showMessageDialog(null, "Select two intersections for the road", "Intersection", JOptionPane.INFORMATION_MESSAGE);
                 int i1 = waitForPlayerIntersectionChoice();
                 int i2 = waitForPlayerIntersectionChoice();
                 buildRoad(i1, i2, inTurn);
             } else {
-                JOptionPane.showMessageDialog(null, "You must input either Domain.Structure or Domain.Road", "Invalid input!", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "You must input either Structure or Road", "Invalid input!", JOptionPane.ERROR_MESSAGE);
             }
             answer = JOptionPane.showConfirmDialog(null, "Would you like to build more?", "Build?", JOptionPane.YES_NO_OPTION);
         }
