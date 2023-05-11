@@ -1,9 +1,6 @@
 package Domain;
 
-import Presentation.CardGUI;
-import Presentation.CurrentTurnGUI;
-import Presentation.PlayersStatsGUI;
-import Presentation.TradeManagerGUI;
+import Presentation.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,6 +33,8 @@ public class Game {
 
 	public CardGUI cardGUI;
 
+	public ColorPickerGUI colorPickerGUI;
+
 	public Game () {
 		dice = new Dice(2);
 		playerNum = Integer.parseInt(JOptionPane.showInputDialog(null, "Enter number of players", "2"));
@@ -54,15 +53,18 @@ public class Game {
 		int useCustomBoard = JOptionPane.showConfirmDialog(null, "Would you like to set board resources manually?", "Use custom board?", JOptionPane.YES_NO_OPTION);
 		this.gameBuildingHandler.board.setResources(useCustomBoard);
 		gameFrame.repaint();
-
 		
-		colors = new Color[MAX_PLAYERS];
+		colors = new Color[playerNum];
 		players = new Player[playerNum];
 		maxKnights = 0;
 		maxRoads = 2;
 		mostRoads = new SpecialtyCard("MostRoads");
 		largestArmy = new SpecialtyCard("LargestArmy");
 		robber = new Robber();
+
+		JOptionPane.showMessageDialog(null,"Select a color for each player.");
+		colorPickerGUI = new ColorPickerGUI(playerNum);
+		while(colorPickerGUI.frame.isDisplayable()){ /* do nothing */ }
 
 		populateColors();
 		populatePlayers();
@@ -90,7 +92,7 @@ public class Game {
 		mostRoads = new SpecialtyCard("MostRoads");
 		largestArmy = new SpecialtyCard("LargestArmy");
 
-		populateColors();
+		populateColorsTest();
 
 		for(int i = 0; i < playerNum; i++){
 			players[i] = new Player(String.valueOf(i), colors[i]);
@@ -220,17 +222,8 @@ public class Game {
 			}
 		}
 	}
-
-	String getPlayerNameByColor(Color c) {
-		for(int i = 0; i < playerNum; i++) {
-			if(players[i].color.equals(c)) {
-				return players[i].name;
-			}
-		}
-		return null;
-	}
 	
-	private Player getPlayerOfColor(Color c) {
+	public Player getPlayerOfColor(Color c) {
 		for(int i = 0; i < this.playerNum; i++) {
 			if(players[i].color.equals(c)) {
 				return players[i];
@@ -463,6 +456,10 @@ public class Game {
 	}
 
 	public void populateColors() {
+		colors = colorPickerGUI.getColorArray();
+	}
+
+	public void populateColorsTest() {
 		colors[0] = Color.RED;
 		colors[1] = Color.ORANGE;
 		colors[2] = Color.BLUE;
