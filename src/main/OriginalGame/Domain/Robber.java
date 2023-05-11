@@ -59,8 +59,8 @@ public class Robber {
             Structure s = getStuctureByHex(g, moveRobber, i);
             if(s != null) {
                 if(!s.color.equals(g.inTurn.color)) {
-                    if(!names.contains(g.getPlayerNameByColor(s.color))) {
-                        names.add(g.getPlayerNameByColor(s.color));
+                    if(!names.contains(g.getPlayerOfColor(s.color).name)) {
+                        names.add(g.getPlayerOfColor(s.color).name);
                     }
                 }
             }
@@ -119,8 +119,8 @@ public class Robber {
             Structure s = getStuctureByHex(g, moveRobber, i);
             if(s != null) {
                 if(!s.color.equals(g.inTurn.color)) {
-                    if(!names.contains(g.getPlayerNameByColor(s.color))) {
-                        names.add(g.getPlayerNameByColor(s.color));
+                    if(!names.contains(g.getPlayerOfColor(s.color).name)) {
+                        names.add(g.getPlayerOfColor(s.color).name);
                     }
                 }
             }
@@ -155,8 +155,8 @@ public class Robber {
             Structure s = g.gameBuildingHandler.board.hexes[moveRobber].intersections[i].structure;
             if (s != null) {
                 if (!s.color.equals(g.inTurn.color)) {
-                    if (!names.contains(g.getPlayerNameByColor(s.color))) {
-                        names.add(g.getPlayerNameByColor(s.color));
+                    if (!names.contains(g.getPlayerOfColor(s.color).name)) {
+                        names.add(g.getPlayerOfColor(s.color).name);
                     }
                 }
             }
