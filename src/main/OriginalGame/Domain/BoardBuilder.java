@@ -43,19 +43,31 @@ public class BoardBuilder {
         }
     }
 
-    public int getManualHexNumber(){
-        String numberStr = JOptionPane.showInputDialog(null, "Enter this hex's number (2-12 and can't be 7)", "2");
+    public String showManualHexNumberUI(){
+        return JOptionPane.showInputDialog(null, "Enter this hex's number (2-12 and can't be 7)", "2");
+    }
+
+    public int validateManualHexNumberString(String numberStr){
         if(numberStr == null){
             return 0;
         }
-        int number = Integer.parseInt(numberStr);
-        while(number < 2 || number > 12 || number == 7){
-            JOptionPane.showMessageDialog(null, "Hex numbers must be from 2-12 and can not be 7", "Invalid number", JOptionPane.INFORMATION_MESSAGE);
-            numberStr = JOptionPane.showInputDialog(null, "Enter this hex's number (2-12 and can't be 7)", "2");
-            if(numberStr == null){
-                return 0;
+        try{
+            int number = Integer.parseInt(numberStr);
+            if(number < 2 || number > 12 || number == 7){
+                return -1;
             }
-            number = Integer.parseInt(numberStr);
+            return number;
+        }catch(Exception e){
+            return -1;
+        }
+    }
+
+    public int getManualHexNumber(){
+        String numberStr = showManualHexNumberUI();
+        int number = validateManualHexNumberString(numberStr);
+        if(number < 0){
+            JOptionPane.showMessageDialog(null, "Hex numbers must be from 2-12 and can not be 7", "Invalid number", JOptionPane.INFORMATION_MESSAGE);
+            return getManualHexNumber();
         }
         return number;
     }
