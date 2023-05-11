@@ -1,14 +1,19 @@
 package Domain;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class BoardBuilder {
     public BoardBuilder(){
 
     }
     public Hex createHex(){
-        String resource = JOptionPane.showInputDialog(null, "Enter resource type (Grain, Wool, Lumber, Brick, Ore, None)");
-        return createHexOfType(resource);
+        if(!GraphicsEnvironment.isHeadless()){
+            String resource = JOptionPane.showInputDialog(null, "Enter resource type (Grain, Wool, Lumber, Brick, Ore, None)");
+            return createHexOfType(resource);
+        } else {
+            return createHexOfType("grain");
+        }
     }
 
     public Hex createHexOfType(String resource) {
@@ -44,7 +49,11 @@ public class BoardBuilder {
     }
 
     public String showManualHexNumberUI(){
-        return JOptionPane.showInputDialog(null, "Enter this hex's number (2-12 and can't be 7)", "2");
+        if(!GraphicsEnvironment.isHeadless()){
+            return JOptionPane.showInputDialog(null, "Enter this hex's number (2-12 and can't be 7)", "2");
+        } else {
+            return "2";
+        }
     }
 
     public int validateManualHexNumberString(String numberStr){

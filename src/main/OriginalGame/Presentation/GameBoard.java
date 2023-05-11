@@ -56,11 +56,17 @@ public class GameBoard extends JPanel {
 	}
 	public void placeManualHexes(){
 		int continueEditingBoard = JOptionPane.YES_OPTION;
-		JOptionPane.showMessageDialog(null, "Click a hex to set its resource and number", "Configure board", JOptionPane.INFORMATION_MESSAGE);
+		if(!GraphicsEnvironment.isHeadless()){
+			JOptionPane.showMessageDialog(null, "Click a hex to set its resource and number", "Configure board", JOptionPane.INFORMATION_MESSAGE);
+		}
 		while(continueEditingBoard == JOptionPane.YES_OPTION){
 			int selected = selectBoardHex();
 			createHexAt(selected);
-			continueEditingBoard = JOptionPane.showConfirmDialog(null, "Would you like to continue setting resources?", "Continue?", JOptionPane.YES_NO_OPTION);
+			if(!GraphicsEnvironment.isHeadless()){
+				continueEditingBoard = JOptionPane.showConfirmDialog(null, "Would you like to continue setting resources?", "Continue?", JOptionPane.YES_NO_OPTION);
+			} else {
+				continueEditingBoard = JOptionPane.NO_OPTION;
+			}
 		}
 		initManualRobberPosition();
 	}
@@ -75,8 +81,11 @@ public class GameBoard extends JPanel {
 	}
 
 	public void initManualRobberPosition(){
-		JOptionPane.showMessageDialog(null, "Click a hex to place the robber and finish board setup", "Place robber", JOptionPane.INFORMATION_MESSAGE);
-		int selected = selectBoardHex();
+		int selected = 0;
+		if(!GraphicsEnvironment.isHeadless()){
+			JOptionPane.showMessageDialog(null, "Click a hex to place the robber and finish board setup", "Place robber", JOptionPane.INFORMATION_MESSAGE);
+			selected = selectBoardHex();
+		}
 		hexes[selected].hasRobber = true;
 	}
 
@@ -85,7 +94,7 @@ public class GameBoard extends JPanel {
 		int selected = -1;
 		while (selected == -1) {
 			try {
-				if(true)
+				if(!GraphicsEnvironment.isHeadless())
 					selected = this.getSelectedHex();
 				else
 					selected = 0;
