@@ -38,6 +38,7 @@ public class PlayersStatsGUI {
             frame.setVisible(true);
             frame.setSize(300, 500);
             frame.setLocation(1100,0);
+            frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         }
 
 
