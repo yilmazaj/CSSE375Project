@@ -75,7 +75,7 @@ public class Player {
     }
 
     public boolean removeResourceCard(String type) {
-
+        System.out.println("Type: " + type);
         for(int i = 0; i < resources.size();i++) {
             ResourceCard c = resources.get(i);
             if (c.getType().equals(type)) {
@@ -92,46 +92,35 @@ public class Player {
         return false;
     }
 
-    public void clearResources(){
-        resources.clear();
-        oreAmount = 0;
-        woolAmount = 0;
-        grainAmount = 0;
-        lumberAmount = 0;
-        brickAmount = 0;
-    }
+
+//    public void clearResources(){
+//        resources.clear();
+//        oreAmount = 0;
+//        woolAmount = 0;
+//        grainAmount = 0;
+//        lumberAmount = 0;
+//        brickAmount = 0;
+//    }
 
     public boolean containsAllResources(ArrayList<ResourceCard> resourcesToCheck) {
-        ArrayList<ResourceCard> temp = new ArrayList();
-        boolean empty = false;
-        int i;
-        for(i = 0; i < this.resources.size(); ++i) {
-            for(int j = 0; j < resourcesToCheck.size(); ++j) {
-                if (resourcesToCheck.isEmpty()) {
-                    empty = true;
-                    break;
-                }
-
-                if (((ResourceCard)resourcesToCheck.get(j)).type.equals(((ResourceCard)this.resources.get(i)).type)) {
-                    temp.add((ResourceCard)this.resources.remove(i));
-                    resourcesToCheck.remove(j);
-                    --i;
-                    break;
-                }
-            }
-
-            if (resourcesToCheck.isEmpty()) {
-                empty = true;
-                break;
-            }
+        int tempOreAmount = 0;
+        int tempWoolAmount = 0;
+        int tempGrainAmount = 0;
+        int tempLumberAmount = 0;
+        int tempBrickAmount = 0;
+        for(ResourceCard c: resourcesToCheck){
+            if(c.getType().equals("Brick")){ tempBrickAmount++;}
+            if(c.getType().equals("Grain")){ tempGrainAmount++;}
+            if(c.getType().equals("Lumber")){ tempLumberAmount++;}
+            if(c.getType().equals("Wool")){ tempWoolAmount++; }
+            if(c.getType().equals("Ore")){ tempOreAmount++; }
         }
 
-        for(i = 0; i < temp.size(); ++i) {
-            this.addResourceCard((ResourceCard)temp.get(i));
-            resourcesToCheck.add((ResourceCard)temp.get(i));
-        }
+        return tempLumberAmount <= lumberAmount && tempWoolAmount <= woolAmount
+                && tempOreAmount <= oreAmount &&
+                tempGrainAmount <= grainAmount &&
+                tempBrickAmount <= brickAmount;
 
-        return empty;
     }
 
     public void removeAllResources(ArrayList<ResourceCard> requiredResources) {

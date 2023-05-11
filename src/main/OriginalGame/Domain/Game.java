@@ -171,7 +171,7 @@ public class Game {
 				i2 = gameBuildingHandler.waitForPlayerIntersectionChoice();
 			}
 			gameBuildingHandler.buildRoadsUI(inTurn);
-			inTurn.clearResources();
+//			inTurn.clearResources();
 			rotateTurns();
 		}
 	}
