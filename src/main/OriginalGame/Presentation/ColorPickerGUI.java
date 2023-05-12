@@ -12,9 +12,12 @@ public class ColorPickerGUI extends JFrame implements ActionListener {
     private int colorsPicked;
     private int numPlayers;
 
+    public boolean isFull;
+
     public ColorPickerGUI(int numPlayers) {
 
         colorsPicked = 0;
+        isFull = false;
         colorArray = new Color[numPlayers];
         this.numPlayers = numPlayers;
 
@@ -68,6 +71,7 @@ public class ColorPickerGUI extends JFrame implements ActionListener {
             }
         }
         if (colorsPicked == numPlayers) {
+            isFull = true;
             frame.dispose();
         }
     }
