@@ -34,6 +34,15 @@ public class ColorPickerGUI extends JFrame implements ActionListener {
         frame.add(button);
     }
 
+    public boolean arrayFull(){
+        for(int i = 0; i < colorArray.length; i++){
+            if(colorArray[i] == null){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean colorArrayContains(Color color){
         for(int i = 0; i < colorArray.length; i++){
             if(color.equals(colorArray[i])){

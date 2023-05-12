@@ -455,7 +455,7 @@ public class Game {
 		JOptionPane.showMessageDialog(null,"Select a color for each player.");
 		colorPickerGUI = new ColorPickerGUI(playerNum);
 		colorPickerGUI.initialize();
-		while(colorPickerGUI.frame.isDisplayable()){ /* do nothing */ }
+		while(!colorPickerGUI.arrayFull()){ /* do nothing */ }
 		colors = colorPickerGUI.getColorArray();
 	}
 
