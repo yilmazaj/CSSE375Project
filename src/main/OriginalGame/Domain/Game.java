@@ -460,9 +460,15 @@ public class Game {
 	}
 
 	public void populateColorsTest() {
-		colorPickerGUI = new ColorPickerGUI(playerNum);
-		while(!colorPickerGUI.arrayFull()){ System.out.println(""); }
-		colors = colorPickerGUI.getColorArray();
+		colors[0] = Color.RED;
+		colors[1] = Color.ORANGE;
+		colors[2] = Color.BLUE;
+		colors[3] = Color.GREEN;
+		colors[4] = Color.BLACK;
+		colors[5] = Color.WHITE;
+//		colorPickerGUI = new ColorPickerGUI(playerNum);
+//		while(!colorPickerGUI.arrayFull()){ System.out.println(""); }
+//		colors = colorPickerGUI.getColorArray();
 	}
 	
 	public void populatePlayers() {
