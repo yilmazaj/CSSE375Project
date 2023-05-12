@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class ColorPickerGUI extends JFrame implements ActionListener {
+public class ColorPickerGUI implements ActionListener {
     private JButton button;
     public JFrame frame;
 
@@ -29,7 +29,6 @@ public class ColorPickerGUI extends JFrame implements ActionListener {
         frame.setSize(400, 300);
         frame.setVisible(true);
         frame.setTitle("Color Picker");
-        frame.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         button = new JButton("Choose Color");
         button.addActionListener(this);
@@ -40,6 +39,7 @@ public class ColorPickerGUI extends JFrame implements ActionListener {
     public boolean arrayFull(){
         for(int i = 0; i < colorArray.length; i++){
             if(colorArray[i] == null){
+                System.out.println("");
                 return false;
             }
         }
@@ -62,7 +62,7 @@ public class ColorPickerGUI extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (colorsPicked < numPlayers) {
             Color initialColor = Color.RED;
-            Color selectedColor = JColorChooser.showDialog(this, "Select a color", initialColor);
+            Color selectedColor = JColorChooser.showDialog(null, "Select a color", initialColor);
             if(colorArrayContains(selectedColor)){
                 JOptionPane.showMessageDialog(null, "That color has already been selected.");
             } else {

@@ -466,9 +466,6 @@ public class Game {
 		colors[3] = Color.GREEN;
 		colors[4] = Color.BLACK;
 		colors[5] = Color.WHITE;
-//		colorPickerGUI = new ColorPickerGUI(playerNum);
-//		while(!colorPickerGUI.arrayFull()){ System.out.println(""); }
-//		colors = colorPickerGUI.getColorArray();
 	}
 	
 	public void populatePlayers() {
