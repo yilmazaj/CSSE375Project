@@ -8,17 +8,19 @@ public class ColorPickerGUI extends JFrame implements ActionListener {
     private JButton button;
     public JFrame frame;
 
-    private Color[] colorArray;
+    public Color[] colorArray;
     private int colorsPicked;
     private int numPlayers;
 
     public ColorPickerGUI(int numPlayers) {
 
         colorsPicked = 0;
-
         colorArray = new Color[numPlayers];
         this.numPlayers = numPlayers;
 
+    }
+
+    public void initialize(){
         frame = new JFrame();
         frame.setLayout(new FlowLayout());
         frame.setSize(400, 300);

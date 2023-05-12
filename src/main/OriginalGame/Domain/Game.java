@@ -62,10 +62,6 @@ public class Game {
 		largestArmy = new SpecialtyCard("LargestArmy");
 		robber = new Robber();
 
-		JOptionPane.showMessageDialog(null,"Select a color for each player.");
-		colorPickerGUI = new ColorPickerGUI(playerNum);
-		while(colorPickerGUI.frame.isDisplayable()){ /* do nothing */ }
-
 		populateColors();
 		populatePlayers();
 		inTurn = players[0];
@@ -456,6 +452,10 @@ public class Game {
 	}
 
 	public void populateColors() {
+		JOptionPane.showMessageDialog(null,"Select a color for each player.");
+		colorPickerGUI = new ColorPickerGUI(playerNum);
+		colorPickerGUI.initialize();
+		while(colorPickerGUI.frame.isDisplayable()){ /* do nothing */ }
 		colors = colorPickerGUI.getColorArray();
 	}
 
