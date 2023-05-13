@@ -1,0 +1,545 @@
+@startuml
+class Presentation.PlayerStatsGUI {
+~ Player player
+~ JPanel playerNamePanel
++ JPanel resourceDisplayPanel
++ JPanel leftPanel
++ JPanel rightPanel
++ <<Create>> PlayerStatsGUI(Player)
++ void updateResourcesView()
+}
+class Domain.Road {
++ int intersection1Num
++ int intersection2Num
+# int indexNum
++ Color color
++ <<Create>> Road(int,int,int)
++ void activateRoad(Color)
++ boolean isBetweenIntersections(int,int)
+}
+abstract class Domain.PlayableCard {
++ {abstract}String getType()
+}
+class Domain.YearOfPlentyCard {
++ <<Create>> YearOfPlentyCard()
++ String getType()
+}
+class Presentation.HexActionListener {
+- int hexIndex
+- HexButtonManager manager
++ <<Create>> HexActionListener(int,HexButtonManager)
++ void actionPerformed(ActionEvent)
+}
+abstract class Domain.Buyable {
+}
+class Presentation.IntersectionPoint {
++ Point2D.Double point
++ Color color
++ <<Create>> IntersectionPoint(Point2D.Double)
++ <<Create>> IntersectionPoint(Point2D.Double,Color)
+}
+class Presentation.PlayersStatsGUI {
++ JFrame frame
++ Presentation.PlayerStatsGUI[] playerStatsGUIs
++ Player[] players
++ <<Create>> PlayersStatsGUI(Player[])
++ void updatePlayersStats()
+}
+class Presentation.CardGUI {
+~ Player player
+~ JPanel mainPanel
+~ JButton buyButton
+~ JPanel cardPanel
+~ JFrame frame
+- boolean buyingCard
+- boolean playingCard
+- String cardToPlay
+- boolean isActive
++ <<Create>> CardGUI(Player,boolean)
+- void initializeFrame(boolean)
+- void enableBuyingCard()
++ boolean isBuyingCard()
++ boolean isPlayingCard()
++ String getCardtoPlay()
++ boolean isActive()
++ void notifyInvalidation()
+- void displayPlayableCards()
+- void displayNonPlayableCards()
++ void actionPerformed(ActionEvent)
+}
+class Domain.NoResourceHex {
++ <<Create>> NoResourceHex(int)
++ String getResource()
++ Color getColor()
+}
+class Presentation.GameBoard {
++ Hex[] hexes
++ Intersection[] intersections
++ Road[] roads
++ int hexSideLength
++ double hexDiameter
++ double hexRadius
++ Point2D.Double startingPoint
++ IntersectionPoint[] intersectionPoints
++ IntersectionButtonManager manager
++ HexButtonManager hexButtonManager
+- boolean firstTime
+- BoardBuilder boardBuilder
++ <<Create>> GameBoard()
++ void setResources(int)
++ void setupIntersections()
++ void initCustomBoard()
++ void placeManualHexes()
+- void createHexAt(int)
++ void initManualRobberPosition()
++ int selectBoardHex()
+- void setupIntersectionButtons()
++ int getSelectedIntersection()
++ void enableIntersectionButtons(boolean)
++ void setupHexButtons()
++ int getSelectedHex()
++ void enableHexButtons(boolean)
++ void placeRandomHexes()
+- void mixHexes()
++ void paintComponent(Graphics)
++ void drawIntersectionAtIndex(GraphicsWithIndex)
++ void drawRoadAtIndex(GraphicsWithIndex)
+- Point2D.Double calculateHexCenter(Point2D.Double,int)
++ void drawHexNumberAtPosition(GraphicsWithIndex,Point2D.Double)
++ HexagonData drawHex(Hex,Graphics2D,Point2D.Double)
++ void setIntersections()
+- void setHexIntersections()
++ void setRoads()
+- void connectRoads()
+- void setIntersectionCoords()
++ IntersectionHelper setIntersectionCoordsHelper(IntersectionHelper,int)
++ int findRobberIndex()
++ Road getRoadByIntersections(int,int)
++ void moveRobber(int)
++ ArrayList<Structure> getStructuresOnRolledHexes(int)
+}
+class Domain.Game {
++ GameBuildingHandler gameBuildingHandler
++ int playerNum
++ JPanel[] playerPanels
++ JFrame gameFrame
++ Color[] colors
++ int MAX_PLAYERS
++ Player[] players
++ Player inTurn
++ int inTurnIndex
++ int maxKnights
++ int maxRoads
++ SpecialtyCard mostRoads
++ SpecialtyCard largestArmy
++ Dice dice
++ PlayersStatsGUI playersStats
++ Robber robber
++ TradeManagerGUI tradeManagerGUI
++ CardGUI cardGUI
++ <<Create>> Game()
++ <<Create>> Game(int)
+- void giveInitialResources()
++ void rotateTurns()
++ boolean buildRoad(int,int)
++ boolean buildStructure(String,int)
++ void buildRoadsUI()
++ void buildInitialStructures()
++ int handleDiceRoll()
++ void giveResourcesFromRoll(int)
+~ String getPlayerNameByColor(Color)
+- Player getPlayerOfColor(Color)
+- void waitForPlayerToEndTurn(CurrentTurnGUI)
+- void handlePlayerAction(CurrentTurnGUI)
+- void handleCardAction()
++ void handlePlayerTurn(CurrentTurnGUI)
++ void checkSpecialties()
++ boolean playCard()
+- int getIndexOfFirstPlayableCardofType(String)
++ boolean buyCard()
+- Player getPlayerByName(String)
++ void populateColors()
++ void populatePlayers()
+}
+class Domain.Game$PlayerInfo {
+~ Color playerColor
+~ String playerName
+~ int playerInd
++ <<Create>> PlayerInfo(Color,String,int)
+}
+class Domain.BrickHex {
++ <<Create>> BrickHex(int)
++ String getResource()
++ Color getColor()
+}
+class Presentation.HexagonData {
+- int xCenter
+- int yCenter
+- Polygon hex
++ int HEX_SIDE_LENGTH
++ <<Create>> HexagonData(int,int,Polygon)
++ <<Create>> HexagonData(Point2D)
++ void drawHexShape(Graphics2D)
++ int getXCenter()
++ int getYCenter()
+}
+class Domain.LumberHex {
++ <<Create>> LumberHex(int)
++ String getResource()
++ Color getColor()
+}
+abstract class Domain.Hex {
+- int number
++ Intersection[] intersections
++ boolean hasRobber
+- ImageIcon resourceIcon
++ Point2D.Double center
++ <<Create>> Hex(int)
++ int getNumber()
++ {abstract}String getResource()
++ Color getColor()
++ void setIntersections(Intersection,Intersection,Intersection,Intersection,Intersection,Intersection)
++ void drawIcon(Graphics2D,Point2D.Double)
++ ImageIcon getIcon()
++ void setCenter(int,int)
+}
+class Presentation.HexButton {
+- {static} long serialVersionUID
+- Polygon hexagon
+- boolean paint
++ <<Create>> HexButton(String)
++ boolean contains(Point)
++ boolean contains(int,int)
++ void setSize(Dimension)
++ void setSize(int,int)
++ void setBounds(int,int,int,int)
++ void setBounds(Rectangle)
+# void processMouseEvent(MouseEvent)
+- void calculateCoords()
+# void paintComponent(Graphics)
+# void paintBorder(Graphics)
+}
+class Domain.OreHex {
++ <<Create>> OreHex(int)
++ String getResource()
++ Color getColor()
+}
+class Presentation.HexButtonManager {
+- ArrayList<JButton> hexButtons
+- int selectedHex
++ <<Create>> HexButtonManager()
++ void enableHexButtons(boolean)
++ JButton createHexButton(HexPoint,int)
++ void setSelectedHex(int)
++ int getSelectedHex()
+}
+class Domain.RoadBuildingCard {
++ <<Create>> RoadBuildingCard()
++ String getType()
+}
+class Domain.Main {
++ {static} void main(String[])
+}
+class Presentation.Intersection {
++ Hex[] hexes
++ Road[] roads
++ Structure structure
++ <<Create>> Intersection(Hex)
++ <<Create>> Intersection(Hex,Hex)
++ <<Create>> Intersection(Hex,Hex,Hex)
++ boolean addStructure(Structure)
++ void setRoads(Road,Road,Road)
++ void setRoads(Road,Road)
++ boolean containsRoad(Color)
++ boolean updateRoad(int,int,Road)
++ void drawStructureIcon(Graphics2D,Point2D.Double)
+}
+class Domain.BoardBuilder {
++ <<Create>> BoardBuilder()
++ Hex createHex()
++ Hex createHexOfType(String)
+- Hex createNumberedHexOfType(String)
++ Hex createHexOfTypeAndNumber(String,int)
++ int getManualHexNumber()
+}
+class Domain.Structure {
++ Color color
+# Hex[] hexes
+- ImageIcon structureIcon
+- String type
++ <<Create>> Structure(Color,String)
++ String getType()
++ void drawIcon(Graphics2D,Point2D.Double)
++ ImageIcon getIcon()
+}
+class Domain.SpecialtyCard {
+- String type
++ <<Create>> SpecialtyCard(String)
++ int getPointValue()
++ String getType()
+}
+class Domain.MonopolyCard {
++ String getType()
+}
+class Presentation.IntersectionActionListener {
+- int intersectionIndex
+- IntersectionButtonManager manager
++ <<Create>> IntersectionActionListener(int,IntersectionButtonManager)
++ void actionPerformed(ActionEvent)
+}
+abstract class Domain.ProgressCard {
++ <<Create>> ProgressCard()
+}
+class Presentation.GraphicsWithIndex {
+- Graphics2D g2
+- int position
++ <<Create>> GraphicsWithIndex(Graphics2D,int)
++ void setNewPosition(int)
++ Graphics2D getGraphics()
++ int getPosition()
+}
+class Presentation.TradeManagerGUI {
+- TradeManager tM
+- JFrame frame
+- JPanel enterResources
+- JPanel tradeOptions
+- JLabel label
+- JLabel brickLabel
+- JLabel grainLabel
+- JLabel lumberLabel
+- JLabel woolLabel
+- JLabel oreLabel
+- JLabel tradeOptionsLabel
+- JTextField brick
+- JTextField grain
+- JTextField lumber
+- JTextField wool
+- JTextField ore
+- JButton tradeAway
+- JButton tradeFor
+- JButton[] yesButtons
+- JButton[] noButtons
+- ArrayList<Integer> validTradees
+- Player[] players
++ <<Create>> TradeManagerGUI(Player[],Player)
++ void initializeLabels()
++ void initializeTextFields()
++ void initializeTradeOutGUI()
++ void resetTextFields()
++ void initializeTradeInGUI()
++ void initializeTradeOptionsGUI()
++ void actionPerformed(ActionEvent)
++ {static} void main(String[])
+}
+class Presentation.IntersectionHelper {
+~ int count
+~ double curX
+~ double curY
+~ boolean standardHeight
++ <<Create>> IntersectionHelper(int,double,double,boolean)
+}
+abstract class Domain.NonPlayableCard {
++ {abstract}int getPointValue()
++ {abstract}String getType()
+}
+class Domain.Dice {
+- int[] rolls
+- int total
+- Random rng
+- boolean rollForCurrentPlayerMade
++ <<Create>> Dice(int)
++ void setTotal(int)
++ boolean hasPlayerMadeRoll()
++ void invalidatePreviousRoll()
++ int getNumDice()
++ int[] rollDice()
++ void waitForPlayerDiceRoll()
++ int getTotal()
+}
+class Domain.Robber {
++ <<Create>> Robber()
++ int moveRobberTile(Game)
++ int waitForPlayerHexChoice(Game,boolean)
++ void moreThanSevenCards(Game)
+- ArrayList<String> retrieveRobberTargets(Game,int)
+- void handleSteal(Game,ArrayList<String>)
++ void activateRobber(Game)
++ ArrayList<String> retrieveRobberTargetsWithInput(Game,int)
++ void handleStealWithInput(Game,Player)
++ boolean activateRobberWithInputs(Game,int,String)
++ Structure getStuctureByHex(Game,int,int)
+}
+class Domain.ResourceCard {
+# String type
++ <<Create>> ResourceCard(String)
++ String getType()
++ int getPointValue()
+}
+enum Domain.ResourceType {
++  Lumber
++  Brick
++  Grain
++  Wool
++  Ore
+- <<Create>> ResourceType()
+}
+class Domain.WoolHex {
++ <<Create>> WoolHex(int)
++ String getResource()
++ Color getColor()
+}
+class Domain.KnightCard {
++ String getType()
+}
+class Domain.Player {
++ String name
++ Color color
++ ArrayList<ResourceCard> resources
+# boolean isActive
++ int numSettlements
+# int numCities
++ int numRoads
++ int victoryPoints
++ ArrayList<NonPlayableCard> nCards
++ ArrayList<PlayableCard> pCards
++ int knightCount
++ boolean hasKnightCard
++ boolean hasRoadCard
++ int brickAmount
++ int grainAmount
++ int lumberAmount
++ int woolAmount
++ int oreAmount
++ <<Create>> Player(String,Color)
++ <<Create>> Player(Game.PlayerInfo)
++ ResourceCard removeRandomCard()
++ void addResourceCard(ResourceCard)
++ boolean removeResourceCard(String)
++ boolean containsAllResources(ArrayList<ResourceCard>)
++ void removeAllResources(ArrayList<ResourceCard>)
++ void printResources()
++ void addNonPlayableCard(NonPlayableCard)
++ boolean removeNonPlayableCard(NonPlayableCard)
++ String displayPlayableCards()
+}
+class Domain.TradeManager {
+- Player[] players
+- Player inTurn
++ int[] resourceOut
++ int[] resourceIn
++ <<Create>> TradeManager(Player[],Player)
++ boolean checkIfValidOutput()
++ ArrayList<Integer> checkIfValidTrade()
+- Player findPlayer(Player[],String)
++ void setResourceOut(String[])
++ void setResourceIn(String[])
++ void handleTrade(String)
+- ArrayList<ResourceCard> createResourceCards(int[])
+}
+abstract class Domain.Buildable {
+}
+class Presentation.CurrentTurnGUI {
+- JFrame frame
+- JPanel panel
+- JLabel[] diceLabels
+- JButton rollDiceButton
+- JButton tradeButton
+- JButton endTurnButton
+- JButton buildButton
+- JButton cardButton
+# String playerName
+- JLabel playerNameLabel
+# Dice dice
+# boolean turnEnded
+- boolean cardActionFlag
+- boolean buildActionFlag
+- boolean tradeActionFlag
++ <<Create>> CurrentTurnGUI(String,Dice)
++ void initialize()
+- void initializeFields()
+- void attachActionListeners()
++ boolean isTurnOver()
++ void updateUIForNewPlayer(String)
+- void resetButtons()
++ void resetContent()
+# void resetFlags()
++ void resetDice()
+- void initializeSwingUI()
++ void endTurnButtonAction()
++ void buildButtonAction()
++ void tradeButtonAction()
++ void cardButtonAction()
++ boolean doBuildAction()
++ boolean doTradeAction()
++ boolean doCardAction()
+- void rollDiceButtonAction()
+- void updateDiceImage(int,int)
+- void scaleAndSetDiceImage(int,int)
+- GridBagConstraints generateDiceConstraints(int)
+- void setGridBagConstraints(GridBagConstraints,int,int,int,int)
++ {static} void main(String[])
+}
+class Domain.VictoryPointCard {
++ <<Create>> VictoryPointCard()
++ int getPointValue()
++ String getType()
+}
+class Presentation.HexPoint {
++ Point2D.Double point
++ Color color
++ <<Create>> HexPoint(Point2D.Double)
++ <<Create>> HexPoint(Point2D.Double,Color)
+}
+class Presentation.IntersectionButtonManager {
+- ArrayList<JButton> intersectionButtons
+- int selectedIntersection
++ <<Create>> IntersectionButtonManager()
++ void enableIntersectionButtons(boolean)
++ JButton createIntersectionButton(IntersectionPoint,int)
++ void setSelectedIntersection(int)
++ int getSelectedIntersection()
+}
+class Domain.GameBuildingHandler {
++ GameBoard board
+- boolean testMode
++ <<Create>> GameBuildingHandler(boolean)
++ boolean buildRoad(int,int,Player)
++ boolean buildStructure(String,int,Player)
++ int waitForPlayerIntersectionChoice()
++ void buildRoadsUI(Player)
++ ArrayList<Structure> getStructuresOnRolledHexes(int)
++ void buildStage(Player)
+}
+class Domain.GrainHex {
++ <<Create>> GrainHex(int)
++ String getResource()
++ Color getColor()
+}
+
+
+Domain.Buildable <|-- Domain.Road
+Domain.Buyable <|-- Domain.PlayableCard
+Domain.ProgressCard <|-- Domain.YearOfPlentyCard
+java.awt.event.ActionListener <|.. Presentation.HexActionListener
+java.awt.event.ActionListener <|.. Presentation.CardGUI
+Domain.Hex <|-- Domain.NoResourceHex
+Presentation.JPanel <|-- Presentation.GameBoard
+Domain.Game +.. Domain.Game$PlayerInfo
+Domain.Hex <|-- Domain.BrickHex
+Domain.Hex <|-- Domain.LumberHex
+Presentation.JButton <|-- Presentation.HexButton
+Domain.Hex <|-- Domain.OreHex
+Domain.ProgressCard <|-- Domain.RoadBuildingCard
+Domain.Buildable <|-- Domain.Structure
+Domain.NonPlayableCard <|-- Domain.SpecialtyCard
+Domain.ProgressCard <|-- Domain.MonopolyCard
+java.awt.event.ActionListener <|.. Presentation.IntersectionActionListener
+Domain.PlayableCard <|-- Domain.ProgressCard
+Domain.Buyable <|-- Domain.NonPlayableCard
+Domain.NonPlayableCard <|-- Domain.ResourceCard
+Domain.Hex <|-- Domain.WoolHex
+Domain.PlayableCard <|-- Domain.KnightCard
+Domain.NonPlayableCard <|-- Domain.VictoryPointCard
+java.io.Serializable <|.. Domain.GameBuildingHandler
+Domain.Hex <|-- Domain.GrainHex
+@enduml

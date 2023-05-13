@@ -22,6 +22,6 @@ public class Main {
             }
             game.rotateTurns();
         }
-        JOptionPane.showMessageDialog(null, game.inTurn.name + " has reached 10 victory points and won the game!", "Domain.Game Over!", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, game.inTurn.name + " has reached 10 victory points and won the game!", "Game Over!", JOptionPane.INFORMATION_MESSAGE);
     }
 }

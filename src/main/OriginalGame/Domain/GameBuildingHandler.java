@@ -47,7 +47,7 @@ public class GameBuildingHandler implements Serializable {
                 return true;
             } else {
                 if(!this.testMode)
-                    JOptionPane.showMessageDialog(null, "Player does not have enough resources to build a road", "Failed to build road", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Player does not have the brick and lumber to build a road", "Failed to build road", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         }
@@ -67,7 +67,7 @@ public class GameBuildingHandler implements Serializable {
                     return true;
                 } else {
                     if(!this.testMode)
-                        JOptionPane.showMessageDialog(null, "Player does not have enough resources to build a road", "Failed to build road", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "Player does not have the brick and lumber to build a road", "Failed to build road", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
             } else {
@@ -117,7 +117,7 @@ public class GameBuildingHandler implements Serializable {
                         return true;
                     } else {
                         if(!this.testMode)
-                            JOptionPane.showMessageDialog(null, "Player does not have the resources required to build a settlement", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Player does not have the brick, grain, lumber, and wool to build a settlement", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
                         return false;
                     }
                 } else {
@@ -154,7 +154,7 @@ public class GameBuildingHandler implements Serializable {
                         return true;
                     } else {
                         if(!this.testMode)
-                            JOptionPane.showMessageDialog(null, "Player does not have the resources required to build a city", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Player does not have the 3 ore and 2 grain to build a city", "Failed to build structure", JOptionPane.ERROR_MESSAGE);
                         return false;
                     }
                 } else {
@@ -217,7 +217,8 @@ public class GameBuildingHandler implements Serializable {
     }
 
     public void buildStage(Player inTurn) {
-        int answer = JOptionPane.showConfirmDialog(null, "Would you like to build?", "Build?", JOptionPane.YES_NO_OPTION);
+//        int answer = JOptionPane.showConfirmDialog(null, "Would you like to build?", "Build?", JOptionPane.YES_NO_OPTION);
+        int answer = JOptionPane.YES_OPTION;
         while (answer == JOptionPane.YES_OPTION) {
             String s = JOptionPane.showInputDialog(null, "Structure or Road?", "");
             if (s.equals("Structure")) {
